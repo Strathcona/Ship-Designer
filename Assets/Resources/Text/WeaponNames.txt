@@ -1,0 +1,12 @@
+'Devastator'
+'Bulldog'
+'Artemis'
+'Rhino'
+'Duster'
+'Tortise'
+Mark 5
+Mark 6
+Mark 7
+Mark 8
+Type 90
+Type 72
