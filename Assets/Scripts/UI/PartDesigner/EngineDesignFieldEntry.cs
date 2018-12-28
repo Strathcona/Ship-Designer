@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameConstructs;
 
 public class EngineDesignFieldEntry : PartDesignFieldEntry
 {
@@ -12,10 +13,14 @@ public class EngineDesignFieldEntry : PartDesignFieldEntry
     public Text agilityText;
     public Text thrustText;
 
-    public override void Initialize() {
-        engine = new Engine();
+    public override void Initialize(Part p) {
+        engine = new Engine(p);
         UpdateAgilitySlider();
         UpdateThrustSlider();
+    }
+
+    public override PartType GetPartType() {
+        return PartType.Engine;
     }
 
     public override Part GetPart() {
@@ -26,6 +31,12 @@ public class EngineDesignFieldEntry : PartDesignFieldEntry
         base.UpdateStrings();
         agilityText.text = engine.Agility.ToString();
         thrustText.text = engine.Thrust.ToString();
+    }
+
+    public override void SetPart() {
+        SetAgilitySlider();
+        SetThrustSlider();
+        UpdateStrings();
     }
 
     public override void Clear() {
@@ -39,8 +50,16 @@ public class EngineDesignFieldEntry : PartDesignFieldEntry
         UpdateStrings();
     }
 
+    public void SetAgilitySlider() {
+        agilitySlider.value = engine.Agility;
+    }
+
     public void UpdateThrustSlider() {
         engine.Thrust = Mathf.FloorToInt(thrustSlider.value);
         UpdateStrings();
+    }
+
+    public void SetThrustSlider() {
+        thrustSlider.value = engine.Thrust;
     }
 }

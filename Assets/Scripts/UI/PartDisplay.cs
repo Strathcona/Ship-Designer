@@ -11,7 +11,6 @@ public class PartDisplay : MonoBehaviour {
     private void Awake() {
         descriptionText = this.transform.GetChild(0).GetComponentInChildren<Text>();
         statisticsText = this.transform.GetChild(1).GetComponentInChildren<Text>();
-
     }
 
     public void DisplayPart(Part p) {

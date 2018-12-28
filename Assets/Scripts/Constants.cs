@@ -28,6 +28,14 @@ namespace GameConstructs {
             {WeaponType.railgun, 3}
         };
 
+        public static Dictionary<PartType, string> PartTypeString = new Dictionary<PartType, string>() {
+            {PartType.Engine, "Engine"},
+            {PartType.Weapon, "Weapon"},
+            {PartType.PowerPlant, "Power Plant"},
+            {PartType.Sensor, "Sensor"},
+            {PartType.FireControl, "Fire Control"},
+        };
+
         public static Dictionary<int, float> TierDamagePerSize = new Dictionary<int, float>() {
             {0, 1.0f },
             {1, 1.2f},

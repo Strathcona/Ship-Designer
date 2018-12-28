@@ -13,12 +13,16 @@ public class WeaponDesignFieldEntry : PartDesignFieldEntry {
     public Slider reloadSlider;
     public Text reloadText;
 
-    public override void Initialize() {
-        weapon = new Weapon();
+    public override void Initialize(Part p) {
+        weapon = new Weapon(p);
         UpdateWeaponCaliber();
         UpdateWeaponReload();
         UpdateWeaponTurret();
         UpdateWeaponType();
+    }
+
+    public override PartType GetPartType() {
+        return PartType.Weapon;
     }
 
     public override Part GetPart() {
@@ -28,6 +32,14 @@ public class WeaponDesignFieldEntry : PartDesignFieldEntry {
         base.UpdateStrings();
         caliberText.text = weapon.Caliber.ToString() + "mm";
         reloadText.text = weapon.ReloadTime.ToString() + "s";
+    }
+
+    public override void SetPart() {
+        SetWeaponCaliber();
+        SetWeaponReload();
+        SetWeaponTurret();
+        SetWeaponType();
+        UpdateStrings();
     }
 
     public override void Clear() {
@@ -54,6 +66,20 @@ public class WeaponDesignFieldEntry : PartDesignFieldEntry {
         UpdateStrings();
     }
 
+    public void SetWeaponType() {
+        switch (weapon.weaponType) {
+            case WeaponType.laser:
+                weaponTypeDropdown.value = 0;
+                break;
+            case WeaponType.railgun:
+                weaponTypeDropdown.value = 1;
+                break;
+            default:
+                Debug.Log("Fell through on weapon type set ");
+                break;
+        }
+    }
+
     public void UpdateWeaponTurret() {
         switch (turretTypeDropdown.value) {
             case 0:
@@ -78,14 +104,30 @@ public class WeaponDesignFieldEntry : PartDesignFieldEntry {
         UpdateStrings();
     }
 
+    public void SetWeaponTurret() {
+        if(weapon.Turreted == false) {
+            turretTypeDropdown.value = 0;
+        } else {
+            turretTypeDropdown.value = weapon.TurretNumber + 1;
+        }
+    }
+
     public void UpdateWeaponCaliber() {
         weapon.Caliber = Mathf.FloorToInt(caliberSlider.value) * 4;
         UpdateStrings();
     }
 
+    public void SetWeaponCaliber() {
+        caliberSlider.value = weapon.Caliber;
+    }
+
     public void UpdateWeaponReload() {
         weapon.ReloadTime = reloadSlider.value;
         UpdateStrings();
+    }
+
+    public void SetWeaponReload() {
+        reloadSlider.value = weapon.ReloadTime;
     }
 
 }

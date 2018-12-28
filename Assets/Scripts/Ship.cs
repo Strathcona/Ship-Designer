@@ -87,7 +87,7 @@ public class Ship {
         }
         FireControl f = FireControl.GetRandomFireControl();
         s.AddPart(f);
-        Engine e = Engine.GetRandomShipEngine();
+        Engine e = Engine.GetRandomEngine();
         s.AddPart(e);
         Sensor sen = Sensor.GetRandomSensor();
         s.AddPart(sen);

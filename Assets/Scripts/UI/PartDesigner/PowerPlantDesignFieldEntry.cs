@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameConstructs;
 
 public class PowerPlantDesignFieldEntry : PartDesignFieldEntry
 {
@@ -10,9 +11,13 @@ public class PowerPlantDesignFieldEntry : PartDesignFieldEntry
     public Slider outputSlider;
     public Text outputText;
 
-    public override void Initialize() {
-        powerPlant = new PowerPlant();
+    public override void Initialize(Part p) {
+        powerPlant = new PowerPlant(p);
         UpdateOutputSlider();
+    }
+
+    public override PartType GetPartType() {
+        return PartType.PowerPlant;
     }
 
     public override Part GetPart() {
@@ -22,6 +27,10 @@ public class PowerPlantDesignFieldEntry : PartDesignFieldEntry
     protected override void UpdateStrings() {
         base.UpdateStrings();
         outputText.text = powerPlant.NetPower.ToString();
+    }
+
+    public override void SetPart() {
+        UpdateStrings();
     }
 
     public override void Clear() {

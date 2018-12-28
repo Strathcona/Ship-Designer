@@ -9,9 +9,13 @@ public class PowerPlant : Part{
         partType = PartType.PowerPlant;
     }
 
+    public PowerPlant(Part p) : base() {
+        partType = PartType.PowerPlant;
+    }
+
     public override string GetDescriptionString() {
         string number = (numberOfPart + " x ");
-        return number + manufacturerName + " " + partModelName + " " + partTypeName;
+        return number + manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
         return "Size: " + size.ToString() + " Output: " + netPower.ToString();
@@ -27,8 +31,8 @@ public class PowerPlant : Part{
     public static PowerPlant GetRandomPowerPlant() {
         PowerPlant p = new PowerPlant();
         p.tier = 1;
-        p.partTypeName = "Reactor";
-        p.partModelName = Constants.GetRandomPowerPlantModelName();
+        p.typeName = "Reactor";
+        p.modelName = Constants.GetRandomPowerPlantModelName();
         p.manufacturerName = Constants.GetRandomCompanyName();
         p.netPower = Random.Range(20, 100);
         return p;

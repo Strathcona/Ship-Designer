@@ -27,8 +27,28 @@ public class Sensor : Part{
         partType = PartType.Sensor;
     }
 
+    public Sensor(Part p) : base() {
+        Sensor s = (Sensor)p;
+        range = s.Range;
+        resolution = s.Resolution;
+        range = s.Range;
+        partType = PartType.Sensor;
+        UpdateProperties();
+    }
+
+    public override void CopyValuesFromPart(Part p) {
+        base.CopyValuesFromPart(p);
+        Sensor s = (Sensor)p;
+        range = s.Range;
+        resolution = s.Resolution;
+        range = s.Range;
+        partType = PartType.Sensor;
+        UpdateProperties();
+    }
+
+
     public override string GetDescriptionString() {
-        return manufacturerName + " " + partModelName + " " + partTypeName;
+        return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
         return "Size: " + size.ToString() + " Range: " + Range.ToString() + " Resoultion " + Resolution.ToString();
@@ -45,8 +65,8 @@ public class Sensor : Part{
         Sensor s = new Sensor();
         s.Tier = 1;
         s.sensorType = SensorType.LowEnergy;
-        s.partTypeName = "Low Energy Sensor";
-        s.partModelName = Constants.GetRandomSensorModelName();
+        s.typeName = "Low Energy Sensor";
+        s.modelName = Constants.GetRandomSensorModelName();
         s.manufacturerName = Constants.GetRandomCompanyName();
         s.Range = UnityEngine.Random.Range(2, 20);
         s.Resolution = UnityEngine.Random.Range(2, 20);

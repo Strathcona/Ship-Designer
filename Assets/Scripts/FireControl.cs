@@ -34,8 +34,28 @@ public class FireControl : Part{
         partType = PartType.FireControl;
     }
 
+
+    public FireControl(Part p) : base() {
+        FireControl f = (FireControl)p;
+        tracking = f.Tracking;
+        accuracy = f.Accuracy;
+        range = f.Range;
+        partType = PartType.FireControl;
+        UpdateProperties();
+    }
+
+    public override void CopyValuesFromPart(Part p) {
+        base.CopyValuesFromPart(p);
+        FireControl f = (FireControl)p;
+        tracking = f.Tracking;
+        accuracy = f.Accuracy;
+        range = f.Range;
+        partType = PartType.FireControl;
+        UpdateProperties();
+    }
+
     public override string GetDescriptionString() {
-        return manufacturerName + " " + partModelName + " " + partTypeName;
+        return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
         return "Size: "+size+" Tracking: " + tracking + " Accuracy: " + accuracy + " Effective Range: " + range;
@@ -56,8 +76,8 @@ public class FireControl : Part{
         f.tracking = Random.Range(1, 20);
         f.accuracy = Random.Range(1, 20);
         f.range = Random.Range(1, 20);
-        f.partTypeName = "Fire Control System";
-        f.partModelName = Constants.GetRandomFireControlModelName();
+        f.typeName = "Fire Control System";
+        f.modelName = Constants.GetRandomFireControlModelName();
         f.numberOfPart = Random.Range(1, 3);
         Debug.Log(f.GetDescriptionString());
         Debug.Log(f.GetStatisticsString());

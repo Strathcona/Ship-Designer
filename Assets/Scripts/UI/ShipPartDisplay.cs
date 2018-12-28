@@ -8,7 +8,7 @@ public class ShipPartDisplay : MonoBehaviour {
     public List<GameObject> partDisplays = new List<GameObject>();
 
     public void DisplayShip(Ship s) {
-        ClearDisplay();
+        Clear();
 
         if(s.allParts.Count > partDisplays.Count) {
             int neededPartDisplays = s.allParts.Count - partDisplays.Count;
@@ -28,7 +28,7 @@ public class ShipPartDisplay : MonoBehaviour {
         }
     }
 
-    public void ClearDisplay() {
+    public void Clear() {
         ship = null;
         for (int i = 0; i < partDisplays.Count; i++) {
             partDisplays[i].SetActive(false);

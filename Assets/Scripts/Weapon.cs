@@ -28,15 +28,43 @@ public class Weapon : Part {
     private bool turreted;
     public bool Turreted {
         get { return turreted; }
+        set {
+            turreted = value;
+            UpdateProperties();
+        }
     }
     private int turretNumber;
     public int TurretNumber {
         get { return turretNumber; }
+        set {
+            turretNumber = value;
+            UpdateProperties();
+        }
     }
     public WeaponType weaponType;
 
-
     public Weapon() {
+        partType = PartType.Weapon;
+    }
+
+    public Weapon(Part p) : base() {
+        Weapon w = (Weapon)p;
+        caliber = w.Caliber;
+        reloadTime = w.reloadTime;
+        damage = w.damage;
+        turreted = w.Turreted;
+        turretNumber = w.TurretNumber;
+        partType = PartType.Weapon;
+    }
+
+    public override void CopyValuesFromPart(Part p) {
+        base.CopyValuesFromPart(p);
+        Weapon w = (Weapon)p;
+        caliber = w.Caliber;
+        reloadTime = w.reloadTime;
+        damage = w.damage;
+        turreted = w.Turreted;
+        turretNumber = w.TurretNumber;
         partType = PartType.Weapon;
     }
 
@@ -44,7 +72,7 @@ public class Weapon : Part {
         string number = (numberOfPart + " x");
         string caliberString = caliber.ToString() + "mm";
         string partTypeName = Constants.GetWeaponTypeName(tier, weaponType);
-        string typeline = manufacturerName + " " + partModelName + " " + partTypeName;
+        string typeline = manufacturerName + " " + modelName + " " + partTypeName;
 ;
         string turretSetup = "";
         switch (turretNumber) {
@@ -107,7 +135,7 @@ public class Weapon : Part {
             w.SetTurrets(false, 1);
         }
         w.ReloadTime = (w.Caliber * Constants.TierFireTimePerSize[w.Tier]);
-        w.partModelName = Constants.GetRandomWeaponModelName();
+        w.modelName = Constants.GetRandomWeaponModelName();
         w.numberOfPart = Random.Range(1, 4);
         Debug.Log(w.GetDescriptionString());
         Debug.Log(w.GetStatisticsString());

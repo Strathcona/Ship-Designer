@@ -26,8 +26,25 @@ public class Engine : Part {
         partType = PartType.Engine;
     }
 
+    public Engine(Part p) : base() {
+        Engine e = (Engine)p;
+        thrust = e.Thrust;
+        agility = e.Agility;
+        partType = PartType.Engine;
+        UpdateProperties();
+    }
+
+    public override void CopyValuesFromPart(Part p) {
+        base.CopyValuesFromPart(p);
+        Engine e = (Engine)p;
+        thrust = e.Thrust;
+        agility = e.Agility;
+        partType = PartType.Engine;
+        UpdateProperties();
+    }
+
     public override string GetDescriptionString() {
-        return manufacturerName + " " + partModelName + " " + partTypeName;
+        return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
         return "Size: " + size + " Agility: " + agility + " Thrust: " + thrust;
@@ -40,14 +57,14 @@ public class Engine : Part {
         size = Mathf.Max(1, Mathf.FloorToInt(agility * 0.3f + thrust * 0.4f));
     }
 
-    public static Engine GetRandomShipEngine() {
+    public static Engine GetRandomEngine() {
         Engine s = new Engine();
         s.Tier = Random.Range(1, 6);
         s.manufacturerName = Constants.GetRandomCompanyName();
         s.Agility = Random.Range(1, 20);
         s.Thrust = Random.Range(1, 20);
-        s.partTypeName = Constants.TierEngineNames[s.Tier] + " Engine";
-        s.partModelName = Constants.GetRandomEngineModelName();
+        s.typeName = Constants.TierEngineNames[s.Tier] + " Engine";
+        s.modelName = Constants.GetRandomEngineModelName();
         s.numberOfPart = Random.Range(1, 8);
         Debug.Log(s.GetDescriptionString());
         Debug.Log(s.GetStatisticsString());

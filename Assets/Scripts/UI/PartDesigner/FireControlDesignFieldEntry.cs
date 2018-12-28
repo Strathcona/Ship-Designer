@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using GameConstructs;
 
 public class FireControlDesignFieldEntry : PartDesignFieldEntry
 {
@@ -12,11 +13,15 @@ public class FireControlDesignFieldEntry : PartDesignFieldEntry
     public Text accuracyText;
     public Text rangeText;
 
-    public override void Initialize() {
-        fireControl = new FireControl();
+    public override void Initialize(Part p) {
+        fireControl = new FireControl(p);
         UpdateAccuracySlider();
         UpdateRangeSlider();
         UpdateTrackingSlider();
+    }
+
+    public override PartType GetPartType() {
+        return PartType.FireControl;
     }
 
     public override Part GetPart() {
@@ -28,6 +33,13 @@ public class FireControlDesignFieldEntry : PartDesignFieldEntry
         trackingText.text = fireControl.Tracking.ToString();
         accuracyText.text = fireControl.Accuracy.ToString();
         rangeText.text = fireControl.Range.ToString();
+    }
+
+    public override void SetPart() {
+        SetAccuracySlider();
+        SetTrackingSlider();
+        SetRangeSlider();
+        UpdateStrings();
     }
 
     public override void Clear() {
@@ -42,13 +54,25 @@ public class FireControlDesignFieldEntry : PartDesignFieldEntry
         UpdateStrings();
     }
 
+    public void SetTrackingSlider() {
+        trackingSlider.value = fireControl.Tracking;
+    }
+
     public void UpdateAccuracySlider() {
         fireControl.Accuracy = Mathf.FloorToInt(accuracySlider.value);
         UpdateStrings();
     }
 
+    public void SetAccuracySlider() {
+        accuracySlider.value = fireControl.Accuracy;
+    }
+
     public void UpdateRangeSlider() {
         fireControl.Range = Mathf.FloorToInt(rangeSlider.value);
         UpdateStrings();
+    }
+
+    public void SetRangeSlider() {
+        rangeSlider.value = fireControl.Range;
     }
 }
