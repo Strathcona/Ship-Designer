@@ -89,8 +89,8 @@ namespace GameConstructs {
             return (200 * damage).ToString() + "W";
         }
 
-        public static string GetWeaponTypeName(int tier, WeaponType w) {
-            if (w == WeaponType.laser) {
+        public static string GetWeaponTypeName(int tier, int w) {
+            if (w == 0) {
                 switch (tier) {
                     case 0:
                         return "Solid State Laser";
@@ -110,7 +110,7 @@ namespace GameConstructs {
                         Debug.LogWarning("Failed to find laser tier name");
                         return "";
                 }
-            } else if(w == WeaponType.railgun) {
+            } else if(w == 1) {
                 switch (tier) {
                     case 0:
                         return "Tungsten Slug Railgun";
@@ -127,11 +127,11 @@ namespace GameConstructs {
                     case 6:
                         return "Relativistic Railgun";
                     default:
-                        Debug.LogWarning("Failed to find laser tier name");
+                        Debug.LogWarning("Failed to find railgun tier name");
                         return "";
                 }
             }
-            Debug.LogWarning("Failed to find weapontype for weapon type name");
+            Debug.LogWarning("Failed to find weapontype for weaponType value" + w);
             return "";
         }
 
@@ -167,5 +167,6 @@ namespace GameConstructs {
     public enum WeaponType { laser, railgun};
     public enum SensorType { LowEnergy, HighEnergy, Gravitic};
     public enum PartType { Weapon, FireControl, Sensor, Engine, PowerPlant};
+    public enum TweakableType { Slider, Dropdown };
 }
 

@@ -5,43 +5,51 @@ using System;
 using GameConstructs;
 
 public class Sensor : Part{
-    private int range;
-    public int Range {
-        get { return range; }
-        set {
-            range = value;
-            UpdateProperties();
-        }
-    }
-    private int resolution;
-    public int Resolution {
-        get { return resolution; }
-        set {
-            resolution = value;
-            UpdateProperties();
-        }
-    }
+    public Tweakable range;
+    public Tweakable resolution;
     public SensorType sensorType;
 
-    public Sensor() {
+    public Sensor(): base() {
         partType = PartType.Sensor;
     }
 
     public Sensor(Part p) : base() {
         Sensor s = (Sensor)p;
-        range = s.Range;
-        resolution = s.Resolution;
-        range = s.Range;
+        range.Value = s.range.Value;
+        resolution.Value = s.resolution.Value;
         partType = PartType.Sensor;
         UpdateProperties();
+    }
+
+    protected override void InitializeTweakables() {
+        range = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Range");
+        resolution = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Resolution");
+
+        tweakables.Add(range);
+        tweakables.Add(resolution);
     }
 
     public override void CopyValuesFromPart(Part p) {
         base.CopyValuesFromPart(p);
         Sensor s = (Sensor)p;
-        range = s.Range;
-        resolution = s.Resolution;
-        range = s.Range;
+        range.Value = s.range.Value;
+        resolution.Value= s.resolution.Value;
         partType = PartType.Sensor;
         UpdateProperties();
     }
@@ -51,14 +59,18 @@ public class Sensor : Part{
         return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
-        return "Size: " + size.ToString() + " Range: " + Range.ToString() + " Resoultion " + Resolution.ToString();
+        return "Size: " + size.ToString() + " Range: " + range.Value.ToString() + " Resoultion " + resolution.Value.ToString();
     }
     public override string GetPartString() {
         return "Sensor";
     }
 
     protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(range * resolution * 0.1f));
+        size = Mathf.Max(1, Mathf.FloorToInt(range.Value * resolution.Value * 0.1f));
+    }
+
+    public override void TweakableUpdate() {
+
     }
 
     public static Sensor GetRandomSensor() {
@@ -68,8 +80,8 @@ public class Sensor : Part{
         s.typeName = "Low Energy Sensor";
         s.modelName = Constants.GetRandomSensorModelName();
         s.manufacturerName = Constants.GetRandomCompanyName();
-        s.Range = UnityEngine.Random.Range(2, 20);
-        s.Resolution = UnityEngine.Random.Range(2, 20);
+        s.range.Value = UnityEngine.Random.Range(2, 20);
+        s.resolution.Value = UnityEngine.Random.Range(2, 20);
         return s;
 
     }

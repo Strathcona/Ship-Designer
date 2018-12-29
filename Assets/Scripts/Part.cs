@@ -13,6 +13,7 @@ public abstract class Part {
     public int creditCost = 0;
     public PartType partType;
     public int ticksToDesign = 100;
+    public List<Tweakable> tweakables = new List<Tweakable>();
     protected int size = 1;
     public int Size {
         get { return size; }
@@ -45,10 +46,11 @@ public abstract class Part {
     }
 
     public Part() {
-
+        InitializeTweakables();
     }
 
     public Part(Part p) {
+        InitializeTweakables();
         typeName = p.typeName;
         modelName = p.modelName;
         manufacturerName = p.manufacturerName;
@@ -76,8 +78,10 @@ public abstract class Part {
         netPower = p.NetPower;
     }
 
-    protected virtual void UpdateProperties() {}//could be called by children
     public abstract string GetDescriptionString();
     public abstract string GetStatisticsString();
     public abstract string GetPartString();
+    public abstract void TweakableUpdate();
+    protected abstract void InitializeTweakables();
+    protected abstract void UpdateProperties();
 }

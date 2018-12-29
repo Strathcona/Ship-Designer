@@ -27,14 +27,14 @@ public class Ship {
                 case "Weapon":
                     Weapon w = (Weapon)p;
                     alphaDamage += w.Damage * w.numberOfPart;
-                    averageDamage += w.Damage * w.numberOfPart / w.ReloadTime;
+                    averageDamage += w.Damage * w.numberOfPart / w.reload.Value;
                     break;
                 case "FireControl":
                     break;
                 case "ShipEngine":
                     Engine e = (Engine)p;
-                    speedRating += e.Thrust * e.numberOfPart * 1.0f / hullSize;
-                    manevorability += e.Agility * e.numberOfPart / (0.5f * hullSize);
+                    speedRating += e.thrust.Value * e.numberOfPart * 1.0f / hullSize;
+                    manevorability += e.agility.Value * e.numberOfPart / (0.5f * hullSize);
                     break;
                 case "Sensor":
                     break;
@@ -53,7 +53,7 @@ public class Ship {
                 Weapon w = (Weapon)p;
                 weapons.Add(w);
                 alphaDamage += w.Damage*w.numberOfPart;
-                averageDamage += w.Damage*w.numberOfPart / w.ReloadTime;
+                averageDamage += w.Damage*w.numberOfPart / w.reload.Value;
                 break;
             case "FireControl":
                 fireControls.Add((FireControl)p);
@@ -61,8 +61,8 @@ public class Ship {
             case "ShipEngine":
                 Engine e = (Engine)p;
                 engines.Add(e);
-                speedRating += e.Thrust*e.numberOfPart*1.0f / hullSize;
-                manevorability += e.Agility*e.numberOfPart / (0.5f*hullSize);
+                speedRating += e.thrust.Value*e.numberOfPart*1.0f / hullSize;
+                manevorability += e.agility.Value*e.numberOfPart / (0.5f*hullSize);
                 break;
             case "Sensor":
                 sensors.Add((Sensor)p);

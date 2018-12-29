@@ -5,40 +5,52 @@ using GameConstructs;
 
 [System.Serializable]
 public class Engine : Part {
-    private int agility;
-    public int Agility {
-        get { return agility; }
-        set {
-            agility = value;
-            UpdateProperties();
-        }
-    }
-    private int thrust;
-    public int Thrust {
-        get { return thrust; }
-        set {
-            thrust = value;
-            UpdateProperties();
-        }
-    }
+    public Tweakable agility;
+    public Tweakable thrust;
 
-    public Engine() {
+    public Engine() : base(){
         partType = PartType.Engine;
     }
 
     public Engine(Part p) : base() {
         Engine e = (Engine)p;
-        thrust = e.Thrust;
-        agility = e.Agility;
+        for (int i = 0; i < e.tweakables.Count; i++) {
+            tweakables[i].Value = e.tweakables[i].Value;
+        }
         partType = PartType.Engine;
         UpdateProperties();
+    }
+
+    protected override void InitializeTweakables() {
+        agility = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Agility");
+
+        thrust = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Thrust");
+        tweakables.Add(agility);
+        tweakables.Add(thrust);
     }
 
     public override void CopyValuesFromPart(Part p) {
         base.CopyValuesFromPart(p);
         Engine e = (Engine)p;
-        thrust = e.Thrust;
-        agility = e.Agility;
+        for (int i = 0; i < e.tweakables.Count; i++) {
+            tweakables[i].Value = e.tweakables[i].Value;
+        }
         partType = PartType.Engine;
         UpdateProperties();
     }
@@ -47,22 +59,26 @@ public class Engine : Part {
         return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
-        return "Size: " + size + " Agility: " + agility + " Thrust: " + thrust;
+        return "Size: " + size + " Agility: " + agility.Value.ToString() + " Thrust: " + thrust.Value.ToString();
     }
     public override string GetPartString() {
         return "ShipEngine";
     }
 
+    public override void TweakableUpdate() {
+
+    }
+
     protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(agility * 0.3f + thrust * 0.4f));
+        size = Mathf.Max(1, Mathf.FloorToInt(agility.Value * 0.3f + thrust.Value * 0.4f));
     }
 
     public static Engine GetRandomEngine() {
         Engine s = new Engine();
         s.Tier = Random.Range(1, 6);
         s.manufacturerName = Constants.GetRandomCompanyName();
-        s.Agility = Random.Range(1, 20);
-        s.Thrust = Random.Range(1, 20);
+        s.agility.Value = Random.Range(1, 20);
+        s.thrust.Value = Random.Range(1, 20);
         s.typeName = Constants.TierEngineNames[s.Tier] + " Engine";
         s.modelName = Constants.GetRandomEngineModelName();
         s.numberOfPart = Random.Range(1, 8);

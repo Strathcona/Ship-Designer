@@ -34,6 +34,6 @@ public class HomeScreen : MonoBehaviour {
     public void ShowPartDesigner() {
         Clear();
         partDesignerCanvas.gameObject.SetActive(true);
-        partDesigner.ResetPart();
+        partDesigner.Clear();
     }
 }

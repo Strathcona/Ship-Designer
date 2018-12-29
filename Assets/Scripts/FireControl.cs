@@ -5,30 +5,9 @@ using GameConstructs;
 
 [System.Serializable]
 public class FireControl : Part{
-    private int tracking;
-    public int Tracking {
-        get { return tracking; }
-        set {
-            tracking = value;
-            UpdateProperties();
-        }
-    }
-    private int accuracy;
-    public int Accuracy {
-        get { return accuracy; }
-        set {
-            accuracy = value;
-            UpdateProperties();
-        }
-    }
-    private int range;
-    public int Range {
-        get { return range; }
-        set {
-            range = value;
-            UpdateProperties();
-        }
-    }
+    public Tweakable tracking;
+    public Tweakable accuracy;
+    public Tweakable range;
 
     public FireControl() {
         partType = PartType.FireControl;
@@ -37,19 +16,54 @@ public class FireControl : Part{
 
     public FireControl(Part p) : base() {
         FireControl f = (FireControl)p;
-        tracking = f.Tracking;
-        accuracy = f.Accuracy;
-        range = f.Range;
+        for (int i = 0; i < f.tweakables.Count; i++) {
+            tweakables[i].Value = f.tweakables[i].Value;
+        }
         partType = PartType.FireControl;
         UpdateProperties();
+    }
+
+    protected override void InitializeTweakables() {
+        tracking = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Tracking");
+
+        accuracy = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Accuracy");
+        range = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Range");
+        tweakables.Add(tracking);
+        tweakables.Add(accuracy);
+        tweakables.Add(range);
+        Debug.Log(tweakables.Count);
     }
 
     public override void CopyValuesFromPart(Part p) {
         base.CopyValuesFromPart(p);
         FireControl f = (FireControl)p;
-        tracking = f.Tracking;
-        accuracy = f.Accuracy;
-        range = f.Range;
+        for (int i = 0; i < f.tweakables.Count; i++) {
+            tweakables[i].Value = f.tweakables[i].Value;
+        }
         partType = PartType.FireControl;
         UpdateProperties();
     }
@@ -58,7 +72,7 @@ public class FireControl : Part{
         return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
-        return "Size: "+size+" Tracking: " + tracking + " Accuracy: " + accuracy + " Effective Range: " + range;
+        return "Size: "+size+" Tracking: " + tracking.Value.ToString() + " Accuracy: " + accuracy.Value.ToString() + " Effective Range: " + range.Value.ToString();
     }
 
     public override string GetPartString() {
@@ -66,16 +80,20 @@ public class FireControl : Part{
     }
 
     protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(0.1f * (tracking + accuracy + range) / Constants.TierFireControlAccuracy[tier]));
+        size = Mathf.Max(1, Mathf.FloorToInt(0.1f * (tracking.Value + accuracy.Value + range.Value) / Constants.TierFireControlAccuracy[tier]));
+    }
+
+    public override void TweakableUpdate() {
+
     }
 
     public static FireControl GetRandomFireControl() {
         FireControl f = new FireControl();
         f.tier = Random.Range(1, 6);
         f.manufacturerName = Constants.GetRandomCompanyName();
-        f.tracking = Random.Range(1, 20);
-        f.accuracy = Random.Range(1, 20);
-        f.range = Random.Range(1, 20);
+        f.tracking.Value = Random.Range(1, 20);
+        f.accuracy.Value = Random.Range(1, 20);
+        f.range.Value = Random.Range(1, 20);
         f.typeName = "Fire Control System";
         f.modelName = Constants.GetRandomFireControlModelName();
         f.numberOfPart = Random.Range(1, 3);

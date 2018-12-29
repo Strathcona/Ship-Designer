@@ -5,83 +5,102 @@ using GameConstructs;
 
 [System.Serializable]
 public class Weapon : Part {
-    private int caliber;
-    public int Caliber {
-        get { return caliber; }
-        set {
-            caliber = value;
-            UpdateProperties();
-        }
-    }
-    private float reloadTime;
-    public float ReloadTime {
-        get { return reloadTime; }
-        set {
-            reloadTime = value;
-            UpdateProperties();
-        }
-    }
+    public Tweakable caliber;
+    public Tweakable reload;
+    public Tweakable turrets;
+    public Tweakable weaponType;
+
     private int damage;
     public int Damage {
         get { return damage; }
     }
-    private bool turreted;
-    public bool Turreted {
-        get { return turreted; }
-        set {
-            turreted = value;
-            UpdateProperties();
-        }
-    }
-    private int turretNumber;
-    public int TurretNumber {
-        get { return turretNumber; }
-        set {
-            turretNumber = value;
-            UpdateProperties();
-        }
-    }
-    public WeaponType weaponType;
 
-    public Weapon() {
+    public Weapon() : base(){
         partType = PartType.Weapon;
     }
 
     public Weapon(Part p) : base() {
         Weapon w = (Weapon)p;
-        caliber = w.Caliber;
-        reloadTime = w.reloadTime;
-        damage = w.damage;
-        turreted = w.Turreted;
-        turretNumber = w.TurretNumber;
+        for (int i = 0; i < w.tweakables.Count; i++) {
+            tweakables[i].Value = w.tweakables[i].Value;
+        }
         partType = PartType.Weapon;
+    }
+
+    protected override void InitializeTweakables() {
+        caliber = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Caliber");
+
+        reload = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            1,
+            1,
+            1,
+            100,
+            "Reload");
+        turrets = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Dropdown,
+            TweakableUpdate,
+            0,
+            0,
+            0,
+            4,
+            "Turret Setup");
+        turrets.dropdownLabels.Add("Centerline Mounted");
+        turrets.dropdownLabels.Add("Single Turret");
+        turrets.dropdownLabels.Add("Dual Turret");
+        turrets.dropdownLabels.Add("Triple Turret");
+        turrets.dropdownLabels.Add("Quadruple Turret");
+
+        weaponType = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Dropdown,
+            TweakableUpdate,
+            0,
+            0,
+            0,
+            1,
+            "Weapon Type");
+        weaponType.dropdownLabels.Add("Laser");
+        weaponType.dropdownLabels.Add("Railgun");
+        tweakables.Add(weaponType);
+        tweakables.Add(turrets);
+        tweakables.Add(caliber);
+        tweakables.Add(reload);
     }
 
     public override void CopyValuesFromPart(Part p) {
         base.CopyValuesFromPart(p);
         Weapon w = (Weapon)p;
-        caliber = w.Caliber;
-        reloadTime = w.reloadTime;
-        damage = w.damage;
-        turreted = w.Turreted;
-        turretNumber = w.TurretNumber;
+        for (int i = 0; i < w.tweakables.Count; i++) {
+            tweakables[i].Value = w.tweakables[i].Value;
+        }
         partType = PartType.Weapon;
     }
 
     public override string GetDescriptionString() {
         string number = (numberOfPart + " x");
         string caliberString = caliber.ToString() + "mm";
-        string partTypeName = Constants.GetWeaponTypeName(tier, weaponType);
+        string partTypeName = Constants.GetWeaponTypeName(tier, weaponType.Value);
         string typeline = manufacturerName + " " + modelName + " " + partTypeName;
 ;
         string turretSetup = "";
-        switch (turretNumber) {
+        switch (turrets.Value) {
+            case 0:
+                turretSetup = "Centerline Mounted";
+                break;
             case 1:
-                if(turreted == false) {
-                    turretSetup = "Centerline Mounted";
-                } else {
-                    turretSetup = "Single Turret";
-                }
+                turretSetup = "Single Turret";
                 break;
             case 2:
                 turretSetup = "Double Turret";
@@ -90,7 +109,7 @@ public class Weapon : Part {
                 turretSetup = "Triple Turret";
                 break;
             case 4:
-                turretSetup = "Quad Turret";
+                turretSetup = "Quadruple Turret";
                 break;
             default:
                 break;
@@ -99,13 +118,7 @@ public class Weapon : Part {
     }
 
     public override string GetStatisticsString() {
-        return "Size: "+ this.GetTotalSize().ToString()+ " Damage: " + damage + " Recharge Time: " + reloadTime + "s";
-    }
-
-    public void SetTurrets(bool _turreted, int _turretNumber) {
-        turreted = _turreted;
-        turretNumber = _turretNumber;
-        UpdateProperties();
+        return "Size: " + this.GetTotalSize().ToString() + " Damage: " + damage + " Recharge Time: " + reload.Value.ToString() + "s";
     }
 
     public override string GetPartString() {
@@ -113,28 +126,25 @@ public class Weapon : Part {
     }
     
     protected override void UpdateProperties() {
-        int turretfactor = 0;
-        if (turreted) {
-            turretfactor = 1;
-        }
-        size = Mathf.Max(1, Mathf.FloorToInt(caliber / reloadTime) + turretfactor);
-        damage = Mathf.FloorToInt(caliber * Constants.TierDamagePerSize[tier]) * turretNumber;
-        creditCost = Mathf.FloorToInt(size * 120.0f + reloadTime*60f);
-        timeCost = Mathf.FloorToInt(reloadTime * 10.0f + size * 5.0f);
+        int turretfactor = Mathf.Max(1, turrets.Value);
+        size = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
+        damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
+        creditCost = Mathf.FloorToInt(size * 120.0f + reload.Value*60f);
+        timeCost = Mathf.FloorToInt(reload.Value * 10.0f + size * 5.0f);
+    }
+
+    public override void TweakableUpdate() {
+        UpdateProperties();
     }
 
     public static Weapon GetRandomLaser() {
         Weapon w = new Weapon();
         w.Tier = (Random.Range(1, 6));
-        w.weaponType = WeaponType.laser;
-        w.Caliber = Random.Range(2, 20)*4;
+        w.weaponType.Value = 0;
+        w.caliber.Value = Random.Range(2, 20);
         w.manufacturerName = Constants.GetRandomCompanyName();
-        if(Random.Range(0,2) == 1) {
-            w.SetTurrets(true, Random.Range(1, 5));
-        } else {
-            w.SetTurrets(false, 1);
-        }
-        w.ReloadTime = (w.Caliber * Constants.TierFireTimePerSize[w.Tier]);
+        w.turrets.Value = Random.Range(0, 5);
+        w.reload.Value = Random.Range(2, 20);
         w.modelName = Constants.GetRandomWeaponModelName();
         w.numberOfPart = Random.Range(1, 4);
         Debug.Log(w.GetDescriptionString());
