@@ -12,13 +12,7 @@ public class PartDesigner : MonoBehaviour {
     public Text descriptionDisplay;
     public Text statisticsDisplay;
     public InputField modelNameInput;
-    public PartList partList;
     public TweakableEditor tweakableEditor;
-
-    private void Awake() {
-        partList.partDesigner = this;
-        partList.DisplayParts();
-    }
 
     public void UpdatePartModel() {
         activePart.modelName = modelNameInput.text;
@@ -34,6 +28,10 @@ public class PartDesigner : MonoBehaviour {
             descriptionDisplay.text = activePart.GetDescriptionString();
             statisticsDisplay.text = activePart.GetStatisticsString();
         }
+    }
+
+    public void AskToLoadPart() {
+        PartLoader.instance.LoadPartPopup(LoadPart);
     }
 
     public void LoadPart(Part p) {
@@ -117,7 +115,6 @@ new List<Action>() { SubmitDesign });
 
     public void SubmitDesign() {
         PartLibrary.AddPartToLibrary(activePart);
-        partList.DisplayParts();
     }
 
     public void UpdatePartTier() {

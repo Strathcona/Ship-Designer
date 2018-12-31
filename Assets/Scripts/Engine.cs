@@ -58,11 +58,9 @@ public class Engine : Part {
     public override string GetDescriptionString() {
         return manufacturerName + " " + modelName + " " + typeName;
     }
+
     public override string GetStatisticsString() {
         return "Size: " + size + " Agility: " + agility.Value.ToString() + " Thrust: " + thrust.Value.ToString();
-    }
-    public override string GetPartString() {
-        return "ShipEngine";
     }
 
     public override void TweakableUpdate() {

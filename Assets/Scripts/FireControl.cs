@@ -74,10 +74,6 @@ public class FireControl : Part{
         return "Size: "+size+" Tracking: " + tracking.Value.ToString() + " Accuracy: " + accuracy.Value.ToString() + " Effective Range: " + range.Value.ToString();
     }
 
-    public override string GetPartString() {
-        return "FireControl";
-    }
-
     protected override void UpdateProperties() {
         size = Mathf.Max(1, Mathf.FloorToInt(0.1f * (tracking.Value + accuracy.Value + range.Value) / Constants.TierFireControlAccuracy[tier]));
     }

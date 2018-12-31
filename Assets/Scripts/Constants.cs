@@ -36,6 +36,14 @@ namespace GameConstructs {
             {PartType.FireControl, "Fire Control"},
         };
 
+        public static Dictionary<PartType, Color> PartColor = new Dictionary<PartType, Color>() {
+            {PartType.Engine, new Color(1.0f, 0.69f, 0.35f)},
+            {PartType.Weapon, new Color(1.0f, 0.36f, 0.34f)},
+            {PartType.PowerPlant, new Color(1.0f, 0.94f, 0.34f)},
+            {PartType.Sensor, new Color(0.34f, 1f, 0.37f)},
+            {PartType.FireControl, new Color(0.34f, 0.97f, 1f)},
+        };
+
         public static Dictionary<int, float> TierDamagePerSize = new Dictionary<int, float>() {
             {0, 1.0f },
             {1, 1.2f},

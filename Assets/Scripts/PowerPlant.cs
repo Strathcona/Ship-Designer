@@ -34,14 +34,10 @@ public class PowerPlant : Part{
 
 
     public override string GetDescriptionString() {
-        string number = (numberOfPart + " x ");
-        return number + manufacturerName + " " + modelName + " " + typeName;
+        return manufacturerName + " " + modelName + " " + typeName;
     }
     public override string GetStatisticsString() {
         return "Size: " + size.ToString() + " Output: " + netPower.ToString();
-    }
-    public override string GetPartString() {
-        return "PowerPlant";
     }
 
     protected override void UpdateProperties() {

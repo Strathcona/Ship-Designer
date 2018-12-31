@@ -8,11 +8,13 @@ public static class PartLibrary {
     private static List<Part> obsoleteParts = new List<Part>();
 
     static PartLibrary() {
-        AddPartToLibrary(Weapon.GetRandomLaser());
-        AddPartToLibrary(Sensor.GetRandomSensor());
-        AddPartToLibrary(FireControl.GetRandomFireControl());
-        AddPartToLibrary(Engine.GetRandomEngine());
-        AddPartToLibrary(PowerPlant.GetRandomPowerPlant());
+        parts = new List<Part>() {
+            Weapon.GetRandomLaser(),
+            Sensor.GetRandomSensor(),
+            FireControl.GetRandomFireControl(),
+            Engine.GetRandomEngine(),
+            PowerPlant.GetRandomPowerPlant()
+        };
     }
 
     public static bool AddPartToLibrary(Part p) {

@@ -61,9 +61,6 @@ public class Sensor : Part{
     public override string GetStatisticsString() {
         return "Size: " + size.ToString() + " Range: " + range.Value.ToString() + " Resoultion " + resolution.Value.ToString();
     }
-    public override string GetPartString() {
-        return "Sensor";
-    }
 
     protected override void UpdateProperties() {
         size = Mathf.Max(1, Mathf.FloorToInt(range.Value * resolution.Value * 0.1f));

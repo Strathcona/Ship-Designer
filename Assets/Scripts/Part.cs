@@ -78,9 +78,10 @@ public abstract class Part {
         netPower = p.NetPower;
     }
 
-    public abstract string GetDescriptionString();
+    public virtual string GetDescriptionString() {
+        return manufacturerName + " " + modelName + " " + typeName;
+    }
     public abstract string GetStatisticsString();
-    public abstract string GetPartString();
     public abstract void TweakableUpdate();
     protected abstract void InitializeTweakables();
     protected abstract void UpdateProperties();

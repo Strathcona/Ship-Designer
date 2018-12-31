@@ -114,17 +114,13 @@ public class Weapon : Part {
             default:
                 break;
         }
-        return turretSetup+" "+ caliberString + " " + typeline;
+        return turretSetup+" "+ caliberString + typeline;
     }
 
     public override string GetStatisticsString() {
         return "Size: " + this.GetTotalSize().ToString() + " Damage: " + damage + " Recharge Time: " + reload.Value.ToString() + "s";
     }
 
-    public override string GetPartString() {
-        return "Weapon";
-    }
-    
     protected override void UpdateProperties() {
         int turretfactor = Mathf.Max(1, turrets.Value);
         size = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);

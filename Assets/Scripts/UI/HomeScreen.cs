@@ -9,15 +9,13 @@ public class HomeScreen : MonoBehaviour {
     public Canvas partDesignerCanvas;
     public ShipDisplay shipDisplay;
     public Canvas homescreenCanvas;
-
-    private void Awake() {
-        partDesigner = partDesignerCanvas.GetComponent<PartDesigner>();
-        shipDisplay = shipDisplayCanvas.GetComponent<ShipDisplay>();
-    }
+    public Canvas partProductionCanvas;
+    public PartProduction partProduction;
 
     private void Clear() {
         partDesignerCanvas.gameObject.SetActive(false);
         shipDisplayCanvas.gameObject.SetActive(false);
+        partProductionCanvas.gameObject.SetActive(false);
         homescreenCanvas.gameObject.SetActive(false);
     }
 
@@ -35,5 +33,9 @@ public class HomeScreen : MonoBehaviour {
         Clear();
         partDesignerCanvas.gameObject.SetActive(true);
         partDesigner.Clear();
+    }
+
+    public void ShowPartProduction() {
+        partProductionCanvas.gameObject.SetActive(true);
     }
 }

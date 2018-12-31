@@ -23,55 +23,55 @@ public class Ship {
 
     public void RecalculatePartStats() {
         foreach(Part p in allParts) {
-            switch (p.GetPartString()) {
-                case "Weapon":
+            switch (p.partType) {
+                case PartType.Weapon:
                     Weapon w = (Weapon)p;
                     alphaDamage += w.Damage * w.numberOfPart;
                     averageDamage += w.Damage * w.numberOfPart / w.reload.Value;
                     break;
-                case "FireControl":
+                case PartType.FireControl:
                     break;
-                case "ShipEngine":
+                case PartType.Engine:
                     Engine e = (Engine)p;
                     speedRating += e.thrust.Value * e.numberOfPart * 1.0f / hullSize;
                     manevorability += e.agility.Value * e.numberOfPart / (0.5f * hullSize);
                     break;
-                case "Sensor":
+                case PartType.Sensor:
                     break;
-                case "PowerPlant":
+                case PartType.PowerPlant:
                     break;
                 default:
-                    Debug.Log("Couldn't find " + p.GetPartString());
+                    Debug.Log("Couldn't find " + p.partType);
                     break;
             }
         }
     }
     public void AddPart(Part p) {
         allParts.Add(p);
-        switch (p.GetPartString()) {
-            case "Weapon":
+        switch (p.partType) {
+            case PartType.Weapon:
                 Weapon w = (Weapon)p;
                 weapons.Add(w);
                 alphaDamage += w.Damage*w.numberOfPart;
                 averageDamage += w.Damage*w.numberOfPart / w.reload.Value;
                 break;
-            case "FireControl":
+            case PartType.FireControl:
                 fireControls.Add((FireControl)p);
                 break;
-            case "ShipEngine":
+            case PartType.Engine:
                 Engine e = (Engine)p;
                 engines.Add(e);
                 speedRating += e.thrust.Value*e.numberOfPart*1.0f / hullSize;
                 manevorability += e.agility.Value*e.numberOfPart / (0.5f*hullSize);
                 break;
-            case "Sensor":
+            case PartType.Sensor:
                 sensors.Add((Sensor)p);
                 break;
-            case "PowerPlant":
+            case PartType.PowerPlant:
                 powerplants.Add((PowerPlant)p);
                 break;
             default:
-                Debug.Log("Couldn't find "+p.GetPartString());
+                Debug.Log("Couldn't find "+p.partType);
                 break;
         }
     }
