@@ -19,11 +19,11 @@ public class ModalPopup : MonoBehaviour {
     }
 
     public void DisplayMessage(string title, string body, List<string> buttonLabels, List<Action> buttonActions) {
-        if(buttonLabels.Count != buttonActions.Count) {
-            Debug.LogError("Different number of labels and actions given to modal popup");
-            return;
-        }
+        //if you have fewer actions than labels, extra labels will just close the window
 
+        if(buttonActions.Count > buttonLabels.Count) {
+            Debug.LogError("More actions than labels passed to Display Message");
+        }
         titleText.text = title;
         bodyText.text = body;
 
@@ -37,13 +37,14 @@ public class ModalPopup : MonoBehaviour {
             }
         }
 
-        Debug.Log(buttonActions.Count);
         for(int j = 0; j < buttonLabels.Count; j++) {
             optionButtons[j].SetActive(true);
             optionButtons[j].GetComponentInChildren<Text>().text = buttonLabels[j];
-            var k = j;//apparently delegates don't pass by value exactly, so copy the value so it won't change
-            optionButtons[j].GetComponent<Button>().onClick.AddListener(delegate { buttonActions[k](); });
             optionButtons[j].GetComponent<Button>().onClick.AddListener(delegate { popupManager.ClosePopup(this); });
+            if (j < buttonActions.Count) {
+                var k = j;//apparently delegates don't pass by value exactly, so copy the value so it won't change
+                optionButtons[j].GetComponent<Button>().onClick.AddListener(delegate { buttonActions[k](); });
+            }
         }
     }
 

@@ -90,7 +90,7 @@ public class Weapon : Part {
 
     public override string GetDescriptionString() {
         string number = (numberOfPart + " x");
-        string caliberString = caliber.ToString() + "mm";
+        string caliberString = caliber.Value.ToString() + "mm";
         string partTypeName = Constants.GetWeaponTypeName(tier, weaponType.Value);
         string typeline = manufacturerName + " " + modelName + " " + partTypeName;
 ;

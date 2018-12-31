@@ -37,6 +37,7 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void LoadPart(Part p) {
+        Debug.Log("Loading Part" + p.modelName +" "+ p.Tier);
         switch (p.partType) {
             case PartType.Weapon:
                 activePart = new Weapon();
@@ -51,7 +52,7 @@ public class PartDesigner : MonoBehaviour {
                 activePart = new FireControl();
                 break;
             case PartType.Engine:
-                activePart = new FireControl();
+                activePart = new Engine();
                 break;
         }
         activePart.CopyValuesFromPart(p);
@@ -71,7 +72,6 @@ public class PartDesigner : MonoBehaviour {
     public void CreateNewPart() {
         switch (createNewDropdown.value) {
             case 0:
-                Debug.Log("This is the default value, nothing should change");
                 break;
             case 1:
                 activePart = new Weapon();
@@ -92,9 +92,32 @@ public class PartDesigner : MonoBehaviour {
         createNewDropdown.value = 0;
         tweakableEditor.DisplayTweakables(activePart);
     }
+    public void ResetCreateNewDropdown() {
+        createNewDropdown.value = 0;
+    }
+
+    public void AskToCreateNewPart() {
+        //check if it's zero because we don't want to trigger a second popup by resetting it to zero
+        if(createNewDropdown.value != 0) {
+            ModalPopupManager.instance.DisplayModalPopup("Confirmation",
+    "Are you sure you want to create a new part?",
+    new List<string>() { "Yes", "No" },
+    new List<Action>() { CreateNewPart, ResetCreateNewDropdown });
+        }
+    }
+
+    public void AskToSubmitPart() {
+        ModalPopupManager.instance.DisplayModalPopup("Confirmation",
+"Would you like to submit this part for design? It will take "+activePart.ticksToDesign+" units of design effort.",
+new List<string>() { "Yes", "No" },
+new List<Action>() { SubmitDesign });
+
+        //refresh part list
+    }
 
     public void SubmitDesign() {
-
+        PartLibrary.AddPartToLibrary(activePart);
+        partList.DisplayParts();
     }
 
     public void UpdatePartTier() {

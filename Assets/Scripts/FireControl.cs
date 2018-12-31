@@ -55,7 +55,6 @@ public class FireControl : Part{
         tweakables.Add(tracking);
         tweakables.Add(accuracy);
         tweakables.Add(range);
-        Debug.Log(tweakables.Count);
     }
 
     public override void CopyValuesFromPart(Part p) {

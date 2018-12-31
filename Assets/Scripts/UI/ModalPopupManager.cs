@@ -42,6 +42,7 @@ public class ModalPopupManager : MonoBehaviour {
     }
 
     public void ClosePopup(ModalPopup popup) {
+        Debug.Log("Close Popup");
         popup.Clear();
         inactivePopups.Add(popup.gameObject);
         activePopups.Remove(popup.gameObject);
