@@ -18,6 +18,8 @@ public class SelectableFullPartDisplay : MonoBehaviour
     public Text size;
     public Text tier;
     public Text power;
+    public Image developmentFill;
+    public Text developmentText;
     public Button button;
     public Outline outline;
 
@@ -27,7 +29,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
         bgImage = GetComponent<Image>();
     }
 
-    public void SetOutLine(bool showOutline) {
+    public void SetOutline(bool showOutline) {
         outline.enabled = showOutline;
     }
 

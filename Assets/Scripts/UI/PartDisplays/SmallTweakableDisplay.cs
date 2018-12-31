@@ -13,7 +13,7 @@ public class SmallTweakableDisplay : MonoBehaviour
         Clear();
         tweakable = t;
         text.text = tweakable.tweakableName + ":" + tweakable.Value.ToString();
-        text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, LayoutUtility.GetPreferredWidth(text.rectTransform));
+        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, LayoutUtility.GetPreferredWidth(text.rectTransform)+8);
     }
 
     public void Clear() {

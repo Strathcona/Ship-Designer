@@ -45,7 +45,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 80}
+  m_SizeDelta: {x: 700, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8006414889197663724
 CanvasRenderer:
@@ -106,6 +106,8 @@ MonoBehaviour:
   size: {fileID: 8291600650206965876}
   tier: {fileID: 8291600650962213023}
   power: {fileID: 8291600649130407109}
+  developmentFill: {fileID: 8291600649297403882}
+  developmentText: {fileID: 8291600650438286238}
   button: {fileID: 8291600649444809579}
   outline: {fileID: 8006414889197663700}
 --- !u!114 &8006414889197663700
@@ -282,7 +284,7 @@ GameObject:
   - component: {fileID: 8291600649297403885}
   - component: {fileID: 8291600649297403882}
   m_Layer: 5
-  m_Name: Design Fill
+  m_Name: Development Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,8 +307,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.042500004, y: 0}
   m_AnchorMax: {x: 0.95750004, y: 0.2}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.5}
+  m_SizeDelta: {x: 0, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8291600649297403885
 CanvasRenderer:
@@ -632,7 +634,7 @@ GameObject:
   - component: {fileID: 8291600650438286209}
   - component: {fileID: 8291600650438286238}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Development Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -687,10 +689,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 11
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
