@@ -48,6 +48,23 @@ public class ModalPopup : MonoBehaviour {
         }
     }
 
+    public void DisplayMessage(string title, string body, string buttonText) {
+        //This is for a single option popup that does nothing, like a validation message
+
+        titleText.text = title;
+        bodyText.text = body;
+
+        if(optionButtons.Count < 1) {
+            GameObject g = GameObject.Instantiate(optionButtonPrefab);
+            g.transform.SetParent(optionsObject.transform);
+            optionButtons.Add(g);
+            g.SetActive(false);
+        }
+        optionButtons[0].SetActive(true);
+        optionButtons[0].GetComponentInChildren<Text>().text = buttonText;
+        optionButtons[0].GetComponent<Button>().onClick.AddListener(delegate { popupManager.ClosePopup(this); });
+    }
+
     private void CloseThis() {
     }
 

@@ -12,6 +12,9 @@ namespace GameConstructs {
         private static string[] engineNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/EngineNames.txt");
         private static string[] sensorNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/SensorNames.txt");
         private static string[] powerNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/PowerPlantNames.txt");
+        private static string[] firstNamesMasculine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesMasculine.txt");
+        private static string[] firstNamesFeminine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesFeminine.txt");
+        private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
 
         public static float CalculateR(int hullSize) {
             return Mathf.Pow(3f / (4f * Mathf.PI) * hullSize, 1f / 3f);
@@ -169,6 +172,18 @@ namespace GameConstructs {
 
         public static string GetRandomPowerPlantModelName() {
             return powerNames[UnityEngine.Random.Range(0, powerNames.Length)];
+        }
+
+        public static string GetRandomFirstName(bool feminine) {
+            if (feminine) {
+                return firstNamesFeminine[UnityEngine.Random.Range(0, firstNamesFeminine.Length)];
+            } else {
+                return firstNamesMasculine[UnityEngine.Random.Range(0, firstNamesMasculine.Length)];
+            }
+        }
+
+        public static string GetRandomLastName() {
+            return lastNames[UnityEngine.Random.Range(0, lastNames.Length)];
         }
     }
 
