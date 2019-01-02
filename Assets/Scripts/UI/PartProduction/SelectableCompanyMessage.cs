@@ -12,6 +12,8 @@ public class SelectableCompanyMessage : MonoBehaviour {
     public Text companyMessage;
     public Outline outline;
     public Button button;
+    public Button bottomButton;
+    public Text bottomButtonText;
 
     public void SetOutline(bool showOutline) {
         outline.enabled = showOutline;

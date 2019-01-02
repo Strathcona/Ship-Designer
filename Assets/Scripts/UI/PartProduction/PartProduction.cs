@@ -11,8 +11,9 @@ public class PartProduction : MonoBehaviour {
     public GameObject companyDisplayPrefab;
     public GameObject bidsAttachPoint;
     public SelectableCompanyMessage selectedCompanyBid;
+    public GameObject negotiationsPanel; 
 
-    private void Awake() {
+    void Awake() {
         companyDisplayPrefab = Resources.Load("Prefabs/SelectableCompanyMessage", typeof(GameObject)) as GameObject;
         companyDisplayPool = new GameObjectPool(companyDisplayPrefab, bidsAttachPoint);
     }
@@ -24,17 +25,23 @@ public class PartProduction : MonoBehaviour {
     public void LoadPart(Part p) {
         part = p;
         partDisplay.DisplayPart(part);
+        SubmitForBids();
     }
 
-    public void SelectBid(SelectableCompanyMessage companyBid) {
-        if (selectedCompanyBid != null) {
-            selectedCompanyBid.SetOutline(false);
-        }
-        selectedCompanyBid = companyBid;
-        companyBid.SetOutline(true);
+    public void AskToConfirmCompany(SelectableCompanyMessage s) {
+        ModalPopupManager.instance.DisplayModalPopup("Confirmation",
+            "Do you want to enter negotiations with " + s.company.name + "?",
+            new List<string>() { "Yes", "No" },
+            new List<System.Action>() { EnterNegotiations });
+        selectedCompanyBid = s;
+    }
+
+    public void EnterNegotiations() {
+
     }
 
     public void SubmitForBids() {
+        companyDisplayPool.ReleaseAll();
         if (part == null) {
             ModalPopupManager.instance.DisplayModalPopup("Warning", "Please select a part first", "Okay");
         } else {
@@ -46,9 +53,9 @@ public class PartProduction : MonoBehaviour {
                 m.DisplayCompanyMessage(b.GetBidString());
                 m.SetOutline(false);
                 var val = m;
-                m.button.onClick.AddListener(delegate { SelectBid(val); });
+                m.bottomButton.onClick.AddListener(delegate { AskToConfirmCompany(val); });
+                m.bottomButtonText.text = "Confirm";
             }
-            submitBidsButton.gameObject.SetActive(false);
         }
     }
 }
