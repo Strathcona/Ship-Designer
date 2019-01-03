@@ -11,6 +11,7 @@ public abstract class Part {
     public float quality = 1.0f;
     public int timeCost = 0;
     public int creditCost = 0;
+    public int complexityCost = 0;
     public PartType partType;
     public int ticksToDesign = 100;
     public List<Tweakable> tweakables = new List<Tweakable>();
@@ -81,8 +82,13 @@ public abstract class Part {
     public virtual string GetDescriptionString() {
         return manufacturerName + " " + modelName + " " + typeName;
     }
+
+    protected virtual void UpdateProperties() {
+        complexityCost = Mathf.FloorToInt(Mathf.Pow(2, tier));
+    }
     public abstract string GetStatisticsString();
     public abstract void TweakableUpdate();
     protected abstract void InitializeTweakables();
-    protected abstract void UpdateProperties();
+
+
 }

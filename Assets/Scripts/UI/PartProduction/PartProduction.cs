@@ -11,7 +11,13 @@ public class PartProduction : MonoBehaviour {
     public GameObject companyDisplayPrefab;
     public GameObject bidsAttachPoint;
     public SelectableCompanyMessage selectedCompanyBid;
-    public GameObject negotiationsPanel; 
+    public GameObject negotiationsPanel;
+    public InputFieldIncrement units;
+    public InputFieldIncrement timeTillDelivery;
+    public InputFieldIncrement unitsPerMonth;
+    public float minimumTimeForUpdate;
+    public float timeSinceLastChange = 0;
+
 
     void Awake() {
         companyDisplayPrefab = Resources.Load("Prefabs/SelectableCompanyMessage", typeof(GameObject)) as GameObject;

@@ -122,6 +122,7 @@ public class Weapon : Part {
     }
 
     protected override void UpdateProperties() {
+        base.UpdateProperties();
         int turretfactor = Mathf.Max(1, turrets.Value);
         size = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
         damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
