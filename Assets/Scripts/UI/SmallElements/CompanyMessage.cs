@@ -10,14 +10,9 @@ public class CompanyMessage : MonoBehaviour {
     public Text companyType;
     public NPCDisplay npcDisplay;
     public Text companyMessage;
-    public Outline outline;
     public Button button;
     public Button bottomButton;
     public Text bottomButtonText;
-
-    public void ShowOutline(bool showOutline) {
-        outline.enabled = showOutline;
-    }
 
     public void ShowBottomButton(bool showBottomButton) {
         bottomButton.gameObject.SetActive(showBottomButton);

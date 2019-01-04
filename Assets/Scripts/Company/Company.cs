@@ -42,19 +42,6 @@ public class Company {
         }
     }
 
-
-
-    public CompanyBid GetCompanyBidOnPart(Part p) {
-        CompanyBid b = new CompanyBid();
-        b.company = this;
-        b.proposedRate = Mathf.FloorToInt(p.timeCost * Random.Range(0.1f, 0.2f));
-        b.proposedCredits = Mathf.FloorToInt(p.creditCost * Random.Range(0.8f, 1.2f));
-        b.maxUnits = Random.Range(20, 200);
-        b.maxQuality = Random.Range(0.75f, 1.0f);
-        b.minQuality = Random.Range(0.25f, b.maxQuality);
-        return b;
-    }
-
     public string GetCompanyOpinionOnPartProduction(Part p, bool prototype, int units, int deliveryDate,  int priceLimit) {
         Debug.Log(productionCapacity + " " + units);
         Debug.Log((p.creditCost * (1+ minimumMargin)) + " " + priceLimit);

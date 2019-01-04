@@ -10,7 +10,7 @@ public class HomeScreen : MonoBehaviour {
     public ShipDisplay shipDisplay;
     public Canvas homescreenCanvas;
     public Canvas partProductionCanvas;
-    public PartProduction partProduction;
+    public PartProposals partProduction;
 
     private void Clear() {
         partDesignerCanvas.gameObject.SetActive(false);
