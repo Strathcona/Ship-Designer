@@ -186,27 +186,26 @@ namespace GameConstructs {
             return lastNames[UnityEngine.Random.Range(0, lastNames.Length)];
         }
 
-        public static string GetCompanyType(List<CompanyQuality> qualities) {
-            if (qualities.Count == 0) {
-                return "Generic Megabrand";
+        public static string GetCompanyType(HashSet<CompanyQuality> qualities) {
+            if (qualities.Contains(CompanyQuality.Speed)){
+                return "Rapid Developers";
             }
-            switch (qualities[0]) {
-                case CompanyQuality.Speed:
-                    return "Rapid Developers";
-                case CompanyQuality.Quality:
-                    return "Relentless Perfectionists";
-                case CompanyQuality.Cost:
-                    return "Ruthless Cost-Cutters";
-                case CompanyQuality.Prestige:
-                    return "Honorable Service";
-                case CompanyQuality.Ethics:
-                    return "Ethical Enterprise";
-                case CompanyQuality.Flexibility:
-                    return "Bespoke Consortium";
-                default:
-                    Debug.LogError("Unsupported companyQuality" + qualities[0]);
-                    return "Generic Megabrand";
+            if (qualities.Contains(CompanyQuality.Quality)) {
+                return "Relentless Perfectionists";
             }
+            if (qualities.Contains(CompanyQuality.Cost)) {
+                return "Ruthless Cost-Cutters";
+            }
+            if (qualities.Contains(CompanyQuality.Prestige)) {
+                return "Honorable Collective";
+            }
+            if (qualities.Contains(CompanyQuality.Ethics)) {
+                return "Ethical Enterprise";
+            }
+            if (qualities.Contains(CompanyQuality.Flexibility)) {
+                return "Bespoke Consortium";
+            }
+            return "Generic Megabrand";
         }
     }
 

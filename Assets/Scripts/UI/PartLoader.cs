@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PartLoader : MonoBehaviour {
     public static PartLoader instance;
     public GameObject partLoadPopup;
     public GameObject selectableFullPartDisplayPrefab;
     public GameObject partDisplayRoot;
+    public Text partLoadLabel;
     private GameObjectPool pool;
     private Action<Part> onPartLoaded;
     private Action noSelection;
-
     public SelectableFullPartDisplay selectedDisplay;
 
     private void Awake() {
@@ -48,9 +49,12 @@ public class PartLoader : MonoBehaviour {
         Clear();
     }
 
-    public void LoadPartPopup(Action<Part> _onPartLoaded, Action _noSelection=null) {
+    public void LoadPartPopup(Action<Part> _onPartLoaded, Action _noSelection=null, string label="") {
         onPartLoaded = _onPartLoaded;
         noSelection = _noSelection;
+        if(label != "") {
+            partLoadLabel.text = label;
+        }
         partLoadPopup.SetActive(true);
         List<Part> parts = PartLibrary.GetParts();
         foreach (Part p in parts) {

@@ -12,6 +12,7 @@ public class NPCDisplay : MonoBehaviour {
         Clear();
         npc = n;
         npcName.text = n.firstName + " " + n.lastName;
+        npcPortrait.sprite = npc.sprite;
     }
 
     public void Clear() {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectableCompanyMessage : MonoBehaviour {
+public class CompanyMessage : MonoBehaviour {
 
     public Company company;
     public Text companyName;
@@ -15,8 +15,12 @@ public class SelectableCompanyMessage : MonoBehaviour {
     public Button bottomButton;
     public Text bottomButtonText;
 
-    public void SetOutline(bool showOutline) {
+    public void ShowOutline(bool showOutline) {
         outline.enabled = showOutline;
+    }
+
+    public void ShowBottomButton(bool showBottomButton) {
+        bottomButton.gameObject.SetActive(showBottomButton);
     }
     
     public void DisplayCompany(Company c) {

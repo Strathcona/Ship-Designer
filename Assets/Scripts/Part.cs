@@ -85,6 +85,8 @@ public abstract class Part {
 
     protected virtual void UpdateProperties() {
         complexityCost = Mathf.FloorToInt(Mathf.Pow(2, tier));
+        creditCost = Mathf.FloorToInt(Mathf.Pow(2, tier)) + Random.Range(1, 5);
+        timeCost = Mathf.FloorToInt(Mathf.Pow(2, tier)) + Random.Range(1, 5);
     }
     public abstract string GetStatisticsString();
     public abstract void TweakableUpdate();
