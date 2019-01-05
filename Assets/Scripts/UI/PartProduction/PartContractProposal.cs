@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartProposals : MonoBehaviour {
+public class PartContractProposal : MonoBehaviour {
     public Part part;
+    public Contract contract;
     public SelectableFullPartDisplay partDisplay;
     public Button submitBidsButton;
     public List<CompanyMessage> companyMessages= new List<CompanyMessage>();
@@ -16,8 +17,6 @@ public class PartProposals : MonoBehaviour {
     public GameObject negotiationsPanel;
     public Toggle prototypeToggle;
 
-    public bool isPrototype;
-    public GameObject orderRequirements;
     public ToggleableInputFieldIncrement units;
     public ToggleableInputFieldIncrement deliveryTime;
     public ToggleableInputFieldIncrement unitPrice;
@@ -28,10 +27,13 @@ public class PartProposals : MonoBehaviour {
     public float timeSinceLastChange = 0f;
 
     private void Awake() {
-        companyMessagePrefab = Resources.Load("Prefabs/SelectableCompanyMessage", typeof(GameObject)) as GameObject;
+        companyMessagePrefab = Resources.Load("Prefabs/CompanyMessage", typeof(GameObject)) as GameObject;
         units.onChange.AddListener(ResetCompanyOpinion);
+        units.onChange.AddListener(UpdateContract);
         deliveryTime.onChange.AddListener(ResetCompanyOpinion);
+        deliveryTime.onChange.AddListener(UpdateContract);
         unitPrice.onChange.AddListener(ResetCompanyOpinion);
+        unitPrice.onChange.AddListener(UpdateContract);
         prototypeToggle.onValueChanged.AddListener(TogglePrototype);
     }
 
@@ -41,19 +43,31 @@ public class PartProposals : MonoBehaviour {
         ShowCompanies();
         timeSinceLastChange = 0;
         timeTillUpdate = Random.Range(minTime, maxTime);
+        NewContract();
     }
 
     public void TogglePrototype(bool toggle) {
-        isPrototype = toggle;
-        orderRequirements.SetActive(!toggle);
         ResetCompanyOpinion();
+        UpdateContract();
     }
+
+    public void NewContract() {
+        contract = new Contract(part, prototypeToggle.isOn, units.input.fieldValue, deliveryTime.input.fieldValue, unitPrice.input.fieldValue);
+    }
+
+    public void UpdateContract() {
+        contract.prototype = prototypeToggle.isOn;
+        contract.units = units.input.fieldValue;
+        contract.time = deliveryTime.input.fieldValue;
+        contract.price = unitPrice.input.fieldValue;
+    }
+
 
     private void Update() {
         timeSinceLastChange += Time.deltaTime;
         if(timeSinceLastChange > timeTillUpdate) {
             if(companyMessagesPreOpinion.Count > 0) {
-                ShowRandomCompanyOpinion();
+                ShowRandomResponseToProposal();
             }
         }
     }
@@ -83,24 +97,24 @@ public class PartProposals : MonoBehaviour {
         ResetCompanyOpinion();
     }
 
-    public void ShowRandomCompanyOpinion() {
+    public void ShowRandomResponseToProposal() {
         CompanyMessage[] array = new CompanyMessage[companyMessagesPreOpinion.Count];
         companyMessagesPreOpinion.CopyTo(array);
         CompanyMessage message = array[Random.Range(0, array.Length)];
         companyMessagesPreOpinion.Remove(message);
-        int partUnits = -1;
-        int partDelivery = -1;
-        int partPrice = -1;
+        int requestedUnits = -1;
+        int requestedTime = -1;
+        int requestedPrice = -1;
         if (units.isToggled) {
-            partUnits = units.input.fieldValue;
+            requestedUnits = units.input.fieldValue;
         }
         if (deliveryTime.isToggled) {
-            partDelivery = deliveryTime.input.fieldValue;
+            requestedTime = deliveryTime.input.fieldValue;
         }
         if (unitPrice.isToggled) {
-            partPrice = unitPrice.input.fieldValue;
+            requestedPrice = unitPrice.input.fieldValue;
         }
-        message.DisplayCompanyMessage(message.company.GetCompanyOpinionOnPartProduction(part, isPrototype, partUnits, partDelivery, partPrice));
+        message.DisplayCompanyMessage(message.company.GetCompanyOpinionOnContract(contract));
         message.ShowBottomButton(true);
         message.bottomButtonText.text = "Enter Negotiations";
         message.bottomButton.onClick.AddListener(delegate { AskToConfirmCompany(message); });

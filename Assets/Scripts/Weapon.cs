@@ -126,8 +126,6 @@ public class Weapon : Part {
         int turretfactor = Mathf.Max(1, turrets.Value);
         size = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
         damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
-        creditCost = Mathf.FloorToInt(size * 120.0f + reload.Value*60f);
-        timeCost = Mathf.FloorToInt(reload.Value * 10.0f + size * 5.0f);
     }
 
     public override void TweakableUpdate() {

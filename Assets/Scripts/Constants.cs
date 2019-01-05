@@ -202,7 +202,7 @@ namespace GameConstructs {
             if (qualities.Contains(CompanyQuality.Ethics)) {
                 return "Ethical Enterprise";
             }
-            if (qualities.Contains(CompanyQuality.Flexibility)) {
+            if (qualities.Contains(CompanyQuality.Quantity)) {
                 return "Bespoke Consortium";
             }
             return "Generic Megabrand";
@@ -213,6 +213,6 @@ namespace GameConstructs {
     public enum SensorType { LowEnergy, HighEnergy, Gravitic};
     public enum PartType { Weapon, FireControl, Sensor, Engine, PowerPlant};
     public enum TweakableType { Slider, Dropdown };
-    public enum CompanyQuality {Speed, Quality, Cost, Prestige, Ethics, Flexibility};
+    public enum CompanyQuality {Speed, Quality, Cost, Prestige, Ethics, Quantity};
 }
 

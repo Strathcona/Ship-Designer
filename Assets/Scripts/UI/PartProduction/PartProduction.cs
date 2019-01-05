@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PartProduction : MonoBehaviour
 {
-    public PartProposals partProposals;
-    public PartNegotiation partNegotiation;
+    public PartContractProposal partProposals;
+    public PartContractNegotiation partNegotiation;
     public Part part;
     public SelectableFullPartDisplay partDisplay;
     public Button LoadPartButton;
@@ -18,7 +18,14 @@ public class PartProduction : MonoBehaviour
     }
 
     public void AskToLoadPart() {
-        PartLoader.instance.LoadPartPopup(LoadPart, label: "Select a Part to get companies to produce");
+        PartLoader.instance.LoadPartPopup(LoadPart, label: "Select a Part design to propose to companies");
+    }
+
+    public void AskToChangePart() {
+        ModalPopupManager.instance.DisplayModalPopup("Confirmation",
+            "Are you sure you want to change which part design you're using? Any proposals or negotiations will end.",
+            new List<string>() { "Yes", "No" },
+            new List<System.Action>() { AskToLoadPart });
     }
 
     public void LoadPart(Part p) {

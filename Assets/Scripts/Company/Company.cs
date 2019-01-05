@@ -10,9 +10,10 @@ public class Company {
     public HashSet<CompanyQuality> companyQualities = new HashSet<CompanyQuality>();
     public HashSet<PartType> partTypes = new HashSet<PartType>();
     public NPC ceo;
-    public float minimumTimePerComplexity; //how much time below the minimum time before the company agrees to an offer
-    public float minimumMargin = 0.1f; //how much margin they must make before they agree
+    public float minimumMargin = 1.1f; //how much margin they must make before they agree
     public int productionCapacity = 10; //how many units per month the company can produce
+    public float prototypeDiscount = 0.5f; //how much of a discount in time and price a company offers a protoType;
+    private ContractOpinion contractOpinion;
 
 
     public Company() {
@@ -42,41 +43,55 @@ public class Company {
         }
     }
 
-    public string GetCompanyOpinionOnPartProduction(Part p, bool prototype, int units, int deliveryDate,  int priceLimit) {
-        Debug.Log(productionCapacity + " " + units);
-        Debug.Log((p.creditCost * (1+ minimumMargin)) + " " + priceLimit);
-        Debug.Log(p.timeCost + " " + deliveryDate);
-        if (prototype) {
-            if (companyQualities.Contains(CompanyQuality.Speed)) {
-                return "We'll get you a design <color=#FFFF00><b>prototype</b></color> for this in no time.";
+    public string GetCompanyOpinionOnContract(Contract contract) {
+        contractOpinion = new ContractOpinion(this, contract);
+        Debug.Log(this.name + " time:" + contractOpinion.timeFavorability + " price:" + contractOpinion.priceFavorability + " units:" + contractOpinion.unitsFavorability);
+        string response = "";
+        if (!contractOpinion.Willing) { //if we're not willing
+            response += "I'm sorry we can't commit to this.";
+            if (contractOpinion.priceTooLow) {
+                if (companyQualities.Contains(CompanyQuality.Cost)) {
+                    response += "Even our efficent production just won't be profitable at this <color=#888800>price</color>";
+                } else {
+                    response += "This <color=#888800>price</color> is too low.";
+                }
+            } else if (contractOpinion.tooManyUnits) {
+                if (companyQualities.Contains(CompanyQuality.Quantity)) {
+                    response += "Our capacity is great, but even we cannot meet your <color#008800>unit</color> requirements.";
+                } else {
+                    response += "This exceeds our <color=#888800>production capacity</color>.";
+                }
+            } else if (contractOpinion.timeTooShort) {
+                if (companyQualities.Contains(CompanyQuality.Speed)) {
+                    response += "We pride ourselves on our efficency, but we simply cannot meet this delivery <color#008888>timeframe</color>.";
+                } else {
+                    response += "I'm affraid we would require more <color#008888>time</color>.";
+                }
             }
-            if (companyQualities.Contains(CompanyQuality.Quality)) {
-                return "You'll see even our <color=#FFFF00><b>prototype</b></color> surpass our competition's production line models.";
-            }
-            if (companyQualities.Contains(CompanyQuality.Cost)) {
-                return "Tell you what, we'll give you this <color=#FFFF00><b>prototype</b></color> for free.";
-            }
-            if (companyQualities.Contains(CompanyQuality.Prestige)) {
-                return "Your design looks promising, we'd be honored to provide you a <color=#FFFF00><b>prototype</b></color>.";
-            }
-            if (companyQualities.Contains(CompanyQuality.Ethics)) {
-                return "This <color=#FFFF00><b>prototype</b></color> looks like it can be sustainably and efficently sourced.";
-            }
-            if (companyQualities.Contains(CompanyQuality.Flexibility)) {
-                return "We'll get you this <color=#FFFF00><b>prototype</b></color>. Don't worry, we're more than capable of handling further iteration as well.";
-            }
-        } else {
-            if(units > productionCapacity) {
-                return "I'm sorry. We simply don't have the production capacity for this many <color=#660000>units</color>.";
-            }
-            if (priceLimit > p.creditCost*(1+minimumMargin)) {
-                return "We simply can't do this order at this <color=#666600>price</color>.";
-            }
-            if (deliveryDate > 0 && deliveryDate < p.timeCost) {
-                return "This <color=#006600>delivery timeframe</color> is simply unworkable.";
+        } else { //if we are willing
+            if (contractOpinion.prototype) { //if this is for a prototype
+                if (companyQualities.Contains(CompanyQuality.Speed)) {
+                    return "We'll get you a design <color=#FFFF00><b>prototype</b></color> for this in no time.";
+                }
+                if (companyQualities.Contains(CompanyQuality.Quality)) {
+                    return "You'll see even our <color=#FFFF00><b>prototype</b></color> surpass our competition's production line models.";
+                }
+                if (companyQualities.Contains(CompanyQuality.Cost)) {
+                    return "Tell you what, we'll give you this <color=#FFFF00><b>prototype</b></color> for free.";
+                }
+                if (companyQualities.Contains(CompanyQuality.Prestige)) {
+                    return "Your design looks promising, we'd be honored to provide you a <color=#FFFF00><b>prototype</b></color>.";
+                }
+                if (companyQualities.Contains(CompanyQuality.Ethics)) {
+                    return "This <color=#FFFF00><b>prototype</b></color> looks like it can be sustainably and efficently sourced.";
+                }
+                if (companyQualities.Contains(CompanyQuality.Quantity)) {
+                    return "We'll get you this <color=#FFFF00><b>prototype</b></color>. Don't worry, we're more than capable of handling further iteration as well.";
+                }
+            } else { //if it's not a prototype
+                response = "I am certain we can meet your contracted requirements";
             }
         }
-
-        return "Sure. Yeah. We can do that for you.";
+        return response;
     }
 }
