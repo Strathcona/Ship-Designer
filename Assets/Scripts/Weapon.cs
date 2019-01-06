@@ -137,7 +137,6 @@ public class Weapon : Part {
         w.Tier = (Random.Range(1, 6));
         w.weaponType.Value = 0;
         w.caliber.Value = Random.Range(2, 20);
-        w.manufacturerName = Constants.GetRandomCompanyName();
         w.turrets.Value = Random.Range(0, 5);
         w.reload.Value = Random.Range(2, 20);
         w.modelName = Constants.GetRandomWeaponModelName();

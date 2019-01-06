@@ -85,7 +85,6 @@ public class FireControl : Part{
     public static FireControl GetRandomFireControl() {
         FireControl f = new FireControl();
         f.tier = Random.Range(1, 6);
-        f.manufacturerName = Constants.GetRandomCompanyName();
         f.tracking.Value = Random.Range(1, 20);
         f.accuracy.Value = Random.Range(1, 20);
         f.range.Value = Random.Range(1, 20);

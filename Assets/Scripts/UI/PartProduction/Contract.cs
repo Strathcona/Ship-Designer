@@ -10,7 +10,7 @@ public class Contract {
     public int units;
     public int time;
 
-    public Contract(Part p, bool _prototype, int _price = -1 , int _units = -1 , int _time = -1) {
+    public Contract(Part p, bool _prototype = false, int _price = -1 , int _units = -1 , int _time = -1) {
         part = p;
         prototype = _prototype;
         price = _price;

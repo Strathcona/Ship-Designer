@@ -53,7 +53,6 @@ public class PowerPlant : Part{
         p.tier = 1;
         p.typeName = "Reactor";
         p.modelName = Constants.GetRandomPowerPlantModelName();
-        p.manufacturerName = Constants.GetRandomCompanyName();
         p.power.Value = Random.Range(20, 100);
         return p;
     }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ModalPopupManager : MonoBehaviour {
     public static ModalPopupManager instance;
     public GameObject modalPopupPrefab;
+    public int popupID = 0;
     public List<GameObject> activePopups = new List<GameObject>();
     public List<GameObject> inactivePopups = new List<GameObject>();
 
@@ -24,6 +25,8 @@ public class ModalPopupManager : MonoBehaviour {
     public void DisplayModalPopup(string title, string body, List<string> buttonLabels, List<Action> buttonPopups) {
         if(inactivePopups.Count < 1) {
             GameObject g = GameObject.Instantiate(modalPopupPrefab, transform, true);
+            g.name = "Popup " + popupID.ToString();
+            popupID += 1;
             inactivePopups.Add(g);
             RectTransform t = g.GetComponent<RectTransform>();
             t.offsetMax = Vector2.zero;
@@ -63,10 +66,10 @@ public class ModalPopupManager : MonoBehaviour {
     }
 
     public void ClosePopup(ModalPopup popup) {
-        Debug.Log("Close Popup");
         popup.Clear();
         inactivePopups.Add(popup.gameObject);
         activePopups.Remove(popup.gameObject);
         popup.gameObject.SetActive(false);
+        Debug.Log("Close Popup"+popup.name);
     }
 }

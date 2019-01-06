@@ -9,7 +9,15 @@ public class InputFieldIncrement : MonoBehaviour {
     public Button up;
     public Button down;
     public InputField inputField;
-    public int fieldValue = 0;
+    [SerializeField] //can't serialize properties, so you gotta do the private field. Setter won't be called from the editor BTW
+    private int fieldValue = 1;
+    public int FieldValue {
+        get { return fieldValue; }
+        set {
+            fieldValue = value;
+            inputField.text = fieldValue.ToString();
+        }
+    }
     public int minValue = 0;
     public int maxValue = 100;
 
@@ -17,22 +25,22 @@ public class InputFieldIncrement : MonoBehaviour {
         up.onClick.AddListener(IncrementUp);
         down.onClick.AddListener(IncrementDown);
         inputField.onEndEdit.AddListener(OnValueChanged);
-        inputField.text = fieldValue.ToString();
+        inputField.text = FieldValue.ToString();
     }
 
     public void IncrementUp() {
-        if(fieldValue < maxValue) {
-            fieldValue += 1;
+        if(FieldValue < maxValue) {
+            FieldValue += 1;
         }
-        inputField.text = fieldValue.ToString();
+        inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
     public void IncrementDown() {
-        if(fieldValue > minValue) {
-            fieldValue -= 1;
+        if(FieldValue > minValue) {
+            FieldValue -= 1;
         }
-        inputField.text = fieldValue.ToString();
+        inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
@@ -40,13 +48,13 @@ public class InputFieldIncrement : MonoBehaviour {
         Debug.Log(s);
         int temp = int.Parse(s);
         if(temp > maxValue) {
-            fieldValue = maxValue;
+            FieldValue = maxValue;
         } else if (temp < minValue) {
-            fieldValue = minValue;
+            FieldValue = minValue;
         } else {
-            fieldValue = temp;
+            FieldValue = temp;
         }
-        inputField.text = fieldValue.ToString();
+        inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 

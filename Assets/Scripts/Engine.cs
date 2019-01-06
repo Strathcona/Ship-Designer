@@ -74,7 +74,6 @@ public class Engine : Part {
     public static Engine GetRandomEngine() {
         Engine s = new Engine();
         s.Tier = Random.Range(1, 6);
-        s.manufacturerName = Constants.GetRandomCompanyName();
         s.agility.Value = Random.Range(1, 20);
         s.thrust.Value = Random.Range(1, 20);
         s.typeName = Constants.TierEngineNames[s.Tier] + " Engine";

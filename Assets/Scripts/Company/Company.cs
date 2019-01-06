@@ -91,13 +91,13 @@ public class Company {
             response += "I'm sorry we can't commit to this. ";
             if (contractOpinion.priceTooLow) {
                 if (companyQualities.Contains(CompanyQuality.Cost)) {
-                    response += "Even our efficent production just won't be profitable at this <color=#888800>price</color>";
+                    response += "The <color=#888800>price</color> you are asking is frankly, ridiculous.";
                 } else {
                     response += "This <color=#888800>price</color> is too low.";
                 }
             } else if (contractOpinion.tooManyUnits) {
                 if (companyQualities.Contains(CompanyQuality.Quantity)) {
-                    response += "Our capacity is great, but even we cannot meet your <color#008800>unit</color> requirements.";
+                    response += "You won't find anyone in this quadrant who could meet those <color#008800>unit</color> requirements.";
                 } else {
                     response += "This exceeds our <color=#888800>production capacity</color>.";
                 }
@@ -129,7 +129,7 @@ public class Company {
                     response = "We'll get you this <color=#FFFF00><b>prototype</b></color>. Don't worry, we're more than capable of handling further iteration as well.";
                 }
             } else { //if it's not a prototype
-                response = "I am certain we can meet your contracted requirements";
+                response = "I am certain we can meet your contracted requirements. Let's pin down the fine details.";
             }
         }
         contractOpinion.responseString = response;
