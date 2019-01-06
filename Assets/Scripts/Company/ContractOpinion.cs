@@ -6,7 +6,7 @@ public class ContractOpinion {
     public Part part;
     public Company company;
     public bool Willing {
-        get { return !priceTooLow || !timeTooShort || !tooManyUnits; }
+        get { return !priceTooLow && !timeTooShort && !tooManyUnits; }
     }
     public bool prototype; 
     public int requestedPrice; //what the company is asked to get paid
@@ -22,8 +22,7 @@ public class ContractOpinion {
     public float unitsFavorability;
     public bool tooManyUnits;
 
-    public string proposalString;
-    public string negotiationString;
+    public string responseString;
 
     public ContractOpinion(Company c, Contract contract) {
         part = contract.part;
@@ -39,34 +38,36 @@ public class ContractOpinion {
         requestedPrice = contract.price;
 
         desiredUnits = company.productionCapacity;
-        desiredTime = Mathf.CeilToInt(part.unitTimeCost * requestedUnits * prototypeFactor);
+        desiredTime = Mathf.CeilToInt(part.unitTimeCost * requestedUnits * prototypeFactor *c.productionSpeed);
         desiredPrice = Mathf.CeilToInt(part.unitCost * company.minimumMargin * prototypeFactor);
 
+        unitsFavorability = requestedUnits*0.5f; //you want to produce as close to capacity as possible
         if (requestedUnits > company.productionCapacity) {
             tooManyUnits = true;
             unitsFavorability = 0.0f;
         } else {
             tooManyUnits = false;
-            unitsFavorability = 1 + 1 / requestedUnits / (company.productionCapacity + 1); //you want to produce as close to capacity as possible
         }
 
+        timeFavorability = requestedTime / desiredTime; //you want to deliver as soon as you have the parts done, and not earlier
         if (desiredTime > requestedTime) {
             timeTooShort = true;
             timeFavorability = 0.0f;
         } else {
             timeTooShort = false;
-            timeFavorability = requestedTime / desiredTime;
         }
 
+        priceFavorability = requestedPrice / desiredPrice; //you want to at least make your minimum margin
         if (requestedPrice < desiredPrice) {
             priceTooLow = true;
             priceFavorability = 0.0f;
         } else {
             priceTooLow = false;
-            priceFavorability = requestedPrice / desiredPrice;
         }
 
-        Debug.Log(company.name+" on "+part.modelName + " time:" + timeFavorability + " price:" + priceFavorability + " units:" + unitsFavorability);
-
+        Debug.Log(company.name + " on " + part.GetDescriptionString());
+        Debug.Log("Requested Price:" + requestedPrice + " Desired: " + desiredPrice + " Favorability: " + priceFavorability);
+        Debug.Log("Requested Time:" + requestedTime + " Desired: " + desiredTime + " Favorability: " + timeFavorability);
+        Debug.Log("Requested Units:" + requestedUnits + " Desired: " + desiredUnits + " Favorability: " + unitsFavorability);
     }
 }
