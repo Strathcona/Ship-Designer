@@ -30,6 +30,7 @@ public class PartContractProposal : MonoBehaviour {
 
     public Text baselineValuesText;
 
+    public Company companyToChat;
     public CompanyChatWindow companyChatWindow;
 
     private void Awake() {
@@ -159,6 +160,7 @@ public class PartContractProposal : MonoBehaviour {
     }
 
     public void AskToEnterNegotiations(Company company) {
+        companyToChat = company;
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
             "Do you want to enter negotiations with " + company.name + "?",
             new List<string>() { "Yes", "No" },
@@ -167,6 +169,7 @@ public class PartContractProposal : MonoBehaviour {
 
     public void OpenCompanyChat() {
         companyChatWindow.gameObject.SetActive(true);
+        companyChatWindow.StartChatWith(companyToChat);
     }
 
     public void CloseCompanyChat() {
