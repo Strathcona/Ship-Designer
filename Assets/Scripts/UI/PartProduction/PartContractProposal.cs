@@ -4,72 +4,112 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PartContractProposal : MonoBehaviour {
-    public PartProduction partProduction;
+    public Part part;
 
     public SelectableFullPartDisplay partDisplay;
-    public Button submitBidsButton;
+    public Button loadPartButton;
+    public Button changePartButton;
+    public Button showCompaniesButton;
     public List<CompanyMessage> companyMessages= new List<CompanyMessage>();
     public List<CompanyMessage> companyMessagesPreOpinion = new List<CompanyMessage>();
     public List<Company> companies = new List<Company>();
     public GameObject companyMessagePrefab;
     public GameObject companyMessageAttachPoint;
-    public Toggle prototypeToggle;
 
+    public GameObject orderRequirements;
+    public GameObject orderRecomendations;
+
+    public Toggle prototypeToggle;
     public InputFieldIncrement unitsField;
     public InputFieldIncrement timeField;
     public InputFieldIncrement priceField;
+    public bool proposedPrototype;
+    public int proposedUnits;
+    public int proposedTime;
+    public int proposedPrice;
 
-    public float timeTillUpdate = 5.0f;
-    public float minTime = 0.5f;
-    public float maxTime = 2.5f;
-    public float timeSinceLastChange = 0f;
+    public Text baselineValuesText;
+
+    public CompanyChatWindow companyChatWindow;
 
     private void Awake() {
         companyMessagePrefab = Resources.Load("Prefabs/CompanyMessage", typeof(GameObject)) as GameObject;
         unitsField.onSubmit.AddListener(ResetCompanyOpinion);
-        unitsField.onSubmit.AddListener(UpdateContract);
+        unitsField.onSubmit.AddListener(UpdateProposal);
         timeField.onSubmit.AddListener(ResetCompanyOpinion);
-        timeField.onSubmit.AddListener(UpdateContract);
+        timeField.onSubmit.AddListener(UpdateProposal);
         priceField.onSubmit.AddListener(ResetCompanyOpinion);
-        priceField.onSubmit.AddListener(UpdateContract);
+        priceField.onSubmit.AddListener(UpdateProposal);
         prototypeToggle.onValueChanged.AddListener(TogglePrototype);
+
+        companyChatWindow.gameObject.SetActive(false);
+        showCompaniesButton.gameObject.SetActive(false);
+        changePartButton.gameObject.SetActive(false);
+        orderRecomendations.SetActive(false);
+        orderRequirements.SetActive(false);
+        prototypeToggle.gameObject.SetActive(false);
     }
 
-    public void UpdatePart(Part p) {
-        UpdateContract();
-        ShowCompanies();
-        timeSinceLastChange = 0;
-        timeTillUpdate = Random.Range(minTime, maxTime);
+    public void AskToLoadPart() {
+        PartLoader.instance.LoadPartPopup(LoadPart, label:"Select a Part to propose to Companies");
+    }
+
+    public void AskToChangePart() {
+        ModalPopupManager.instance.DisplayModalPopup("Confirmation",
+            "Are you sure you want to change your current Part?",
+            new List<string>() { "Yes", "No" },
+            new List<System.Action>() { AskToLoadPart });
+    }
+
+
+    public void LoadPart(Part p) {
+        part = p;
+        partDisplay.DisplayPart(part);
+
+        UpdateProposal();
+        SetBaselineValuesText();
+
+        loadPartButton.gameObject.SetActive(false);
+        changePartButton.gameObject.SetActive(true);
+        companyChatWindow.gameObject.SetActive(false);
+        showCompaniesButton.gameObject.SetActive(true);
+        changePartButton.gameObject.SetActive(true);
+        orderRecomendations.SetActive(true);
+        orderRequirements.SetActive(true);
+        prototypeToggle.gameObject.SetActive(true);
     }
 
     public void TogglePrototype(bool toggle) {
-        UpdateContract();
+        UpdateProposal();
         ResetCompanyOpinion();
     }
 
-    public void UpdateContract() {
-        partProduction.contract.prototype = prototypeToggle.isOn;
-        partProduction.contract.units = unitsField.FieldValue;
-        partProduction.contract.time = timeField.FieldValue;
-        partProduction.contract.price = priceField.FieldValue;
+    public void SetBaselineValuesText() {
+        baselineValuesText.text = "Baseline Price is "+part.unitCost.ToString()+". Baseline time is " + part.unitTimeCost.ToString();
     }
 
+    public void ResetToBaselineValues() {
+        proposedPrice = part.unitCost * proposedUnits;
+        proposedTime = part.unitTimeCost * proposedUnits;
+        priceField.FieldValue = proposedPrice;
+        timeField.FieldValue = proposedTime;
+    }
 
-    private void Update() {
-        timeSinceLastChange += Time.deltaTime;
-        if(timeSinceLastChange > timeTillUpdate) {
-            if(companyMessagesPreOpinion.Count > 0) {
-                ShowRandomResponseToProposal();
-            }
-        }
+    public void UpdateProposal() {
+        Debug.Log("Updating Proposal");
+        proposedPrototype = prototypeToggle.isOn;
+        proposedUnits = unitsField.FieldValue;
+        proposedTime = timeField.FieldValue;
+        proposedPrice = priceField.FieldValue;
     }
 
     public void ShowCompanies() {
+        showCompaniesButton.gameObject.SetActive(false);
         foreach(CompanyMessage cm in companyMessages) {
             cm.Clear();
             cm.gameObject.SetActive(false);
         }
-        List<Company> companiesByPartType = CompanyLibrary.GetCompanies(partProduction.part.partType);
+        List<Company> companiesByPartType = CompanyLibrary.GetCompanies(part.partType);
         int neededCompanyDisplays = companiesByPartType.Count - companyMessages.Count;
         if (neededCompanyDisplays > 0) {
             for (int i = 0; i < neededCompanyDisplays; i++) {
@@ -86,42 +126,50 @@ public class PartContractProposal : MonoBehaviour {
             index += 1;
         }
         ResetCompanyOpinion();
+        while(companyMessagesPreOpinion.Count > 0) {
+            StartCoroutine("ShowRandomResponseToProposal");
+        }
     }
 
-    public void ShowRandomResponseToProposal() {
+    IEnumerator ShowRandomResponseToProposal() {
         CompanyMessage message = companyMessagesPreOpinion[Random.Range(0, companyMessagesPreOpinion.Count)];
-        ContractOpinion co = message.company.GetContractOpinion(partProduction.contract);
+        ProposalOpinion co = message.company.GetPartOpinion(part, proposedPrototype, proposedUnits, proposedTime, proposedPrice);
         companyMessagesPreOpinion.Remove(message);
         message.DisplayCompanyMessage(co.responseString);
         if (co.Willing) {
             message.ShowBottomButton(true);
-            message.bottomButtonText.text = "Enter Negotiations";
+            message.bottomButtonText.text = "Contact";
             message.bottomButton.onClick.RemoveAllListeners();
             message.bottomButton.onClick.AddListener(delegate { AskToEnterNegotiations(message.company); });
         }
-        timeSinceLastChange = 0;
-        timeTillUpdate = Random.Range(minTime, maxTime);
+        yield return new WaitForSeconds(1.5f);
     }
 
     public void ResetCompanyOpinion() {
-        timeSinceLastChange = 0;
+        UpdateProposal(); //make sure we're up to date
         companyMessagesPreOpinion.Clear();
         foreach(CompanyMessage c in companyMessages) {
             c.DisplayCompanyMessage("Let me think here");
             c.ShowBottomButton(false);
             companyMessagesPreOpinion.Add(c);
         }
+        while (companyMessagesPreOpinion.Count > 0) {
+            StartCoroutine("ShowRandomResponseToProposal");
+        }
     }
 
     public void AskToEnterNegotiations(Company company) {
-        partProduction.company = company;
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
             "Do you want to enter negotiations with " + company.name + "?",
             new List<string>() { "Yes", "No" },
-            new List<System.Action>() { EnterNegotiations });
+            new List<System.Action>() { OpenCompanyChat });
     }
 
-    public void EnterNegotiations() {
-        partProduction.EnterNegotiations();
+    public void OpenCompanyChat() {
+        companyChatWindow.gameObject.SetActive(true);
+    }
+
+    public void CloseCompanyChat() {
+        companyChatWindow.gameObject.SetActive(false);
     }
 }

@@ -10,6 +10,7 @@ public class Company {
     public HashSet<CompanyQuality> companyQualities = new HashSet<CompanyQuality>();
     public HashSet<PartType> partTypes = new HashSet<PartType>();
     public NPC ceo;
+    public int opinion = 100;
     public float minimumMargin = 1.1f; //how much margin they must make before they agree
     public float productionSpeed = 1.0f;
     public float changeOrderCost = 1.5f;
@@ -84,8 +85,8 @@ public class Company {
         }
     }
 
-    public ContractOpinion GetContractOpinion(Contract contract) {
-        ContractOpinion contractOpinion = new ContractOpinion(this, contract);
+    public ProposalOpinion GetPartOpinion(Part p, bool prototype, int units, int time, int price) {
+        ProposalOpinion contractOpinion = new ProposalOpinion(this, p, prototype, units, time, price);
         string response = "";
         if (!contractOpinion.Willing) { //if we're not willing
             response += "I'm sorry we can't commit to this. ";

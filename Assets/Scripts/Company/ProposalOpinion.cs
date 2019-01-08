@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContractOpinion {
+public class ProposalOpinion {
     public Part part;
     public Company company;
     public bool Willing {
@@ -24,18 +24,18 @@ public class ContractOpinion {
 
     public string responseString;
 
-    public ContractOpinion(Company c, Contract contract) {
-        part = contract.part;
+    public ProposalOpinion(Company c, Part p, bool _prototype, int units, int time, int price) {
+        part = p;
         company = c;
 
-        prototype = contract.prototype;
+        prototype = _prototype;
         float prototypeFactor = 1.0f;
-        if (contract.prototype) {
+        if (prototype) {
             prototypeFactor = company.prototypeDiscount;
         }
-        requestedUnits = contract.units;
-        requestedTime = contract.time;
-        requestedPrice = contract.price;
+        requestedUnits = units;
+        requestedTime = time;
+        requestedPrice = price;
 
         desiredUnits = company.productionCapacity;
         desiredTime = Mathf.CeilToInt(part.unitTimeCost * requestedUnits * prototypeFactor *c.productionSpeed);
