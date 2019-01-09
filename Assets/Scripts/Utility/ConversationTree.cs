@@ -11,61 +11,88 @@ public class ConversationTree {
     public ConversationElement nextElement;
     public List<ConversationElement> elements = new List<ConversationElement>();
     public IConversationReader currentReader;
-    public bool waitingOnChoice;
+    public bool waitingOnChoice = false;
+    public bool endNode = false;
 
     public static ConversationTree GetTestTree() {
         ConversationTree tree = new ConversationTree();
-        tree.elements.Add(new ConversationElement("This is a test tree"));
+        tree.elements.Add(new ConversationElement("Well, everything seems to be in order. Would you like to finalize the deal? [UNITS] units at [PRICE] delivered no later than [TIME] ticks from today."));
         tree.elements.Add(new ConversationElement(
             new List<string>() { "Looks like it.", "Hmm, I'm not sure" },
             new List<string>() { "Question", "Question" },
             new List<bool>() { true, false }));
-        tree.elements[0].next = tree.elements[1];
-        tree.elements.Add(new ConversationElement("Another text"));
-        tree.elements[1].next = tree.elements[2];
-        ConversationElement theEnd = new ConversationElement("The End");
-        ConversationElement choiceOne = new ConversationElement("You answered that it looks like it was a test tree!", theEnd);
-        ConversationElement choiceTwo = new ConversationElement("You answered that it didn't look like a test tree...", theEnd);
-        List<List<string>> branchvar = new List<List<string>>() { new List<string>() { "Question" }, new List<string>() { "Question" } };
+        tree.elements[0].next = 1;
+        ConversationElement end = new ConversationElement();
+        ConversationElement endTransmission = new ConversationElement(new List<string>() { "End Transmission" }, new List<string>(), new List<bool>());
+        ConversationElement agreeText = new ConversationElement("Wonderful. Thank you for your time");
+        ConversationElement disagreeText = new ConversationElement("Ah, well, take your time then. Contact us when you know.");
+        List<List<string>> branchvar = new List<List<string>>() { new List<string>() { "Agree" }, new List<string>() { "Agree" } };
         List<List<bool>> branchcon = new List<List<bool>>() { new List<bool>() { true }, new List<bool>() { false } };
-        ConversationElement branch = new ConversationElement(branchvar, branchcon, new List<int>() { 4, 5 });
-        tree.elements.Add(branch);
-        tree.elements[2].next = tree.elements[3];
-        tree.elements.Add(choiceOne);
-        tree.elements.Add(choiceTwo);
-        tree.elements.Add(theEnd);
+        ConversationElement agreeBranch = new ConversationElement(branchvar, branchcon, new List<int>() { 3, 4 });
+        tree.elements.Add(agreeBranch);
+        tree.elements.Add(agreeText);
+        tree.elements.Add(disagreeText);
+        tree.elements.Add(endTransmission);
+        tree.elements.Add(end);
+        tree.elements[1].next = 2;
+        tree.elements[3].next = 5;
+        tree.elements[4].next = 5;
+        tree.elements[5].next = 6;
+
 
         return tree;
     }
 
     public void StartTree(ConversationElement element, IConversationReader reader) {
+        currentReader = reader;
         ProcessNode(element, reader);   
+        if(currentElement.next <= -1) {
+            Debug.Log("Tree is one node long");
+            currentReader.EndConversation();
+        } else if (currentElement.next >= elements.Count) {
+            Debug.LogError("Out of range next element");
+        } else {
+            nextElement = elements[currentElement.next];
+        }
     }
 
-    public bool NextNode() {
-        if(nextElement != null) {
-            ProcessNode(nextElement, currentReader);
-            return true;
+    public void NextNode() {
+        if (nextElement == null){
+            Debug.LogWarning("Conversation ended with null next element "+this);
+            currentReader.EndConversation();
+        } else if (nextElement.type == ConversationElementType.End) {
+            currentReader.EndConversation();
         } else {
-            return false;
+            ProcessNode(nextElement, currentReader);
+            if (currentElement.next >= elements.Count) {
+                Debug.LogError("Out of range next element");
+            } else {
+                nextElement = elements[currentElement.next];
+            }
         }
     }
 
     private void ProcessNode(ConversationElement element, IConversationReader reader) {
-        Debug.Log("Processing a " + element.type + " element");
         currentElement = element;
-        nextElement = element.next;
         switch (element.type) {
+
             case ConversationElementType.Text:
-                reader.DisplayText(element.text);
+                reader.DisplayText(reader.KeywordReplace(element.text));
                 break;
+
             case ConversationElementType.Set:
                 conversationVariables.Add(element.setKey, element.setValue);
                 break;
+
             case ConversationElementType.Choice:
-                reader.DisplayChoice(element.choices, GetChoiceResponse);
+                List<string> keywordedChoices = new List<string>();
+                foreach(string choice in element.choices) {
+                    keywordedChoices.Add(reader.KeywordReplace(choice));
+                }
+                reader.DisplayChoice(keywordedChoices, GetChoiceResponse);
                 waitingOnChoice = true;
                 return;
+
             case ConversationElementType.Branch:
                 for(int i = 0; i < element.branchVariables.Count; i ++) {
                     //i is the branch we're checking
@@ -89,9 +116,11 @@ public class ConversationTree {
     }
 
     public void GetChoiceResponse(int choice) {
-        conversationVariables.Add(currentElement.responseKeys[choice], currentElement.responseValues[choice]);
+        if (currentElement.responseKeys.Count > choice) {
+            conversationVariables.Add(currentElement.responseKeys[choice], currentElement.responseValues[choice]);
+        }
         waitingOnChoice = false;
-        ProcessNode(currentElement.next, currentReader);
+        ProcessNode(elements[currentElement.next], currentReader);
     }
 
     public static ConversationTree LoadFromJSON(string json) {

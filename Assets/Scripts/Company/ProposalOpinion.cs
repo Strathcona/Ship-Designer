@@ -38,8 +38,8 @@ public class ProposalOpinion {
         requestedPrice = price;
 
         desiredUnits = company.productionCapacity;
-        desiredTime = Mathf.CeilToInt(part.unitTimeCost * requestedUnits * prototypeFactor *c.productionSpeed);
-        desiredPrice = Mathf.CeilToInt(part.unitCost * company.minimumMargin * prototypeFactor);
+        desiredTime = Mathf.CeilToInt(part.unitTime * requestedUnits * prototypeFactor *c.productionSpeed);
+        desiredPrice = Mathf.CeilToInt(part.unitPrice * company.minimumMargin * prototypeFactor);
 
         unitsFavorability = requestedUnits*0.5f; //you want to produce as close to capacity as possible
         if (requestedUnits > company.productionCapacity) {

@@ -214,6 +214,7 @@ namespace GameConstructs {
     public enum PartType { Weapon, FireControl, Sensor, Engine, PowerPlant};
     public enum TweakableType { Slider, Dropdown };
     public enum CompanyQuality {Speed, Quality, Cost, Prestige, Ethics, Quantity};
-    public enum ConversationElementType { Text, Set, Choice, Branch}
+    public enum ConversationElementType { Text, Set, Choice, Branch, End}
+    public enum CompanyTextKey { SpecialMitobahn, GenericOne}
 }
 

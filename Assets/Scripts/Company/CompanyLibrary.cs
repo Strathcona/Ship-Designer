@@ -7,6 +7,8 @@ public static class CompanyLibrary {
     public static HashSet<Company> companies = new HashSet<Company>();
 
     static CompanyLibrary() {
+        Company weyland = new Company();
+
         foreach (PartType pt in (PartType[])System.Enum.GetValues(typeof(PartType))) {
             companies.Add(new Company(pt));
         }

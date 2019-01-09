@@ -31,6 +31,7 @@ public class PartContractProposal : MonoBehaviour {
     public Text baselineValuesText;
 
     public Company companyToChat;
+    public PartOrder partOrderToChat;
     public CompanyChatWindow companyChatWindow;
 
     private void Awake() {
@@ -86,12 +87,12 @@ public class PartContractProposal : MonoBehaviour {
     }
 
     public void SetBaselineValuesText() {
-        baselineValuesText.text = "Baseline Price is "+part.unitCost.ToString()+". Baseline time is " + part.unitTimeCost.ToString();
+        baselineValuesText.text = "Baseline Price is "+part.unitPrice.ToString()+". Baseline time is " + part.unitTime.ToString();
     }
 
     public void ResetToBaselineValues() {
-        proposedPrice = part.unitCost * proposedUnits;
-        proposedTime = part.unitTimeCost * proposedUnits;
+        proposedPrice = part.unitPrice * proposedUnits;
+        proposedTime = part.unitTime * proposedUnits;
         priceField.FieldValue = proposedPrice;
         timeField.FieldValue = proposedTime;
     }
@@ -134,15 +135,13 @@ public class PartContractProposal : MonoBehaviour {
 
     IEnumerator ShowRandomResponseToProposal() {
         CompanyMessage message = companyMessagesPreOpinion[Random.Range(0, companyMessagesPreOpinion.Count)];
-        ProposalOpinion co = message.company.GetPartOpinion(part, proposedPrototype, proposedUnits, proposedTime, proposedPrice);
+        PartOrder po = message.company.GetPartOrderProposal(part, proposedUnits, proposedPrototype);
         companyMessagesPreOpinion.Remove(message);
-        message.DisplayCompanyMessage(co.responseString);
-        if (co.Willing) {
-            message.ShowBottomButton(true);
-            message.bottomButtonText.text = "Contact";
-            message.bottomButton.onClick.RemoveAllListeners();
-            message.bottomButton.onClick.AddListener(delegate { AskToEnterNegotiations(message.company); });
-        }
+        message.DisplayCompanyMessage(po.proposalString);
+        message.ShowBottomButton(true);
+        message.bottomButtonText.text = "Contact";
+        message.bottomButton.onClick.RemoveAllListeners();
+        message.bottomButton.onClick.AddListener(delegate { AskToEnterNegotiations(message.company, po); });
         yield return new WaitForSeconds(1.5f);
     }
 
@@ -159,8 +158,9 @@ public class PartContractProposal : MonoBehaviour {
         }
     }
 
-    public void AskToEnterNegotiations(Company company) {
+    public void AskToEnterNegotiations(Company company, PartOrder po) {
         companyToChat = company;
+        partOrderToChat = po;
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
             "Do you want to enter negotiations with " + company.name + "?",
             new List<string>() { "Yes", "No" },
@@ -169,10 +169,17 @@ public class PartContractProposal : MonoBehaviour {
 
     public void OpenCompanyChat() {
         companyChatWindow.gameObject.SetActive(true);
-        companyChatWindow.StartChatWith(companyToChat);
+        companyChatWindow.StartChatWith(companyToChat, partOrderToChat, GetResultsOfChat);
     }
 
     public void CloseCompanyChat() {
         companyChatWindow.gameObject.SetActive(false);
+    }
+
+    public void GetResultsOfChat(Company company, PartOrder partOrder, bool agree) {
+        CloseCompanyChat();
+        if (agree) {
+
+        }
     }
 }

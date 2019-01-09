@@ -9,8 +9,8 @@ public abstract class Part {
     public string modelName = ""; //Name of the make of the part like 'Devastator'
     public string manufacturerName = ""; //Name of the maker of the Part
     public float quality = 1.0f;
-    public int unitTimeCost = 1;
-    public int unitCost = 1;
+    public int unitTime = 1;
+    public int unitPrice = 1;
     public int complexityCost = 0;
     public PartType partType;
     public int ticksToDesign = 100;
@@ -56,8 +56,8 @@ public abstract class Part {
         modelName = p.modelName;
         manufacturerName = p.manufacturerName;
         quality = p.quality;
-        unitTimeCost = p.unitTimeCost;
-        unitCost = p.unitCost;
+        unitTime = p.unitTime;
+        unitPrice = p.unitPrice;
         partType = p.partType;
         ticksToDesign = p.ticksToDesign;
         size = p.Size;
@@ -70,8 +70,8 @@ public abstract class Part {
         modelName = p.modelName;
         manufacturerName = p.manufacturerName;
         quality = p.quality;
-        unitTimeCost = p.unitTimeCost;
-        unitCost = p.unitCost;
+        unitTime = p.unitTime;
+        unitPrice = p.unitPrice;
         partType = p.partType;
         ticksToDesign = p.ticksToDesign;
         size = p.Size;
@@ -84,8 +84,8 @@ public abstract class Part {
     }
 
     protected virtual void UpdateProperties() {
-        unitCost = 5 * Tier + Random.Range(1, 5);
-        unitTimeCost = 5 * Tier + Random.Range(1, 5);
+        unitPrice = 5 * Tier + Random.Range(1, 5);
+        unitTime = 5 * Tier + Random.Range(1, 5);
     }
     public abstract string GetStatisticsString();
     public abstract void TweakableUpdate();
