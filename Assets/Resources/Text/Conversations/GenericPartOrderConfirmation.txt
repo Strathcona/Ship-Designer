@@ -1,0 +1,28 @@
+#This is an Example Conversation.
+#Each line corresponds to a conversation element in a conversation tree.
+#Each line is assigned an ID equal to its order, first line is 1, second 2, ect, ignoring comments that start with # or empty lines
+#Each line has a type, that determines what the parser looks for, followed by a colon
+#all elements have an int, which is the ID of the next line
+#TEXT elements just contain a string to display
+#CHOICE elements have a few different elements
+#A list of strings to display to the user as options
+#A list of strings to use as variables to store the responses. You can reference these in Branch elements
+#A list of true or false to correspond to values you set your variables to
+#true or false lowercase. Anything not 'true' is going to be interpreted as false
+#Choices don't branch by themselves, they just set various variables, you still need a next element, usually a branch
+#If there are fewer variables and bools than there are choices, then the corresponding options just won't set any variables
+#BRANCH checks a list of variables, and if they all match their conditions, goes to the ID specified
+#Each branch has a list of list of variable names, one list per branch
+#Each Branch has a corresponding list of list of bools that are the desired values of the variable names
+#Each branch has a list of ints that correspond to the ID of the line to go to should all variable values match the branch conditions
+#If multiple branch conditions are true, it goes to the first
+#If no branch conditons are true, it goes to the next element
+#END tags end the conversation, they don't have a next int
+
+[TEXT][1]["Well, everything seems to be in order. Would you like to finalize the deal? *UNITS* units at *PRICE* per unit, delivered no later than *TIME* ticks from today."]
+[CHOICE][1]["Looks like it.","Hmm, I'm not sure"]["Agree","Agree"][true,false]
+[BRANCH][2][["Agree"]][[true]][3,4]
+[TEXT][5]["Wonderful, thank you for your time"]
+[TEXT][5]["Ah, well, take your time then. Contact us if you know for certain."]
+[CHOICE][6]["End Transmission"][][]
+[END]

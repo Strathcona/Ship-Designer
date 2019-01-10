@@ -2435,6 +2435,7 @@ MonoBehaviour:
   conversationTree:
     currentElement:
       type: 0
+      next: 0
       choices: []
       responseKeys: []
       responseValues: 
@@ -2444,6 +2445,7 @@ MonoBehaviour:
       branchResults: 
     nextElement:
       type: 0
+      next: 0
       choices: []
       responseKeys: []
       responseValues: 
@@ -2453,6 +2455,7 @@ MonoBehaviour:
       branchResults: 
     elements: []
     waitingOnChoice: 0
+    endNode: 0
   choiceButtons: []
   timer: 0
   timeTillResponse: 1
@@ -11265,11 +11268,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 10
-    m_Right: 0
+    m_Right: 10
     m_Top: 0
     m_Bottom: 10
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1

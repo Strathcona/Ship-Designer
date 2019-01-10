@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.Serialization.Json;
 using GameConstructs;
 
 [System.Serializable]
 public class ConversationTree {
+    public string name;
     public Dictionary<string, bool> conversationVariables = new Dictionary<string, bool>();//name, then value
     public ConversationElement currentElement;
     public ConversationElement nextElement;
@@ -19,7 +21,7 @@ public class ConversationTree {
         tree.elements.Add(new ConversationElement("Well, everything seems to be in order. Would you like to finalize the deal? [UNITS] units at [PRICE] delivered no later than [TIME] ticks from today."));
         tree.elements.Add(new ConversationElement(
             new List<string>() { "Looks like it.", "Hmm, I'm not sure" },
-            new List<string>() { "Question", "Question" },
+            new List<string>() { "Agree", "Agree" },
             new List<bool>() { true, false }));
         tree.elements[0].next = 1;
         ConversationElement end = new ConversationElement();
@@ -38,9 +40,9 @@ public class ConversationTree {
         tree.elements[3].next = 5;
         tree.elements[4].next = 5;
         tree.elements[5].next = 6;
-
-
         return tree;
+
+        
     }
 
     public void StartTree(ConversationElement element, IConversationReader reader) {
