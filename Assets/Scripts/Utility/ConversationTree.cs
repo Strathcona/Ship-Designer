@@ -17,32 +17,7 @@ public class ConversationTree {
     public bool endNode = false;
 
     public static ConversationTree GetTestTree() {
-        ConversationTree tree = new ConversationTree();
-        tree.elements.Add(new ConversationElement("Well, everything seems to be in order. Would you like to finalize the deal? [UNITS] units at [PRICE] delivered no later than [TIME] ticks from today."));
-        tree.elements.Add(new ConversationElement(
-            new List<string>() { "Looks like it.", "Hmm, I'm not sure" },
-            new List<string>() { "Agree", "Agree" },
-            new List<bool>() { true, false }));
-        tree.elements[0].next = 1;
-        ConversationElement end = new ConversationElement();
-        ConversationElement endTransmission = new ConversationElement(new List<string>() { "End Transmission" }, new List<string>(), new List<bool>());
-        ConversationElement agreeText = new ConversationElement("Wonderful. Thank you for your time");
-        ConversationElement disagreeText = new ConversationElement("Ah, well, take your time then. Contact us when you know.");
-        List<List<string>> branchvar = new List<List<string>>() { new List<string>() { "Agree" }, new List<string>() { "Agree" } };
-        List<List<bool>> branchcon = new List<List<bool>>() { new List<bool>() { true }, new List<bool>() { false } };
-        ConversationElement agreeBranch = new ConversationElement(branchvar, branchcon, new List<int>() { 3, 4 });
-        tree.elements.Add(agreeBranch);
-        tree.elements.Add(agreeText);
-        tree.elements.Add(disagreeText);
-        tree.elements.Add(endTransmission);
-        tree.elements.Add(end);
-        tree.elements[1].next = 2;
-        tree.elements[3].next = 5;
-        tree.elements[4].next = 5;
-        tree.elements[5].next = 6;
-        return tree;
-
-        
+        return ConversationTreeLoader.GetTree("GenericPartOrderConfirmation.txt");        
     }
 
     public void StartTree(ConversationElement element, IConversationReader reader) {
