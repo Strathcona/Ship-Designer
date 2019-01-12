@@ -25,14 +25,14 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
         company = c;
         partOrder = po;
         keywordReplacements = new Dictionary<string, string>() {
-            {"[COMPANY]", company.name },
-            {"[PRICE]",  po.price.ToString()+" credits"},
-            {"[TIME]",  po.time.ToString()+" ticks"}
+            {"*COMPANY*", company.name },
+            {"*PRICE*",  po.price.ToString()+" credits"},
+            {"*TIME*",  po.time.ToString()+" ticks"}
         };
         if(partOrder.units == 1) {
-            keywordReplacements.Add("[UNITS]", po.units.ToString() + " unit");
+            keywordReplacements.Add("*UNITS*", po.units.ToString() + " unit");
         } else {
-            keywordReplacements.Add("[UNITS]", po.units.ToString() + " units");
+            keywordReplacements.Add("*UNITS*", po.units.ToString() + " units");
         }
         conversationTree = ConversationTree.GetTestTree();
         conversationTree.currentReader = this;

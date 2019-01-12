@@ -76,10 +76,12 @@ public static class ConversationTreeLoader {
                         }
                         elements.Add(new ConversationElement(branchVariables, branchConditions, branchDestinations, next));
                         break;
-
+                    default:
+                        Debug.LogError("Couldn't parse conversation key " + topLevelStrings[0]+" in "+file.Name);
+                        break;
                 }
             }
-            Debug.Log("Loaded " + file.Name);
+            tree.elements = elements;
             allTrees.Add(file.Name, tree);
         }
     }
@@ -88,7 +90,6 @@ public static class ConversationTreeLoader {
     }
 
     private static List<string> SplitCommaSeperatedList(string s) {
-
         bool quote = false;
         bool escape = false;
         List<string> strings = new List<string>();
@@ -104,25 +105,24 @@ public static class ConversationTreeLoader {
                 } else {
                     if (c == '"') {
                         quote = false; //we're out of the quote
-                        currentString.Append(c);
                     } else {
                         currentString.Append(c); // if it's not a closing quote, add it to the list
                     }
                 }
-            } else {
-                if (c == ',') {
+            } else if (c == '"') {
+                quote = true;
+            } else if (c == ',') {
                     strings.Add(currentString.ToString());
                     currentString.Clear();
-                } else {
-                    currentString.Append(c);
-                }
+            } else {
+                currentString.Append(c);
             }
         }
+        strings.Add(currentString.ToString());
         return strings;
     }
 
     private static List<string> SplitOnTopLevelBrackets(string s) {
-        Debug.Log("Spiting String:" + s);
         bool quote = false;
         bool escape = false;
         int nestedBrackets = 0;

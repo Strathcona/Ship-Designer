@@ -50,6 +50,7 @@ public class ConversationTree {
     }
 
     private void ProcessNode(ConversationElement element, IConversationReader reader) {
+        Debug.Log("Processing Element " + element.type);
         currentElement = element;
         switch (element.type) {
 
@@ -94,7 +95,11 @@ public class ConversationTree {
 
     public void GetChoiceResponse(int choice) {
         if (currentElement.responseKeys.Count > choice) {
-            conversationVariables.Add(currentElement.responseKeys[choice], currentElement.responseValues[choice]);
+            if (conversationVariables.ContainsKey(currentElement.responseKeys[choice])) {
+                conversationVariables[currentElement.responseKeys[choice]] = currentElement.responseValues[choice];
+            } else {
+                conversationVariables.Add(currentElement.responseKeys[choice], currentElement.responseValues[choice]);
+            }
         }
         waitingOnChoice = false;
         ProcessNode(elements[currentElement.next], currentReader);
