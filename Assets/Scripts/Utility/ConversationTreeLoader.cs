@@ -82,7 +82,8 @@ public static class ConversationTreeLoader {
                 }
             }
             tree.elements = elements;
-            allTrees.Add(file.Name, tree);
+            allTrees.Add(file.Name.Substring(0, file.Name.Length-3), tree);
+            //trim off the ".txt"
         }
     }
     public static ConversationTree GetTree(string name) {

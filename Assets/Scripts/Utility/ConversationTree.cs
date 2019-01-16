@@ -17,7 +17,7 @@ public class ConversationTree {
     public bool endNode = false;
 
     public static ConversationTree GetTestTree() {
-        return ConversationTreeLoader.GetTree("GenericPartOrderConfirmation.txt");        
+        return ConversationTreeLoader.GetTree("GenericPartOrderConfirmation");        
     }
 
     public void StartTree(ConversationElement element, IConversationReader reader) {

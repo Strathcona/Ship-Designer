@@ -17,6 +17,6 @@ public class NPC {
         }
         firstName = Constants.GetRandomFirstName(feminine);
         lastName = Constants.GetRandomLastName();
-        sprite = SpriteLoader.GetNPCImage();
+        sprite = SpriteLoader.GetNPCSprite("Generic");
     }
 }

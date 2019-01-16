@@ -17,6 +17,9 @@ public abstract class Part {
     public PartType partType;
     public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
+    public Sprite bigSprite;
+    public Sprite littleSprite;
+
     protected int size = 1;
 
     public int Size {
@@ -51,6 +54,8 @@ public abstract class Part {
 
     public Part() {
         InitializeTweakables();
+        bigSprite = SpriteLoader.GetPartSprite("defaultBig");
+        littleSprite = SpriteLoader.GetPartSprite("defaultSmall");
     }
 
     public Part(Part p) {
