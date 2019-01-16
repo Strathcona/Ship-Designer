@@ -14,6 +14,11 @@ public class PartDesigner : MonoBehaviour {
     public InputField modelNameInput;
     public TweakableEditor tweakableEditor;
 
+    public void Start() {
+        modelNameInput.gameObject.SetActive(false);
+        partTierDropdown.gameObject.SetActive(false);
+    }
+
     public void UpdatePartModel() {
         activePart.modelName = modelNameInput.text;
         UpdatePartStrings();
@@ -35,6 +40,8 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void LoadPart(Part p) {
+        modelNameInput.gameObject.SetActive(true);
+        partTierDropdown.gameObject.SetActive(true);
         Debug.Log("Loading Part" + p.modelName +" "+ p.Tier);
         switch (p.partType) {
             case PartType.Weapon:
@@ -64,10 +71,13 @@ public class PartDesigner : MonoBehaviour {
         tweakableEditor.Clear();
         descriptionDisplay.text = "---";
         statisticsDisplay.text = "---";
-
+        modelNameInput.gameObject.SetActive(false);
+        partTierDropdown.gameObject.SetActive(false);
     }
 
     public void CreateNewPart() {
+        modelNameInput.gameObject.SetActive(true);
+        partTierDropdown.gameObject.SetActive(true);
         switch (createNewDropdown.value) {
             case 0:
                 break;
@@ -106,7 +116,7 @@ public class PartDesigner : MonoBehaviour {
 
     public void AskToSubmitPart() {
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
-"Would you like to submit this part for design? It will take "+activePart.ticksToDesign+" units of design effort.",
+"Would you like to submit this part for design? It will take "+TimeManager.GetTimeString(activePart.minutesToDevelop)+".",
 new List<string>() { "Yes", "No" },
 new List<Action>() { SubmitDesign });
 
@@ -114,7 +124,7 @@ new List<Action>() { SubmitDesign });
     }
 
     public void SubmitDesign() {
-        PartLibrary.AddPartToLibrary(activePart);
+        PartLibrary.AddPartToDevelopment(activePart);
     }
 
     public void UpdatePartTier() {

@@ -14,11 +14,12 @@ public class SelectableFullPartDisplay : MonoBehaviour
     public GameObjectPool tweakableDisplayPool;
     public List<GameObject> tweakableDisplays = new List<GameObject>();
     public GameObject smallTweakableDisplayPrefab;
-    public GameObject fadePanel;
+    public GameObject overlayPanel;
+    public Image overlayFill;
+    public Text overlayText;
     public Text size;
     public Text tier;
     public Text power;
-    public Image developmentFill;
     public Text developmentText;
     public Button button;
     public Outline outline;
@@ -29,8 +30,12 @@ public class SelectableFullPartDisplay : MonoBehaviour
         bgImage = GetComponent<Image>();
     }
 
-    public void SetOutline(bool showOutline) {
-        outline.enabled = showOutline;
+    public void Select() {
+        outline.enabled = true;
+    }
+
+    public void Deselect() {
+        outline.enabled = false;
     }
 
     public void DisplayPart(Part p) {
@@ -45,6 +50,17 @@ public class SelectableFullPartDisplay : MonoBehaviour
             GameObject g = tweakableDisplayPool.GetGameObject();
             g.GetComponent<SmallTweakableDisplay>().DisplayTweakable(t);
         }
+        if (part.inDevelopment) {
+            overlayPanel.SetActive(true);
+            overlayFill.fillAmount = (part.timer.minutesRemaining / part.timer.lengthInMinutes);
+            overlayText.text = "IN DEVELOPMENT";
+        } else if (part.inDelivery){
+            overlayPanel.SetActive(true);
+            overlayFill.fillAmount = (part.timer.minutesRemaining / part.timer.lengthInMinutes);
+            overlayText.text = "DUE FOR DELIVERY";
+        } else {
+            overlayPanel.SetActive(false);
+        }
     }
 
     public void Clear() {
@@ -54,5 +70,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
         size.text = "";
         power.text = "";
         bgImage.color = Color.white;
+        overlayPanel.SetActive(false);
+        overlayText.text = "";
     }
 }

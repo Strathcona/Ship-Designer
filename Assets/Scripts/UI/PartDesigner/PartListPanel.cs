@@ -14,7 +14,6 @@ public class PartListPanel : MonoBehaviour {
         Clear();
         part = p;
         topText.text = p.modelName + " tier "+ p.Tier.ToString()+ " " + Constants.PartTypeString[p.partType];
-        bottomText.text = p.ticksToDesign.ToString();
     }
 
     public void Clear() {

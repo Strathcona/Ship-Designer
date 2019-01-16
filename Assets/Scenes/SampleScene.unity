@@ -3544,7 +3544,7 @@ GameObject:
   - component: {fileID: 595668093}
   - component: {fileID: 595668092}
   m_Layer: 0
-  m_Name: Part Production Computer
+  m_Name: Part Order Computer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3845,10 +3845,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4687b452e0c75e144914ad92bbc8e968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalMinutes: 0
   minutes: 0
   hours: 0
-  minutesPerHour: 60
-  hoursPerTick: 24
+  ticks: 0
+  tocks: 0
   secondsPerMinute: 0.8
   baselineSecondsPerMinute: 0.8
   warpSecondsPerHour: 0.3
@@ -9802,7 +9803,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'TICK
 
-    001'
+    000'
 --- !u!222 &1695773714
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12389,7 +12390,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Comission
+  m_Text: 'Order
 
     Parts'
 --- !u!222 &2060797647

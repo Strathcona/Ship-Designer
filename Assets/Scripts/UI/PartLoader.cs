@@ -22,17 +22,17 @@ public class PartLoader : MonoBehaviour {
             Debug.LogError("You've put another part loader somewhere...");
         }
 
-        selectableFullPartDisplayPrefab = Resources.Load("Prefabs/Selectable Full Part Display", typeof(GameObject)) as GameObject;
+        selectableFullPartDisplayPrefab = Resources.Load("Prefabs/Full Part Display", typeof(GameObject)) as GameObject;
         pool = new GameObjectPool(selectableFullPartDisplayPrefab, partDisplayRoot);
     }
 
 
     public void SelectDisplay(SelectableFullPartDisplay display) {
         if(selectedDisplay != null) {
-            selectedDisplay.SetOutline(false);  
+            selectedDisplay.Deselect();  
         }
         selectedDisplay = display;
-        display.SetOutline(true);
+        display.Select();
     }
 
     public void LoadPart() {
@@ -49,7 +49,7 @@ public class PartLoader : MonoBehaviour {
         Clear();
     }
 
-    public void LoadPartPopup(Action<Part> _onPartLoaded, Action _noSelection=null, string label="") {
+    public void LoadPartPopup(Action<Part> _onPartLoaded, Action _noSelection=null, string label="", bool displayNonDeveloped=false) {
         onPartLoaded = _onPartLoaded;
         noSelection = _noSelection;
         if(label != "") {
@@ -63,6 +63,16 @@ public class PartLoader : MonoBehaviour {
             s.DisplayPart(p);
             var val = s;
             s.button.onClick.AddListener(delegate { SelectDisplay(val); });
+        }
+        if (displayNonDeveloped) {
+            parts = PartLibrary.GetUndevelopedParts();
+            foreach (Part p in parts) {
+                GameObject g = pool.GetGameObject();
+                SelectableFullPartDisplay s = g.GetComponent<SelectableFullPartDisplay>();
+                s.DisplayPart(p);
+                var val = s;
+                s.button.onClick.AddListener(delegate { SelectDisplay(val); });
+            }
         }
     }
 

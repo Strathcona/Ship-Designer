@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 
 public static class PartLibrary {
+    private static List<Part> partsInDevelopment = new List<Part>();
     private static List<Part> parts = new List<Part>();
     private static List<Part> obsoleteParts = new List<Part>();
 
@@ -17,17 +18,27 @@ public static class PartLibrary {
         };
     }
 
-    public static bool AddPartToLibrary(Part p) {
-        if (parts.Contains(p)) {
-            return false;
-        } else {
-            parts.Add(p);
-            return true;
-        }
+    public static void AddPartToDevelopment(Part p) {
+        partsInDevelopment.Add(p);
+        p.inDevelopment = true;
+        var pass = p;
+        Timer t = TimeManager.instance.SetTimer(p.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
+        p.timer = t;
+    }
+
+    public static void CompleteDevelopmentOfPart(Part p) {
+        Debug.Log("Part complete development " + p.GetDescriptionString());
+        p.inDevelopment = false;
+        partsInDevelopment.Remove(p);
+        parts.Add(p);
     }
 
     public static List<Part> GetParts() {
         return new List<Part>(parts);
+    }
+
+    public static List<Part> GetUndevelopedParts() {
+        return new List<Part>(partsInDevelopment);
     }
 
     public static bool ObsoletePart(Part p) {

@@ -11,11 +11,14 @@ public abstract class Part {
     public float quality = 1.0f;
     public int unitTime = 1;
     public int unitPrice = 1;
-    public int complexityCost = 0;
+    public bool inDevelopment = false;
+    public bool inDelivery = false;
+    public Timer timer;
     public PartType partType;
-    public int ticksToDesign = 100;
+    public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
     protected int size = 1;
+
     public int Size {
         get { return size; }
         set {
@@ -59,7 +62,7 @@ public abstract class Part {
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
         partType = p.partType;
-        ticksToDesign = p.ticksToDesign;
+        minutesToDevelop = p.minutesToDevelop;
         size = p.Size;
         tier = p.Tier;
         netPower = p.NetPower;
@@ -73,7 +76,7 @@ public abstract class Part {
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
         partType = p.partType;
-        ticksToDesign = p.ticksToDesign;
+        minutesToDevelop = p.minutesToDevelop;
         size = p.Size;
         tier = p.Tier;
         netPower = p.NetPower;
