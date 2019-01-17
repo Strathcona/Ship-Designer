@@ -35,14 +35,12 @@ public static class SpriteLoader {
             char.IsNumber(fileName[fileName.Length - 3]) &&
             fileName[fileName.Length - 4] == '_'){
                 string numberlessFileName = fileName.Substring(0, fileName.Length - 4);
-                Debug.Log("Found " + numberlessFileName);
                 if (dictionary.ContainsKey(numberlessFileName)) {
                     dictionary[numberlessFileName].Add(s);
                 } else {
                     dictionary.Add(numberlessFileName, new List<Sprite>() { s });
                 }
             } else {
-                Debug.Log("Found " + fileName);
                 if (dictionary.ContainsKey(fileName)) {
                     dictionary[fileName].Add(s);
                 } else {

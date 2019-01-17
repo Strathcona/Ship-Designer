@@ -5,17 +5,18 @@ using System.Text;
 using System.IO;
 
 public static class ConversationTreeLoader {
-    private static Dictionary<string, ConversationTree> allTrees = new Dictionary<string, ConversationTree>();
+    private static Dictionary<string, List<ConversationTree>> allTrees = new Dictionary<string, List<ConversationTree>>();
 
     static ConversationTreeLoader() {
+        Debug.Log("Loading Conversations");
         DirectoryInfo d = new DirectoryInfo(Application.dataPath + "/Resources/Text/Conversations");
         FileInfo[] files = d.GetFiles("*.txt");
         List<ConversationTree> trees = new List<ConversationTree>();
-
+        int count = 0;
         foreach (FileInfo file in files) {
+            count += 1;
             ConversationTree tree = new ConversationTree();
             List<ConversationElement> elements = new List<ConversationElement>();
-            tree.name = file.Name;
             string[] lines = File.ReadAllLines(file.FullName);
             for (int i = 0; i < lines.Length; i++) {
                 if (lines[i].StartsWith("#")) {
@@ -82,12 +83,42 @@ public static class ConversationTreeLoader {
                 }
             }
             tree.elements = elements;
-            allTrees.Add(file.Name.Substring(0, file.Name.Length-3), tree);
-            //trim off the ".txt"
+
+            string fileName = file.Name.Substring(0, file.Name.Length - 4); //trim off the .txt;
+
+            //check if the last digits are "thing_###"
+            //We store those together, not in new entries
+            //that way when we search "thing" we can get all "thing_001" "thing_002" ...
+            if (
+            char.IsNumber(fileName[fileName.Length - 1]) &&
+            char.IsNumber(fileName[fileName.Length - 2]) &&
+            char.IsNumber(fileName[fileName.Length - 3]) &&
+            fileName[fileName.Length - 4] == '_') {
+                string numberlessFileName = fileName.Substring(0, fileName.Length - 4);
+                if (allTrees.ContainsKey(numberlessFileName)) {
+                    allTrees[numberlessFileName].Add(tree);
+                } else {
+                    allTrees.Add(numberlessFileName, new List<ConversationTree>() { tree });
+                }
+            } else {
+                if (allTrees.ContainsKey(fileName)) {
+                    allTrees[fileName].Add(tree);
+                } else {
+                    allTrees.Add(fileName, new List<ConversationTree>() { tree });
+                }
+            }
         }
+        Debug.Log("Loaded " + count + " files");
     }
+
     public static ConversationTree GetTree(string name) {
-        return allTrees[name];
+        if (allTrees.ContainsKey(name)) {
+            List<ConversationTree> trees = allTrees[name];
+            return trees[Random.Range(0, trees.Count)];
+        } else {
+            Debug.LogError("Couldn't find conversation tree" + name);
+            return null;
+        }
     }
 
     private static List<string> SplitCommaSeperatedList(string s) {
