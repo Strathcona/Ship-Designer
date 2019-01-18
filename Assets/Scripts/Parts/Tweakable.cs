@@ -30,7 +30,6 @@ public class Tweakable {
 
     private void OnValueChanged() {
         if(UpdatePart != null) {
-            Debug.Log("Updating Part");
             UpdatePart();
         } else {
             Debug.LogError("Tried to UpdatePart when action was not set");

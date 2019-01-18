@@ -10,8 +10,8 @@ public class ShipPartDisplay : MonoBehaviour {
     public void DisplayShip(Ship s) {
         Clear();
 
-        if(s.allParts.Count > partDisplays.Count) {
-            int neededPartDisplays = s.allParts.Count - partDisplays.Count;
+        if(s.parts.Keys.Count > partDisplays.Count) {
+            int neededPartDisplays = s.parts.Keys.Count - partDisplays.Count;
             Debug.Log("Needed partDisplays " + neededPartDisplays);
             for(int i = 0; i <= neededPartDisplays; i++) {
                 Transform t = Instantiate(partDisplayPrefab);
@@ -21,7 +21,7 @@ public class ShipPartDisplay : MonoBehaviour {
             }
         }
         int index = 0;
-        foreach (Part p in s.allParts) {
+        foreach (Part p in s.parts.Keys) {
             partDisplays[index].SetActive(true);
             partDisplays[index].GetComponent<PartDisplay>().DisplayPart(p);
             index += 1;

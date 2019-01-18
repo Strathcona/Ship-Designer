@@ -90,7 +90,6 @@ public class FireControl : Part{
         f.range.Value = Random.Range(1, 20);
         f.typeName = "Fire Control System";
         f.modelName = Constants.GetRandomFireControlModelName();
-        f.numberOfPart = Random.Range(1, 3);
         Debug.Log(f.GetDescriptionString());
         Debug.Log(f.GetStatisticsString());
         return f;

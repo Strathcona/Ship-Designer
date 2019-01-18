@@ -78,7 +78,6 @@ public class Engine : Part {
         s.thrust.Value = Random.Range(1, 20);
         s.typeName = Constants.TierEngineNames[s.Tier] + " Engine";
         s.modelName = Constants.GetRandomEngineModelName();
-        s.numberOfPart = Random.Range(1, 8);
         Debug.Log(s.GetDescriptionString());
         Debug.Log(s.GetStatisticsString());
         return s;

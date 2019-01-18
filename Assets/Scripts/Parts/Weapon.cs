@@ -89,7 +89,6 @@ public class Weapon : Part {
     }
 
     public override string GetDescriptionString() {
-        string number = (numberOfPart + " x");
         string caliberString = caliber.Value.ToString() + "mm";
         string partTypeName = Constants.GetWeaponTypeName(tier, weaponType.Value);
         string typeline = manufacturerName + " " + modelName + " " + partTypeName;
@@ -118,7 +117,7 @@ public class Weapon : Part {
     }
 
     public override string GetStatisticsString() {
-        return "Size: " + this.GetTotalSize().ToString() + " Damage: " + damage + " Recharge Time: " + reload.Value.ToString() + "s";
+        return "Size: " + size.ToString() + " Damage: " + damage + " Recharge Time: " + reload.Value.ToString() + "s";
     }
 
     protected override void UpdateProperties() {
@@ -140,7 +139,6 @@ public class Weapon : Part {
         w.turrets.Value = Random.Range(0, 5);
         w.reload.Value = Random.Range(2, 20);
         w.modelName = Constants.GetRandomWeaponModelName();
-        w.numberOfPart = Random.Range(1, 4);
         Debug.Log(w.GetDescriptionString());
         Debug.Log(w.GetStatisticsString());
         return w;

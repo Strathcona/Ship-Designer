@@ -6,26 +6,28 @@ using UnityEngine.UI;
 
 public class ShipPartSelector : MonoBehaviour {
     public Event onPartsSelected;
-    public PartType partType;
+    public Ship ship;
     public Text buttonText;
+    public GameObject partIconPrefab;
+    public List<GameObject> partIcons = new List<GameObject>();
 
-    private void Awake() {
-        switch(partType){
-            case PartType.Engine:
-                buttonText.text = "Select Engines";
-                break;
-            case PartType.FireControl:
-                buttonText.text = "Select Fire Controls";
-                break;
-            case PartType.PowerPlant:
-                buttonText.text = "Select Power Plants";
-                break;
-            case PartType.Sensor:
-                buttonText.text = "Select Sensors";
-                break;
-            case PartType.Weapon:
-                buttonText.text = "Select Weapons";
-                break;
+    public void DisplayShipParts(Ship s) {
+        ship = s;
+        foreach (GameObject g in partIcons) {
+            g.SetActive(false);
+        }
+        int neededIcons = ship.parts.Keys.Count - partIcons.Count;
+        for (int i = 0; i < neededIcons; i++) {
+            GameObject g = Instantiate(partIconPrefab) as GameObject;
+            g.transform.SetParent(transform.GetChild(0));
+            g.SetActive(false);
+            partIcons.Add(g);
+        }
+        int index = 0;
+        foreach (Part p in ship.parts.Keys) {
+            partIcons[index].GetComponent<PartIcon>().DisplayPart(p, ship.parts[p]);
+            partIcons[index].SetActive(true);
+            index += 1;
         }
     }
 }

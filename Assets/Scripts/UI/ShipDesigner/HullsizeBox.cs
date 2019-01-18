@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using GameConstructs;
 
 public class HullsizeBox : MonoBehaviour {
+    public bool lifeSupport = false;
     public Part displayedPart;
     private Image image;
     private Dictionary<PartType, Color> partColor = new Dictionary<PartType, Color>() {
@@ -19,7 +20,8 @@ public class HullsizeBox : MonoBehaviour {
         image = GetComponent<Image>();
     }
 
-    public void ClearPart() {
+    public void Clear() {
+        lifeSupport = false;
         displayedPart = null;
         image.color = Color.white;
     }
@@ -27,5 +29,10 @@ public class HullsizeBox : MonoBehaviour {
     public void SetPart(Part p) {
         displayedPart = p;
         image.color = partColor[p.partType];
+    }
+
+    public void SetLifeSupport() {
+        image.color = Color.grey;
+        lifeSupport = true;
     }
 }

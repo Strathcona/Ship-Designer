@@ -45,17 +45,9 @@ public abstract class Part {
             UpdateProperties();
         }
     }
-    public int numberOfPart = 1;
-
-
-    public int GetTotalSize() {
-        return size * numberOfPart;
-    }
 
     public Part() {
         InitializeTweakables();
-        bigSprite = SpriteLoader.GetPartSprite("defaultBig");
-        littleSprite = SpriteLoader.GetPartSprite("defaultSmall");
     }
 
     public Part(Part p) {
