@@ -212,6 +212,7 @@ namespace GameConstructs {
     public enum WeaponType { laser, railgun};
     public enum SensorType { LowEnergy, HighEnergy, Gravitic};
     public enum PartType { Weapon, FireControl, Sensor, Engine, PowerPlant};
+    public enum HullSpaceUsage { None, Part, LifeSupport};
     public enum TweakableType { Slider, Dropdown };
     public enum CompanyQuality {Speed, Quality, Cost, Prestige, Ethics, Quantity};
     public enum ConversationElementType { Text, Set, Choice, Branch, End}

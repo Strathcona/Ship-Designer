@@ -4654,7 +4654,7 @@ MonoBehaviour:
   shipDisplayCanvas: {fileID: 1133702959}
   partDesigner: {fileID: 2129792036}
   partDesignerCanvas: {fileID: 552389067}
-  shipDisplay: {fileID: 0}
+  shipDesigner: {fileID: 0}
   homescreenCanvas: {fileID: 194679140}
   partProductionCanvas: {fileID: 764861239}
   partProduction: {fileID: 865046505}
@@ -5438,9 +5438,8 @@ GameObject:
   m_Component:
   - component: {fileID: 798929400}
   - component: {fileID: 798929402}
-  - component: {fileID: 798929403}
   m_Layer: 5
-  m_Name: Hullsize Display
+  m_Name: Hardpoint Editor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5458,12 +5457,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1935619136}
-  - {fileID: 968801825}
+  - {fileID: 2131924810}
   m_Father: {fileID: 1846674704}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.39187518, y: 0.57}
-  m_AnchorMax: {x: 0.89, y: 0.87}
+  m_AnchorMax: {x: 0.89, y: 0.86}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5475,35 +5474,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 798929399}
   m_CullTransparentMesh: 0
---- !u!114 &798929403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 798929399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 955b26de9485b1248822932d895355f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hullSizePrefab: {fileID: 6946621977382339273, guid: c31df1f55265164478e6f2194433fb58,
-    type: 3}
-  hullSizeRoot: {fileID: 968801824}
-  hullsizeBoxes: []
-  ship:
-    shipName: 
-    className: 
-    hullSize: 0
-    lifeSupportSize: 0
-    speedRating: 0
-    manevorability: 0
-    alphaDamage: 0
-    averageDamage: 0
-    minutesToDevelop: 30000
-    weapons: []
-    fireControls: []
-    engines: []
 --- !u!1 &820570988
 GameObject:
   m_ObjectHideFlags: 0
@@ -7113,66 +7083,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968213483}
   m_CullTransparentMesh: 0
---- !u!1 &968801824
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 968801825}
-  - component: {fileID: 968801826}
-  m_Layer: 5
-  m_Name: HullsizeRoot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &968801825
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968801824}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 798929400}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.03, y: 0.03}
-  m_AnchorMax: {x: 0.97, y: 0.97}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &968801826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968801824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2095666955, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 10, y: 10}
-  m_Spacing: {x: 3, y: 3}
-  m_Constraint: 0
-  m_ConstraintCount: 2
 --- !u!1 &978742094
 GameObject:
   m_ObjectHideFlags: 0
@@ -12569,7 +12479,7 @@ MonoBehaviour:
   shipClassName: {fileID: 102235107}
   shipSize: {fileID: 739219118}
   shipLifeSupport: {fileID: 1924949689}
-  hullsizeDisplay: {fileID: 798929403}
+  hullsizeDisplay: {fileID: 0}
   shipPartSelector: {fileID: 1185083411}
 --- !u!1 &1860631626
 GameObject:
@@ -14738,6 +14648,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129792034}
   m_CullTransparentMesh: 0
+--- !u!1 &2131924809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2131924810}
+  m_Layer: 5
+  m_Name: Hardpoint Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2131924810
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131924809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 798929400}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.030000001, y: 0.09}
+  m_AnchorMax: {x: 0.98, y: 0.91}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &576080751176648513
 PrefabInstance:
   m_ObjectHideFlags: 0

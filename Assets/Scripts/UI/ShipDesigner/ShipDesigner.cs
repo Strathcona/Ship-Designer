@@ -18,6 +18,8 @@ public class ShipDesigner : MonoBehaviour {
         shipSize.gameObject.SetActive(false);
         shipLifeSupport.gameObject.SetActive(false);
         hullsizeDisplay.Clear();
+        shipSize.onSubmit.AddListener(UpdateHullSize);
+        shipLifeSupport.onSubmit.AddListener(UpdateHullSize);
         LoadShip(Ship.MakeUpARandomShip());
     }
 
@@ -36,7 +38,7 @@ public class ShipDesigner : MonoBehaviour {
         shipLifeSupport.gameObject.SetActive(true);
 
         shipClassName.text = ship.className;
-        shipSize.FieldValue = ship.hullSize;
+        shipSize.FieldValue = ship.hull;
         shipLifeSupport.FieldValue = ship.lifeSupportSize;
         shipPartSelector.DisplayShipParts(ship);
         hullsizeDisplay.DisplayShip(ship);
@@ -81,7 +83,7 @@ new List<Action>() { SubmitDesign });
     }
 
     public void UpdateShipSize() {
-        ship.hullSize = shipSize.FieldValue;
+        ship.hull = shipSize.FieldValue;
         UpdateHullSize();
     }
 

@@ -8,7 +8,7 @@ using System;
 public class Ship {
     public string shipName;
     public string className;
-    public int hullSize;
+    public List<HullSpace> hullSpaces;
     public int lifeSupportSize;
     public float speedRating;
     public float manevorability;
@@ -23,6 +23,7 @@ public class Ship {
     public List<Engine> engines = new List<Engine>();
     // Start is called before the first frame update
 
+
     public void RecalculatePartStats() {
         foreach(Part p in parts.Keys) {
             switch (p.partType) {
@@ -35,8 +36,8 @@ public class Ship {
                     break;
                 case PartType.Engine:
                     Engine e = (Engine)p;
-                    speedRating += e.thrust.Value * parts[p] * 1.0f / hullSize;
-                    manevorability += e.agility.Value * parts[p] / (0.5f * hullSize);
+                    speedRating += e.thrust.Value * parts[p] * 1.0f / hull;
+                    manevorability += e.agility.Value * parts[p] / (0.5f * hull);
                     break;
                 case PartType.Sensor:
                     break;
@@ -48,7 +49,7 @@ public class Ship {
             }
         }
     }
-    public void AddPart(Part p, int number) {
+    public bool AddPart(Part p, int number) {
         parts.Add(p, number);
         switch (p.partType) {
             case PartType.Weapon:
@@ -63,8 +64,8 @@ public class Ship {
             case PartType.Engine:
                 Engine e = (Engine)p;
                 engines.Add(e);
-                speedRating += e.thrust.Value* parts[p] * 1.0f / hullSize;
-                manevorability += e.agility.Value* parts[p] / (0.5f*hullSize);
+                speedRating += e.thrust.Value* parts[p] * 1.0f / hull;
+                manevorability += e.agility.Value* parts[p] / (0.5f*hull);
                 break;
             case PartType.Sensor:
                 sensors.Add((Sensor)p);
@@ -82,7 +83,7 @@ public class Ship {
         Ship s = new Ship();
         s.shipName = Constants.GetRandomShipName();
         s.className = Constants.GetRandomShipName();
-        s.hullSize = 250;
+        s.hull = 250;
         int rand = UnityEngine.Random.Range(1, 4);
         for(int  i = 0; i <= rand; i++) {
             s.AddPart(Weapon.GetRandomLaser(), UnityEngine.Random.Range(1,3));
@@ -95,11 +96,11 @@ public class Ship {
         s.AddPart(sen, UnityEngine.Random.Range(1, 3));
         PowerPlant pp = PowerPlant.GetRandomPowerPlant();
         s.AddPart(pp, UnityEngine.Random.Range(1, 3));
-        s.hullSize = 0;
+        s.hull = 0;
         foreach(Part p in s.parts.Keys) {
-            s.hullSize += p.Size * s.parts[p];
+            s.hull += p.Size * s.parts[p];
         }
-        s.hullSize += UnityEngine.Random.Range(0, 10);
+        s.hull += UnityEngine.Random.Range(0, 10);
         s.RecalculatePartStats();
         return s;
     }
