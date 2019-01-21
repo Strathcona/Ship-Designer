@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
+using System;
 
 public class Hardpoint {
-    public HashSet<PartType> allowableTypes = new HashSet<PartType>();
+    public PartType allowableType;
+    public Orientation orientation;
     public int allowableSize;
-    public bool external;
     public Part part;
+    public Action onChange;
 
     public bool MountPart(Part p) {
-        if (allowableTypes.Contains(p.partType)) {
+        if (allowableType == p.partType) {
             if(p.Size == allowableSize) {
                 part = p;
+                onChange();
                 return true;
             }
             return false;
@@ -23,13 +26,14 @@ public class Hardpoint {
     public Part UnmountPart() {
         Part p = part;
         part = null;
+        onChange();
         return p;
     }
 
-    public Hardpoint(int _allowableSize, HashSet<PartType> _allowableTypes, bool _external) {
+    public Hardpoint(int _allowableSize, PartType _allowableType, Orientation _orientation) {
         allowableSize = _allowableSize;
-        allowableTypes = _allowableTypes;
-        external = _external;
+        allowableType = _allowableType;
+        orientation = _orientation;
     }
     
 }
