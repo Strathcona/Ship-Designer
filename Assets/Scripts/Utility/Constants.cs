@@ -4,7 +4,18 @@ using UnityEngine;
 using System.IO;
 using System;
 namespace GameConstructs {
+
+    public enum WeaponType { laser, railgun };
+    public enum SensorType { LowEnergy, HighEnergy, Gravitic };
+    public enum PartType { Weapon, FireControl, Sensor, Engine, Reactor };
+    public enum Orientation { Fore, Aft, Port, Starboard, Dorsal, Ventral, Internal };
+    public enum TweakableType { Slider, Dropdown };
+    public enum CompanyQuality { Speed, Quality, Cost, Prestige, Ethics, Quantity };
+    public enum ConversationElementType { Text, Set, Choice, Branch, End }
+    public enum CompanyTextKey { SpecialMitobahn, GenericOne }
+
     public static class Constants {
+
         private static string[] companyNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/CompanyNames.txt");
         private static string[] weaponNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/WeaponNames.txt");
         private static string[] shipNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/ShipNames.txt");
@@ -15,16 +26,6 @@ namespace GameConstructs {
         private static string[] firstNamesMasculine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesMasculine.txt");
         private static string[] firstNamesFeminine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesFeminine.txt");
         private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
-
-        public static float CalculateR(int hullSize) {
-            return Mathf.Pow(3f / (4f * Mathf.PI) * hullSize, 1f / 3f);
-        }
-
-        public static int CalculateHyperdriveSize(int hullSize, float r) {
-            float driveSizeFactor = 0.2f;
-            int driveSize = Mathf.FloorToInt(Mathf.Min(1, driveSizeFactor * 1 / Mathf.Pow(r, 2f)));
-            return driveSize;
-        }
 
         public static Dictionary<WeaponType, int> CaliberSizeFactor = new Dictionary<WeaponType, int>() {
             {WeaponType.laser, 4},
@@ -45,6 +46,14 @@ namespace GameConstructs {
             {PartType.Reactor, new Color(1.0f, 0.94f, 0.34f)},
             {PartType.Sensor, new Color(0.34f, 1f, 0.37f)},
             {PartType.FireControl, new Color(0.34f, 0.97f, 1f)},
+        };
+
+        public static Dictionary<PartType, string> ColoredPartTypeString = new Dictionary<PartType, string>() {
+            {PartType.Engine, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Engine])+">Engine</color>"},
+            {PartType.Weapon, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Weapon])+">Weapon</color>"},
+            {PartType.Reactor,"<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Reactor])+">Reactor</color>"},
+            {PartType.Sensor, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Sensor])+">Sensor</color>"},
+            {PartType.FireControl, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.FireControl])+">Fire Control</color>"},
         };
 
         public static Dictionary<int, float> TierDamagePerSize = new Dictionary<int, float>() {
@@ -170,7 +179,7 @@ namespace GameConstructs {
             return sensorNames[UnityEngine.Random.Range(0, sensorNames.Length)];
         }
 
-        public static string GetRandomPowerPlantModelName() {
+        public static string GetRandomReactorName() {
             return powerNames[UnityEngine.Random.Range(0, powerNames.Length)];
         }
 
@@ -208,14 +217,5 @@ namespace GameConstructs {
             return "Generic Megabrand";
         }
     }
-
-    public enum WeaponType { laser, railgun};
-    public enum SensorType { LowEnergy, HighEnergy, Gravitic};
-    public enum PartType { Weapon, FireControl, Sensor, Engine, Reactor};
-    public enum Orientation {Fore, Aft, Port, Starboard, Dorsal, Ventral, Internal};
-    public enum TweakableType { Slider, Dropdown };
-    public enum CompanyQuality {Speed, Quality, Cost, Prestige, Ethics, Quantity};
-    public enum ConversationElementType { Text, Set, Choice, Branch, End}
-    public enum CompanyTextKey { SpecialMitobahn, GenericOne}
 }
 

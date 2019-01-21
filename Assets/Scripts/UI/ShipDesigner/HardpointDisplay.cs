@@ -7,6 +7,7 @@ using GameConstructs;
 public class HardpointDisplay : MonoBehaviour {
     public Hardpoint hardpoint;
     public Sprite defaultImage;
+    public bool displayPart = true;
     public Image partImage;
     public Text allowableTypesText;
     public Text allowableSizeText;
@@ -24,10 +25,10 @@ public class HardpointDisplay : MonoBehaviour {
     public void DisplayHardpoint(Hardpoint h) {
         Clear();
         hardpoint = h;
-        if(hardpoint.part == null) {
+        if(hardpoint.part == null || displayPart == false) {
             allowableTypesText.gameObject.SetActive(true);
             allowableSizeText.gameObject.SetActive(true);
-            allowableTypesText.text = hardpoint.allowableType.ToString();
+            allowableTypesText.text = Constants.ColoredPartTypeString[hardpoint.allowableType];
             allowableSizeText.text = hardpoint.allowableSize.ToString();
         } else {
             partNameBackground.SetActive(true);

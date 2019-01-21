@@ -14,7 +14,7 @@ public static class PartLibrary {
             Sensor.GetRandomSensor(),
             FireControl.GetRandomFireControl(),
             Engine.GetRandomEngine(),
-            Reactor.GetRandomPowerPlant()
+            Reactor.GetRandomReactor()
         };
     }
 

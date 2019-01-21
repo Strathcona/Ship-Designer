@@ -48,11 +48,11 @@ public class Reactor : Part{
         netPower = power.Value;
     }
 
-    public static Reactor GetRandomPowerPlant() {
+    public static Reactor GetRandomReactor() {
         Reactor p = new Reactor();
         p.tier = 1;
         p.typeName = "Reactor";
-        p.modelName = Constants.GetRandomPowerPlantModelName();
+        p.modelName = Constants.GetRandomReactorName();
         p.power.Value = Random.Range(20, 100);
         return p;
     }

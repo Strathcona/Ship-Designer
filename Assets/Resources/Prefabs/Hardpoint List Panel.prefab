@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 5542014213439232527}
   - component: {fileID: 5542014213439232513}
   - component: {fileID: 5542014213439232512}
+  - component: {fileID: 1647859539010101663}
   m_Layer: 5
   m_Name: Hardpoint List Panel
   m_TagString: Untagged
@@ -195,7 +196,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 30}
+  m_SizeDelta: {x: 400, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5542014213439232513
 CanvasRenderer:
@@ -234,6 +235,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &1647859539010101663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542014213439232526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11bd35ce372a46d4e9ef657686489392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deleteButton: {fileID: 5542014213515431911}
+  hardpointText: {fileID: 5542014212682067732}
 --- !u!1 &5542014213515431909
 GameObject:
   m_ObjectHideFlags: 0

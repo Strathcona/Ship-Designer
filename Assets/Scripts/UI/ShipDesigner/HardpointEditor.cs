@@ -6,6 +6,10 @@ using GameConstructs;
 
 public class HardpointEditor : MonoBehaviour {
     public List<Hardpoint> hardpoints = new List<Hardpoint>();
+    public List<GameObject> hardpointListElements = new List<GameObject>();
+    int lastUsedListIndex = 0;
+    public GameObject hardpointListPrefab;
+    public GameObject hardpointListRoot;
 
     public InputFieldIncrement size;
     public Toggle externalToggle;
@@ -16,8 +20,9 @@ public class HardpointEditor : MonoBehaviour {
     public OrientationPicker orientationPicker;
     public Button newHardpointButton;
 
-    public GameObject hardpointListPrefab;
-    public GameObject hardpointListRoot;
+    public Button finishedEditingButton;
+    public Button cancelButton;
+
 
     private void Awake() {
         newHardpointButton.onClick.AddListener(AddNewHardpoint);
@@ -31,27 +36,46 @@ public class HardpointEditor : MonoBehaviour {
         ToggleExternal(externalToggle.isOn);
     }
 
+    public void LoadHardpoints(List<Hardpoint> _hardpoints) {
+        Clear();
+        int neededListElements = _hardpoints.Count - hardpointListElements.Count;
+        if (neededListElements > 0) {
+            GameObject g = Instantiate(hardpointListPrefab, hardpointListRoot.transform) as GameObject;
+            hardpointListElements.Add(g);
+            g.SetActive(false);
+        }
+        foreach (Hardpoint h in _hardpoints) {
+            hardpoints.Add(h);
+            var passHardpoint = h;
+            var passListElement = hardpointListElements[lastUsedListIndex].GetComponent<HardpointListElement>();
+            passListElement.DisplayHardpoint(h);
+            passListElement.deleteButton.onClick.AddListener(delegate { DeleteHardpoint(passListElement, passHardpoint); });
+            hardpointListElements[lastUsedListIndex].SetActive(true);
+            lastUsedListIndex += 1;
+        }
+
+    }
+
+
     public void AddNewHardpoint() {
         Hardpoint h = new Hardpoint(size.FieldValue, newHardpointType, newHardpointOrientation);
         hardpoints.Add(h);
-        GameObject g = Instantiate(hardpointListPrefab, hardpointListRoot.transform) as GameObject;
-        var passObject = g;
-        var passHardpoint = h;
-        //make the button delete the list item
-        g.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate { DeleteHardpoint(passObject, passHardpoint); });
-        string hardpointString = "Size " + h.allowableSize.ToString() + " ";
-        if(h.orientation == Orientation.Internal) {
-            hardpointString += "Internal " + h.allowableType.ToString() + " Mount";
-        } else {
-            hardpointString += h.orientation.ToString() + " " + h.allowableType.ToString() + " Hardpoint";
+        if(lastUsedListIndex >= hardpointListElements.Count) {
+            GameObject g = Instantiate(hardpointListPrefab, hardpointListRoot.transform) as GameObject;
+            hardpointListElements.Add(g);
+            var passHardpoint = h;
+            var passListElement = hardpointListElements[lastUsedListIndex].GetComponent<HardpointListElement>();
+            passListElement.DisplayHardpoint(h);
+            passListElement.deleteButton.onClick.AddListener(delegate { DeleteHardpoint(passListElement, passHardpoint); });
+            lastUsedListIndex += 1;
         }
-        g.transform.GetChild(1).GetComponent<Text>().text = hardpointString;
-            
+        
     }
 
-    public void DeleteHardpoint(GameObject listItem, Hardpoint hardpoint) {
+    public void DeleteHardpoint(HardpointListElement listItem, Hardpoint hardpoint) {
         hardpoints.Remove(hardpoint);
-        Destroy(listItem);
+        listItem.Clear();
+        listItem.gameObject.SetActive(false);
     }
 
     public void ToggleExternal(bool isExternal) {
@@ -105,5 +129,14 @@ public class HardpointEditor : MonoBehaviour {
 
     public void ChangeOrientation(Orientation orientation) {
         newHardpointOrientation = orientation;
+    }
+
+    public void Clear() {
+        lastUsedListIndex = 0;
+        hardpoints.Clear();
+        foreach(GameObject g in hardpointListElements) {
+            g.GetComponent<HardpointListElement>().Clear();
+            g.SetActive(false);
+        }
     }
 }

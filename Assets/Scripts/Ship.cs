@@ -12,7 +12,7 @@ public class Ship {
     public int minutesToDesign = 30000;
     public int minutesToBuild = 30000;
 
-    public List<Hardpoint> hardpoints;
+    public List<Hardpoint> hardpoints = new List<Hardpoint>();
     public List<Part> parts = new List<Part>();
     public Dictionary<PartType, Part> partsByPartType = new Dictionary<PartType, Part>();
 
