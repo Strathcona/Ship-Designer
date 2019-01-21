@@ -25,11 +25,6 @@ public class OrientationPicker : MonoBehaviour {
         starboard.onValueChanged.AddListener(StarboardListener);
     }
 
-    public Orientation SetToDefault() {
-        fore.isOn = true;
-        return Orientation.Fore;
-    }
-
     public void ForeListener(bool Set) {
         if (Set) {
             orientation = Orientation.Fore;

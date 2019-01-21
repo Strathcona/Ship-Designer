@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
 
-public class PowerPlant : Part{
+public class Reactor : Part{
 
     public Tweakable power;
 
-    public PowerPlant() : base(){
-        partType = PartType.PowerPlant;
+    public Reactor() : base(){
+        partType = PartType.Reactor;
     }
 
-    public PowerPlant(Part p) : base() {
-        partType = PartType.PowerPlant;
-        PowerPlant pp = (PowerPlant)p;
+    public Reactor(Part p) : base() {
+        partType = PartType.Reactor;
+        Reactor pp = (Reactor)p;
         for (int i = 0; i < pp.tweakables.Count; i++) {
             tweakables[i].Value = pp.tweakables[i].Value;
         }
@@ -48,8 +48,8 @@ public class PowerPlant : Part{
         netPower = power.Value;
     }
 
-    public static PowerPlant GetRandomPowerPlant() {
-        PowerPlant p = new PowerPlant();
+    public static Reactor GetRandomPowerPlant() {
+        Reactor p = new Reactor();
         p.tier = 1;
         p.typeName = "Reactor";
         p.modelName = Constants.GetRandomPowerPlantModelName();

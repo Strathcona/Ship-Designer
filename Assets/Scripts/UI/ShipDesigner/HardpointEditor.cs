@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using GameConstructs;
 
 public class HardpointEditor : MonoBehaviour {
-    public List<Hardpoint> hardpoints;
+    public List<Hardpoint> hardpoints = new List<Hardpoint>();
 
     public InputFieldIncrement size;
     public Toggle externalToggle;
@@ -21,14 +21,14 @@ public class HardpointEditor : MonoBehaviour {
 
     private void Awake() {
         newHardpointButton.onClick.AddListener(AddNewHardpoint);
+        externalToggle.onValueChanged.AddListener(ToggleExternal);
         internalHardpointTypes.onValueChanged.AddListener(ChangeInternalPartType);
         externalHardpointTypes.onValueChanged.AddListener(ChangeExternalPartType);
         orientationPicker.onChange = ChangeOrientation;
-        //Get whatever their currently set values are and invoke the onchange methods
+
         internalHardpointTypes.onValueChanged.Invoke(internalHardpointTypes.value);
         externalHardpointTypes.onValueChanged.Invoke(externalHardpointTypes.value);
-        orientationPicker.onChange.Invoke(orientationPicker.orientation);
-
+        ToggleExternal(externalToggle.isOn);
     }
 
     public void AddNewHardpoint() {
@@ -58,13 +58,17 @@ public class HardpointEditor : MonoBehaviour {
         if (isExternal) {
             externalHardpointTypes.gameObject.SetActive(true);
             orientationPicker.gameObject.SetActive(true);
-            newHardpointOrientation = orientationPicker.SetToDefault();
             internalHardpointTypes.gameObject.SetActive(false);
+
+            orientationPicker.onChange.Invoke(orientationPicker.orientation);
+            externalHardpointTypes.onValueChanged.Invoke(externalHardpointTypes.value);
         } else {
             externalHardpointTypes.gameObject.SetActive(false);
             orientationPicker.gameObject.SetActive(false);
             internalHardpointTypes.gameObject.SetActive(true);
+
             newHardpointOrientation = Orientation.Internal;
+            internalHardpointTypes.onValueChanged.Invoke(internalHardpointTypes.value);
         }
     }
 
@@ -88,7 +92,7 @@ public class HardpointEditor : MonoBehaviour {
     public void ChangeInternalPartType(int value) {
         switch (value) {
             case 0:
-                newHardpointType = PartType.PowerPlant;
+                newHardpointType = PartType.Reactor;
                 break;
             case 1:
                 newHardpointType = PartType.FireControl;

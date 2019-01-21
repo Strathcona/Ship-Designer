@@ -50,8 +50,8 @@ public class PartDesigner : MonoBehaviour {
             case PartType.Sensor:
                 activePart = new Sensor();
                 break;
-            case PartType.PowerPlant:
-                activePart = new PowerPlant();
+            case PartType.Reactor:
+                activePart = new Reactor();
                 break;
             case PartType.FireControl:
                 activePart = new FireControl();
@@ -91,7 +91,7 @@ public class PartDesigner : MonoBehaviour {
                 activePart = new Engine();
                 break;
             case 4:
-                activePart = new PowerPlant();
+                activePart = new Reactor();
                 break;
             case 5:
                 activePart = new Sensor();

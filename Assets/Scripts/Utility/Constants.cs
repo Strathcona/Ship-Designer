@@ -34,7 +34,7 @@ namespace GameConstructs {
         public static Dictionary<PartType, string> PartTypeString = new Dictionary<PartType, string>() {
             {PartType.Engine, "Engine"},
             {PartType.Weapon, "Weapon"},
-            {PartType.PowerPlant, "Power Plant"},
+            {PartType.Reactor, "Power Plant"},
             {PartType.Sensor, "Sensor"},
             {PartType.FireControl, "Fire Control"},
         };
@@ -42,7 +42,7 @@ namespace GameConstructs {
         public static Dictionary<PartType, Color> PartColor = new Dictionary<PartType, Color>() {
             {PartType.Engine, new Color(1.0f, 0.69f, 0.35f)},
             {PartType.Weapon, new Color(1.0f, 0.36f, 0.34f)},
-            {PartType.PowerPlant, new Color(1.0f, 0.94f, 0.34f)},
+            {PartType.Reactor, new Color(1.0f, 0.94f, 0.34f)},
             {PartType.Sensor, new Color(0.34f, 1f, 0.37f)},
             {PartType.FireControl, new Color(0.34f, 0.97f, 1f)},
         };
@@ -211,7 +211,7 @@ namespace GameConstructs {
 
     public enum WeaponType { laser, railgun};
     public enum SensorType { LowEnergy, HighEnergy, Gravitic};
-    public enum PartType { Weapon, FireControl, Sensor, Engine, PowerPlant};
+    public enum PartType { Weapon, FireControl, Sensor, Engine, Reactor};
     public enum Orientation {Fore, Aft, Port, Starboard, Dorsal, Ventral, Internal};
     public enum TweakableType { Slider, Dropdown };
     public enum CompanyQuality {Speed, Quality, Cost, Prestige, Ethics, Quantity};
