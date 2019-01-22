@@ -33,15 +33,13 @@ public class ShipDesigner : MonoBehaviour {
 
     public void EditHardpoints() {
         hardpointEditor.gameObject.SetActive(true);
-        Debug.Log(ship.hardpoints.Count);
         hardpointEditor.LoadHardpoints(ship.hardpoints);
     }
 
     public void FinishedEditingHardpoints() {
         hardpointEditor.gameObject.SetActive(false);
-        ship.SetHardpoints(new List<Hardpoint>(hardpointEditor.hardpoints));
+        ship.SetHardpoints(new List<Hardpoint>(hardpointEditor.GetHardpoints()));
         hardpointLayout.DisplayHardpoints(ship.hardpoints);
-        Debug.Log(ship.hardpoints.Count);
     }
 
     public void CancelEditingHardpoints() {
