@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using GameConstructs;
 
 public class PartIcon : MonoBehaviour
@@ -13,7 +14,6 @@ public class PartIcon : MonoBehaviour
     public GameObject numberTextBG;
     public Text numberText;
 
-
     public void Awake() {
         if(defaultImage == null) {
             SpriteLoader.GetPartSprite("defaultSmall");
@@ -21,16 +21,14 @@ public class PartIcon : MonoBehaviour
         Clear();
     }
 
-    public void DisplayPart(Part p, int number=1) {
+    public void DisplayPart(Part p) {
         Clear();
         part = p;
         text.text = part.modelName;
         image.sprite = part.littleSprite;
         image.color = Constants.PartColor[part.partType];
-        if(number > 1) {
-            numberText.text = "x" + number.ToString();
-            numberTextBG.SetActive(true);
-        }
+        numberText.text = "S" + part.Size.ToString();
+        numberTextBG.SetActive(true);
     }
 
     public void Clear() {

@@ -14,7 +14,7 @@ public class Ship {
 
     public List<Hardpoint> hardpoints = new List<Hardpoint>();
     public List<Part> parts = new List<Part>();
-    public Dictionary<PartType, Part> partsByPartType = new Dictionary<PartType, Part>();
+    public Dictionary<PartType, List<Part>> partsByPartType = new Dictionary<PartType, List<Part>>();
 
     public void AddHardpoint(Hardpoint h) {
         h.onChange = GetPartsFromHardpoints;
@@ -27,6 +27,7 @@ public class Ship {
         foreach(Hardpoint h in hardpoints) {
             h.onChange = GetPartsFromHardpoints;
         }
+        GetPartsFromHardpoints();
     }
 
     public void RemoveHardpoint(Hardpoint h) {
@@ -40,7 +41,12 @@ public class Ship {
         foreach(Hardpoint h in hardpoints) {
             if(h.part!= null) {
                 parts.Add(h.part);
-                partsByPartType.Add(h.part.partType, h.part);
+                if (partsByPartType.ContainsKey(h.part.partType)) {
+                    partsByPartType[h.part.partType].Add(h.part);
+                } else {
+                    partsByPartType.Add(h.part.partType, new List<Part>() { h.part });
+                }
+
             }
         }
     }

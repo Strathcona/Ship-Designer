@@ -39,6 +39,21 @@ public class HardpointDisplay : MonoBehaviour {
         }
     }
 
+    public void Refresh() {
+        if (hardpoint.part == null || displayPart == false) {
+            allowableTypesText.gameObject.SetActive(true);
+            allowableSizeText.gameObject.SetActive(true);
+            allowableTypesText.text = Constants.ColoredPartTypeString[hardpoint.allowableType];
+            allowableSizeText.text = hardpoint.allowableSize.ToString();
+        } else {
+            partNameBackground.SetActive(true);
+            partNameText.gameObject.SetActive(true);
+            partImage.gameObject.SetActive(true);
+            partImage.sprite = hardpoint.part.littleSprite;
+            partImage.color = Constants.PartColor[hardpoint.part.partType];
+        }
+    }
+
     public void Clear() {
         hardpoint = null;
         partImage.sprite = defaultImage;

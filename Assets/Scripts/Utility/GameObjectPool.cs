@@ -14,6 +14,7 @@ public class GameObjectPool {
     public GameObject GetGameObject() {
         if(freeObjects.Count < 1) {
             GameObject g = GameObject.Instantiate(prefab, attachPoint.transform) as GameObject;
+            g.name = prefab.name + attachPoint.transform.childCount.ToString();
             onCreation?.Invoke(g);
             usedObjects.Add(g);
             return g;

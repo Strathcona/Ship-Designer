@@ -8,9 +8,10 @@ public class ShipDesigner : MonoBehaviour {
     public Ship ship;
     public int size;
     public InputField shipClassName;
-    public ShipPartSelector shipPartSelector;
+    public PartSelector partSelector;
     public HardpointEditor hardpointEditor;
     public HardpointLayout hardpointLayout;
+    public HardpointLayout hardpointLayoutParts;
 
     public void Awake() {
         shipClassName.gameObject.SetActive(false);
@@ -26,7 +27,7 @@ public class ShipDesigner : MonoBehaviour {
 
     public void AskToEditHardpoints() {
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
-    "Are you sure you want to edit this ships's mounts and hardpoints? If you change hardpoints or mounts, all attached parts will be removed from the ship",
+    "Are you sure you want to edit this ships's mounts and hardpoints? If you change hardpoints or mounts, attached parts will be removed from the ship",
     new List<string>() { "Yes", "No" },
     new List<Action>() { EditHardpoints });
     }
@@ -40,22 +41,35 @@ public class ShipDesigner : MonoBehaviour {
         hardpointEditor.gameObject.SetActive(false);
         ship.SetHardpoints(new List<Hardpoint>(hardpointEditor.GetHardpoints()));
         hardpointLayout.DisplayHardpoints(ship.hardpoints);
+        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
     }
 
     public void CancelEditingHardpoints() {
         hardpointEditor.gameObject.SetActive(false);
     }
 
+    public void EditParts() {
+        partSelector.gameObject.SetActive(true);
+        partSelector.LoadShip(ship);
+    }
+
+    public void FinishedEditingParts() {
+        partSelector.gameObject.SetActive(false);
+        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
+    }
+
     public void LoadShip(Ship s) {
         ship = s;
         shipClassName.gameObject.SetActive(true);
-
         shipClassName.text = ship.className;
-        shipPartSelector.DisplayShipParts(ship);
+        hardpointLayout.DisplayHardpoints(ship.hardpoints);
+        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
     }
 
     public void Clear() {
-
+        ship = null;
+        hardpointLayout.Clear();
+        hardpointLayoutParts.Clear();
     }
 
 

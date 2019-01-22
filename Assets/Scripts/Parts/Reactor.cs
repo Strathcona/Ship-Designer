@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
 
+[System.Serializable]
 public class Reactor : Part{
 
     public Tweakable power;

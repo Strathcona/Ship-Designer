@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using GameConstructs;
 
+[System.Serializable]
 public class Sensor : Part{
     public Tweakable range;
     public Tweakable resolution;

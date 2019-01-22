@@ -16,7 +16,16 @@ public class PartIconLayout : MonoBehaviour {
         foreach (Part p in parts.Keys) {
             GameObject g = partIconPool.GetGameObject();
             PartIcon pi = g.GetComponent<PartIcon>();
-            pi.DisplayPart(p, parts[p]);
+            pi.DisplayPart(p);
+        }
+    }
+
+    public void DisplayParts(List<Part> parts) {
+        Clear();
+        foreach (Part p in parts) {
+            GameObject g = partIconPool.GetGameObject();
+            PartIcon pi = g.GetComponent<PartIcon>();
+            pi.DisplayPart(p);
         }
     }
 

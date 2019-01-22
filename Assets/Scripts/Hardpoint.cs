@@ -4,6 +4,7 @@ using UnityEngine;
 using GameConstructs;
 using System;
 
+[System.Serializable]
 public class Hardpoint {
     public PartType allowableType;
     public Orientation orientation;
