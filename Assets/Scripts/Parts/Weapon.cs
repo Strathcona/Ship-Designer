@@ -137,6 +137,7 @@ public class Weapon : Part {
 
     public static Weapon GetRandomLaser() {
         Weapon w = new Weapon();
+        w.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
         w.Tier = (Random.Range(1, 6));
         w.weaponType.Value = 0;
         w.caliber.Value = Random.Range(2, 20);

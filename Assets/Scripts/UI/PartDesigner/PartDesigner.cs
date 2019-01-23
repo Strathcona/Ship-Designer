@@ -13,10 +13,12 @@ public class PartDesigner : MonoBehaviour {
     public Text statisticsDisplay;
     public InputField modelNameInput;
     public TweakableEditor tweakableEditor;
+    public Image previewImage;
 
     public void Start() {
         modelNameInput.gameObject.SetActive(false);
         partTierDropdown.gameObject.SetActive(false);
+        previewImage.gameObject.SetActive(false);
     }
 
     public void UpdatePartModel() {
@@ -42,6 +44,7 @@ public class PartDesigner : MonoBehaviour {
     public void LoadPart(Part p) {
         modelNameInput.gameObject.SetActive(true);
         partTierDropdown.gameObject.SetActive(true);
+        previewImage.gameObject.SetActive(true);
         Debug.Log("Loading Part" + p.modelName +" "+ p.Tier);
         switch (p.partType) {
             case PartType.Weapon:
@@ -61,6 +64,7 @@ public class PartDesigner : MonoBehaviour {
                 break;
         }
         activePart.CopyValuesFromPart(p);
+        previewImage.sprite = activePart.sprite;
         modelNameInput.text = activePart.modelName;
         SetPartModel();
         partTierDropdown.value = activePart.Tier;
@@ -73,30 +77,38 @@ public class PartDesigner : MonoBehaviour {
         statisticsDisplay.text = "---";
         modelNameInput.gameObject.SetActive(false);
         partTierDropdown.gameObject.SetActive(false);
+        previewImage.gameObject.SetActive(false);
     }
 
     public void CreateNewPart() {
         modelNameInput.gameObject.SetActive(true);
         partTierDropdown.gameObject.SetActive(true);
+        previewImage.gameObject.SetActive(true);
         switch (createNewDropdown.value) {
             case 0:
                 break;
             case 1:
                 activePart = new Weapon();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
                 break;
             case 2:
                 activePart = new FireControl();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
                 break;
             case 3:
                 activePart = new Engine();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
                 break;
             case 4:
                 activePart = new Reactor();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
                 break;
             case 5:
                 activePart = new Sensor();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
                 break;
         }
+        activePart.sprite = previewImage.sprite;
         createNewDropdown.value = 0;
         tweakableEditor.DisplayTweakables(activePart);
     }

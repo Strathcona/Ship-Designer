@@ -48,6 +48,7 @@ public class Reactor : Part{
 
     public static Reactor GetRandomReactor() {
         Reactor p = new Reactor();
+        p.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
         p.tier = 1;
         p.typeName = "Reactor";
         p.modelName = Constants.GetRandomReactorName();

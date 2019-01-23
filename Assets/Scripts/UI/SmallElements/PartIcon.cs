@@ -25,7 +25,7 @@ public class PartIcon : MonoBehaviour
         Clear();
         part = p;
         text.text = part.modelName;
-        image.sprite = part.littleSprite;
+        image.sprite = part.sprite;
         image.color = Constants.PartColor[part.partType];
         numberText.text = "S" + part.Size.ToString();
         numberTextBG.SetActive(true);

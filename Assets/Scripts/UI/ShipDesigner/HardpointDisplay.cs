@@ -34,7 +34,7 @@ public class HardpointDisplay : MonoBehaviour {
             partNameBackground.SetActive(true);
             partNameText.gameObject.SetActive(true);
             partImage.gameObject.SetActive(true);
-            partImage.sprite = hardpoint.part.littleSprite;
+            partImage.sprite = hardpoint.part.sprite;
             partImage.color = Constants.PartColor[hardpoint.part.partType];
         }
     }
@@ -49,7 +49,7 @@ public class HardpointDisplay : MonoBehaviour {
             partNameBackground.SetActive(true);
             partNameText.gameObject.SetActive(true);
             partImage.gameObject.SetActive(true);
-            partImage.sprite = hardpoint.part.littleSprite;
+            partImage.sprite = hardpoint.part.sprite;
             partImage.color = Constants.PartColor[hardpoint.part.partType];
         }
     }

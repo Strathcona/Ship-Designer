@@ -19550,6 +19550,7 @@ MonoBehaviour:
   statisticsDisplay: {fileID: 1866204736}
   modelNameInput: {fileID: 1478063381}
   tweakableEditor: {fileID: 433820765}
+  previewImage: {fileID: 1153058371}
 --- !u!222 &2129792037
 CanvasRenderer:
   m_ObjectHideFlags: 0

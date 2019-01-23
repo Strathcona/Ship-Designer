@@ -57,6 +57,7 @@ public class Sensor : Part{
 
     public static Sensor GetRandomSensor() {
         Sensor s = new Sensor();
+        s.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
         s.Tier = 1;
         s.sensorType = SensorType.LowEnergy;
         s.typeName = "Low Energy Sensor";

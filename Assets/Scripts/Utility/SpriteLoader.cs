@@ -24,8 +24,8 @@ public static class SpriteLoader {
         int i = 0;
         foreach (FileInfo file in files) {
             string fileName = file.Name.Substring(0, file.Name.Length - 4);
-            Sprite s = Resources.Load<Sprite>(path + fileName);
-
+            //trim off the .png
+            Sprite s = Resources.Load<Sprite>(path +"/"+ fileName);
             //check if the last digits are "thing_###"
             //We store those together, not in new entries
             //that way when we search "thing" we can get all "thing_001" "thing_002" ...
@@ -49,7 +49,7 @@ public static class SpriteLoader {
             }
             i += 1;
         }
-        Debug.Log("Loaded " + i + " files");
+        Debug.Log("Loaded " + i + " sprites");
     }
 
     public static Sprite GetNPCSprite(string name) {
@@ -64,9 +64,11 @@ public static class SpriteLoader {
     }
 
     public static Sprite GetPartSprite(string name) {
+        Debug.Log("Getting sprite:" + name);
         if (partSprites.ContainsKey(name)) {
             List<Sprite> sprites = partSprites[name];
-            return sprites[UnityEngine.Random.Range(0, sprites.Count)];
+            Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];
+            return toReturn;
         } else {
             Debug.LogError("Couldn't find Part sprite " + name);
             return null;

@@ -85,6 +85,7 @@ public class Engine : Part {
 
     public static Engine GetRandomEngine() {
         Engine s = new Engine();
+        s.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
         s.Tier = Random.Range(1, 6);
         s.agility.Value = Random.Range(1, 20);
         s.averageThrust.Value = Random.Range(1, 20);

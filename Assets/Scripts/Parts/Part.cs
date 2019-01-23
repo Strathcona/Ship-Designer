@@ -53,6 +53,7 @@ public abstract class Part {
         typeName = p.typeName;
         modelName = p.modelName;
         manufacturer = p.manufacturer;
+        sprite = p.sprite;
         quality = p.quality;
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
@@ -67,6 +68,7 @@ public abstract class Part {
         typeName = p.typeName;
         modelName = p.modelName;
         manufacturer = p.manufacturer;
+        sprite = p.sprite;
         quality = p.quality;
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
@@ -91,7 +93,6 @@ public abstract class Part {
             weightedTweakableFactor += (float)t.Value / t.maxIntValue;
         }
         weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
-        Debug.Log(weightedTweakableFactor);
         size = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)));
         minutesToDevelop = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
         unitPrice = size * 10;
