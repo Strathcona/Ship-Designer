@@ -67,21 +67,6 @@ public class FireControl : Part{
         UpdateProperties();
     }
 
-    public override string GetDescriptionString() {
-        return manufacturerName + " " + modelName + " " + typeName;
-    }
-    public override string GetStatisticsString() {
-        return "Size: "+size+" Tracking: " + tracking.Value.ToString() + " Accuracy: " + accuracy.Value.ToString() + " Effective Range: " + range.Value.ToString();
-    }
-
-    protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(0.1f * (tracking.Value + accuracy.Value + range.Value) / Constants.TierFireControlAccuracy[tier]));
-    }
-
-    public override void TweakableUpdate() {
-
-    }
-
     public static FireControl GetRandomFireControl() {
         FireControl f = new FireControl();
         f.tier = Random.Range(1, 6);

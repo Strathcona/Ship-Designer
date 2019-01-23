@@ -6,7 +6,10 @@ using GameConstructs;
 [System.Serializable]
 public class Engine : Part {
     public Tweakable agility;
-    public Tweakable thrust;
+    public Tweakable averageThrust;
+    public Tweakable maxThrust;
+    public Tweakable energyEfficiency;
+
 
     public Engine() : base(){
         partType = PartType.Engine;
@@ -32,7 +35,7 @@ public class Engine : Part {
             100,
             "Agility");
 
-        thrust = Tweakable.MakeTweakable(
+        averageThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
@@ -41,8 +44,33 @@ public class Engine : Part {
             1,
             100,
             "Thrust");
+
+        maxThrust = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            100,
+            100,
+            100,
+            150,
+            "Maximum Thrust");
+        maxThrust.unit = "%";
+
+        energyEfficiency = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            100,
+            100,
+            100,
+            125,
+            "Energy Efficiency");
+        energyEfficiency.unit = "%";
+
         tweakables.Add(agility);
-        tweakables.Add(thrust);
+        tweakables.Add(averageThrust);
+        tweakables.Add(maxThrust);
+        tweakables.Add(energyEfficiency);
     }
 
     public override void CopyValuesFromPart(Part p) {
@@ -55,27 +83,11 @@ public class Engine : Part {
         UpdateProperties();
     }
 
-    public override string GetDescriptionString() {
-        return manufacturerName + " " + modelName + " " + typeName;
-    }
-
-    public override string GetStatisticsString() {
-        return "Size: " + size + " Agility: " + agility.Value.ToString() + " Thrust: " + thrust.Value.ToString();
-    }
-
-    public override void TweakableUpdate() {
-
-    }
-
-    protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(agility.Value * 0.3f + thrust.Value * 0.4f));
-    }
-
     public static Engine GetRandomEngine() {
         Engine s = new Engine();
         s.Tier = Random.Range(1, 6);
         s.agility.Value = Random.Range(1, 20);
-        s.thrust.Value = Random.Range(1, 20);
+        s.averageThrust.Value = Random.Range(1, 20);
         s.typeName = Constants.TierEngineNames[s.Tier] + " Engine";
         s.modelName = Constants.GetRandomEngineModelName();
         Debug.Log(s.GetDescriptionString());

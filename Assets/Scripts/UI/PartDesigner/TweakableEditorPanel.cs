@@ -32,14 +32,20 @@ public class TweakableEditorPanel : MonoBehaviour {
             }
             dropdown.value = tweakable.Value;
             dropdown.onValueChanged.AddListener(delegate { UpdateFromDropdown(); });
+
         } else if (t.tweakableType == TweakableType.Slider) {
             slider.gameObject.SetActive(true);
             sliderDisplay.gameObject.SetActive(true);
             sliderText.gameObject.SetActive(true);
             sliderText.text = tweakable.tweakableName;
-            slider.value = tweakable.Value;
-            sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString();
+
+            slider.minValue = tweakable.minIntValue;
+            slider.maxValue = tweakable.maxIntValue;
+            slider.value = tweakable.defaultIntValue;
+
+            sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString()+tweakable.unit;
             slider.onValueChanged.AddListener(delegate { UpdateFromSlider(); });
+            partDesignerUpdateStrings();
         }
     }
     public void UpdateFromDropdown() {
@@ -49,7 +55,7 @@ public class TweakableEditorPanel : MonoBehaviour {
 
     public void UpdateFromSlider() {
         tweakable.Value = Mathf.FloorToInt(slider.value);
-        sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString();
+        sliderDisplay.text = tweakable.ValueString();
         partDesignerUpdateStrings();
     }
 

@@ -32,21 +32,23 @@ public class Weapon : Part {
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
+            5,
+            5,
+            5,
             100,
             "Caliber");
+        caliber.unit = "mm";
 
         reload = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
+            5,
+            5,
+            5,
             100,
             "Reload");
+        reload.unit = "s";
         turrets = Tweakable.MakeTweakable(
             this,
             TweakableType.Dropdown,
@@ -73,6 +75,7 @@ public class Weapon : Part {
             "Weapon Type");
         weaponType.dropdownLabels.Add("Laser");
         weaponType.dropdownLabels.Add("Railgun");
+
         tweakables.Add(weaponType);
         tweakables.Add(turrets);
         tweakables.Add(caliber);
@@ -89,9 +92,14 @@ public class Weapon : Part {
     }
 
     public override string GetDescriptionString() {
-        string caliberString = caliber.Value.ToString() + "mm";
+        string caliberString = caliber.ValueString();
         string partTypeName = Constants.GetWeaponTypeName(tier, weaponType.Value);
-        string typeline = manufacturerName + " " + modelName + " " + partTypeName;
+        string typeline;
+        if(manufacturer != null) {
+            typeline = manufacturer.name + " " + modelName + " " + partTypeName;
+        } else {
+            typeline = modelName + " " + partTypeName;
+        }
 ;
         string turretSetup = "";
         switch (turrets.Value) {
@@ -117,7 +125,7 @@ public class Weapon : Part {
     }
 
     public override string GetStatisticsString() {
-        return "Size: " + size.ToString() + " Damage: " + damage + " Recharge Time: " + reload.Value.ToString() + "s";
+        return "Size: " + size.ToString() + " Damage: " + damage + " Recharge Time: " + reload.ValueString() + "s";
     }
 
     protected override void UpdateProperties() {
@@ -125,10 +133,6 @@ public class Weapon : Part {
         int turretfactor = Mathf.Max(1, turrets.Value);
         size = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
         damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
-    }
-
-    public override void TweakableUpdate() {
-        UpdateProperties();
     }
 
     public static Weapon GetRandomLaser() {

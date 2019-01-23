@@ -5,11 +5,11 @@ using UnityEngine;
 
 public static class PartLibrary {
     private static List<Part> partsInDevelopment = new List<Part>();
-    private static List<Part> parts = new List<Part>();
+    private static List<Part> partDesigns = new List<Part>();
     private static List<Part> obsoleteParts = new List<Part>();
 
     static PartLibrary() {
-        parts = new List<Part>() {
+        partDesigns = new List<Part>() {
             Weapon.GetRandomLaser(),
             Sensor.GetRandomSensor(),
             FireControl.GetRandomFireControl(),
@@ -30,11 +30,11 @@ public static class PartLibrary {
         Debug.Log("Part complete development " + p.GetDescriptionString());
         p.inDevelopment = false;
         partsInDevelopment.Remove(p);
-        parts.Add(p);
+        partDesigns.Add(p);
     }
 
     public static List<Part> GetParts() {
-        return new List<Part>(parts);
+        return new List<Part>(partDesigns);
     }
 
     public static List<Part> GetUndevelopedParts() {
@@ -42,8 +42,8 @@ public static class PartLibrary {
     }
 
     public static bool ObsoletePart(Part p) {
-        if (parts.Contains(p)) {
-            parts.Remove(p);
+        if (partDesigns.Contains(p)) {
+            partDesigns.Remove(p);
             if (obsoleteParts.Contains(p)) {
                 return true;
             } else {
@@ -54,6 +54,4 @@ public static class PartLibrary {
             return false;
         }
     }
-
-
 }

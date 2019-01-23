@@ -17,7 +17,7 @@ public class Company {
     public float miniumQuality = 0.8f;
     public int productionCapacity = 10; //how many units per month the company can produce
     public float prototypeDiscount = 0.5f; //how much of a discount in time and price a company offers a protoType;
-    public List<PartOrder> partOrders = new List<PartOrder>();
+    public List<PartSupplyAgreement> partOrders = new List<PartSupplyAgreement>();
     public CompanyTextKey textKey = CompanyTextKey.GenericOne;
 
     public Company() {
@@ -86,12 +86,12 @@ public class Company {
         }
     }
 
-    public PartOrder GetPartOrderProposal(Part p, int units, bool prototype) {
-        int price = Mathf.CeilToInt(p.unitPrice*minimumMargin*Random.Range(1f,1.1f)*units);
-        int time = Mathf.CeilToInt(p.unitTime * productionSpeed * Random.Range(0.8f, 1f) * units);
-        PartOrder po = new PartOrder(p, units, price, time, prototype);
-        string proposal = KeyString.GetStringFromKey("PartOrderSimple")+ "Our price is <color=#008888>"+price.ToString()+"</color>. We can have them delivered to you in <color=#998800>"+time.ToString()+"</color> ticks.";
-        po.proposalString = proposal;
+    public PartSupplyAgreement GetPartSupplyProposal(Part p) {
+        int price = Mathf.CeilToInt(p.unitPrice*minimumMargin*Random.Range(1f,1.1f));
+        int time = Mathf.CeilToInt(p.unitTime * productionSpeed * Random.Range(0.8f, 1f));
+        PartSupplyAgreement po = new PartSupplyAgreement(p, price, time);
+        string proposal = KeyString.GetStringFromKey("PartOrderSimple")+ "Our unit price is <color=#008888>"+price.ToString()+"</color>. At current production capabilities, each unit will take <color=#998800>"+time.ToString()+"</color> ticks for delivery.";
+        po.comment = proposal;
         return po;
     }
 }

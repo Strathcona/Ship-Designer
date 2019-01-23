@@ -6,7 +6,8 @@ using GameConstructs;
 [System.Serializable]
 public class Reactor : Part{
 
-    public Tweakable power;
+    public Tweakable averagePower;
+    public Tweakable maxPower;
 
     public Reactor() : base(){
         partType = PartType.Reactor;
@@ -21,32 +22,28 @@ public class Reactor : Part{
     }
 
     protected override void InitializeTweakables() {
-        power = Tweakable.MakeTweakable(
+        averagePower = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
+            50,
+            50,
             1,
             100,
-            "Power Output");
-        tweakables.Add(power);
-    }
+            "Baseline Output");
+        tweakables.Add(averagePower);
 
-
-    public override string GetDescriptionString() {
-        return manufacturerName + " " + modelName + " " + typeName;
-    }
-    public override string GetStatisticsString() {
-        return "Size: " + size.ToString() + " Output: " + netPower.ToString();
-    }
-
-    protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(0.1f * Mathf.Pow(netPower, 1.3f)));
-    }
-
-    public override void TweakableUpdate() {
-        netPower = power.Value;
+        maxPower = Tweakable.MakeTweakable(
+            this,
+            TweakableType.Slider,
+            TweakableUpdate,
+            100,
+            110,
+            110,
+            120,
+            "Max Output");
+        maxPower.unit = "%";
+        tweakables.Add(maxPower);
     }
 
     public static Reactor GetRandomReactor() {
@@ -54,7 +51,8 @@ public class Reactor : Part{
         p.tier = 1;
         p.typeName = "Reactor";
         p.modelName = Constants.GetRandomReactorName();
-        p.power.Value = Random.Range(20, 100);
+        p.averagePower.Value = Random.Range(20, 100);
+        p.maxPower.Value = Random.Range(100, 120);
         return p;
     }
 }

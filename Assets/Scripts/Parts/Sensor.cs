@@ -55,22 +55,6 @@ public class Sensor : Part{
         UpdateProperties();
     }
 
-
-    public override string GetDescriptionString() {
-        return manufacturerName + " " + modelName + " " + typeName;
-    }
-    public override string GetStatisticsString() {
-        return "Size: " + size.ToString() + " Range: " + range.Value.ToString() + " Resoultion " + resolution.Value.ToString();
-    }
-
-    protected override void UpdateProperties() {
-        size = Mathf.Max(1, Mathf.FloorToInt(range.Value * resolution.Value * 0.1f));
-    }
-
-    public override void TweakableUpdate() {
-
-    }
-
     public static Sensor GetRandomSensor() {
         Sensor s = new Sensor();
         s.Tier = 1;

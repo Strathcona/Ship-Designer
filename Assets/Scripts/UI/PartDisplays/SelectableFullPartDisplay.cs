@@ -54,10 +54,6 @@ public class SelectableFullPartDisplay : MonoBehaviour
             overlayPanel.SetActive(true);
             overlayFill.fillAmount = (part.timer.minutesRemaining / part.timer.lengthInMinutes);
             overlayText.text = "IN DEVELOPMENT";
-        } else if (part.inDelivery){
-            overlayPanel.SetActive(true);
-            overlayFill.fillAmount = (part.timer.minutesRemaining / part.timer.lengthInMinutes);
-            overlayText.text = "DUE FOR DELIVERY";
         } else {
             overlayPanel.SetActive(false);
         }

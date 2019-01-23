@@ -9,6 +9,7 @@ public class Tweakable {
     public Part part;
     public TweakableType tweakableType;
     public Action UpdatePart; //update the part when it's tweaked
+    public string unit = "";
 
     private int value;
     public int Value {
@@ -23,6 +24,10 @@ public class Tweakable {
     public int maxIntValue = 100;
     public List<string> dropdownLabels = new List<string>();
     public string tweakableName;
+
+    public string ValueString() {
+        return Value.ToString() + unit;
+    }
 
     private Tweakable() {
 

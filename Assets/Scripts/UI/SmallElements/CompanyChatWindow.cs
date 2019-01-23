@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameConstructs;
 
 public class CompanyChatWindow : MonoBehaviour, IConversationReader 
 {
     public Company company;
-    public PartOrder partOrder;
+    public PartSupplyAgreement partOrder;
     public TextScroll companyChatMessages;
     public SmallCompanyDisplay companyChatDisplay;
     public GameObject choiceButtonParent;
@@ -17,24 +18,20 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
     public float timer = 0.0f;
     public float timeTillResponse = 1.0f;
     private static Dictionary<string, string> keywordReplacements;
-    public Action<Company, PartOrder, bool> OnConversationFinish;
+    public Action<Company, PartSupplyAgreement, bool> OnConversationFinish;
 
-    public void StartChatWith(Company c, PartOrder po, Action<Company, PartOrder, bool> onConversationFinish) {
+    public void StartChatWith(Company c, PartSupplyAgreement po, Action<Company, PartSupplyAgreement, bool> onConversationFinish) {
         OnConversationFinish = onConversationFinish;
         Clear();
         company = c;
         partOrder = po;
         keywordReplacements = new Dictionary<string, string>() {
             {"*COMPANY*", company.name },
+            {"*PARTTYPE*", Constants.ColoredPartTypeString[po.part.partType] },
             {"*PRICE*",  po.price.ToString()+" credits"},
             {"*TIME*",  po.time.ToString()+" ticks"}
         };
-        if(partOrder.units == 1) {
-            keywordReplacements.Add("*UNITS*", po.units.ToString() + " unit");
-        } else {
-            keywordReplacements.Add("*UNITS*", po.units.ToString() + " units");
-        }
-        conversationTree = ConversationTree.GetTestTree();
+        conversationTree = ConversationTreeLoader.GetTree("GenericFirstPartSupply");
         conversationTree.currentReader = this;
         companyChatDisplay.DisplayCompany(company);
         conversationTree.StartTree(conversationTree.elements[0], this);

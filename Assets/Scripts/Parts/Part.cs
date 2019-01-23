@@ -7,18 +7,16 @@ using GameConstructs;
 public abstract class Part {
     public string typeName = ""; //A descriptive name of the part like 'Cold Fusion Turbine'
     public string modelName = ""; //Name of the make of the part like 'Devastator'
-    public string manufacturerName = ""; //Name of the maker of the Part
+    public Company manufacturer; //Name of the maker of the Part
     public float quality = 1.0f;
     public int unitTime = 1;
     public int unitPrice = 1;
     public bool inDevelopment = false;
-    public bool inDelivery = false;
     public Timer timer;
     public PartType partType;
     public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
-    public Sprite bigSprite;
-    public Sprite littleSprite;
+    public Sprite sprite;
 
     protected int size = 1;
 
@@ -54,7 +52,7 @@ public abstract class Part {
         InitializeTweakables();
         typeName = p.typeName;
         modelName = p.modelName;
-        manufacturerName = p.manufacturerName;
+        manufacturer = p.manufacturer;
         quality = p.quality;
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
@@ -68,7 +66,7 @@ public abstract class Part {
     public virtual void CopyValuesFromPart(Part p) {
         typeName = p.typeName;
         modelName = p.modelName;
-        manufacturerName = p.manufacturerName;
+        manufacturer = p.manufacturer;
         quality = p.quality;
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
@@ -80,15 +78,36 @@ public abstract class Part {
     }
 
     public virtual string GetDescriptionString() {
-        return manufacturerName + " " + modelName + " " + typeName;
+        if(manufacturer != null) {
+            return manufacturer.name + " " + modelName + " " + typeName;
+        } else {
+            return modelName + " " + typeName;
+        }
     }
 
     protected virtual void UpdateProperties() {
-        unitPrice = 5 * Tier + Random.Range(1, 5);
-        unitTime = 5 * Tier + Random.Range(1, 5);
+        float weightedTweakableFactor = 0;
+        foreach(Tweakable t in tweakables) {
+            weightedTweakableFactor += (float)t.Value / t.maxIntValue;
+        }
+        weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
+        Debug.Log(weightedTweakableFactor);
+        size = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)));
+        minutesToDevelop = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
+        unitPrice = size * 10;
+        unitTime = minutesToDevelop / 10;
     }
-    public abstract string GetStatisticsString();
-    public abstract void TweakableUpdate();
+
+    public virtual string GetStatisticsString() {
+        string statisticsString = "Size:"+Size.ToString();
+        foreach(Tweakable t in tweakables) {
+            statisticsString += " "+t.tweakableName + ":" + t.ValueString();
+        }
+        return statisticsString;
+    }
+    public virtual void TweakableUpdate() {
+        UpdateProperties();
+    }
     protected abstract void InitializeTweakables();
 
 
