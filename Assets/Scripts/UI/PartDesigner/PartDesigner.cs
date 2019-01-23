@@ -9,6 +9,7 @@ public class PartDesigner : MonoBehaviour {
     public Part activePart;
     public Dropdown partTierDropdown;
     public Dropdown createNewDropdown;
+    public Dropdown partSizeDropdown;
     public Text descriptionDisplay;
     public Text statisticsDisplay;
     public InputField modelNameInput;
@@ -18,6 +19,7 @@ public class PartDesigner : MonoBehaviour {
     public void Start() {
         modelNameInput.gameObject.SetActive(false);
         partTierDropdown.gameObject.SetActive(false);
+        partSizeDropdown.gameObject.SetActive(false);
         previewImage.gameObject.SetActive(false);
     }
 
@@ -44,6 +46,7 @@ public class PartDesigner : MonoBehaviour {
     public void LoadPart(Part p) {
         modelNameInput.gameObject.SetActive(true);
         partTierDropdown.gameObject.SetActive(true);
+        partSizeDropdown.gameObject.SetActive(true);
         previewImage.gameObject.SetActive(true);
         Debug.Log("Loading Part" + p.modelName +" "+ p.Tier);
         switch (p.partType) {
@@ -78,12 +81,15 @@ public class PartDesigner : MonoBehaviour {
         modelNameInput.gameObject.SetActive(false);
         partTierDropdown.gameObject.SetActive(false);
         previewImage.gameObject.SetActive(false);
+        partSizeDropdown.gameObject.SetActive(false);
     }
 
     public void CreateNewPart() {
         modelNameInput.gameObject.SetActive(true);
         partTierDropdown.gameObject.SetActive(true);
         previewImage.gameObject.SetActive(true);
+        partSizeDropdown.gameObject.SetActive(true);
+
         switch (createNewDropdown.value) {
             case 0:
                 break;
@@ -141,6 +147,11 @@ new List<Action>() { SubmitDesign });
 
     public void UpdatePartTier() {
         activePart.Tier = partTierDropdown.value;
+        UpdatePartStrings();
+    }
+
+    public void UpdatePartSize() {
+        activePart.size = (PartSize) partSizeDropdown.value;
         UpdatePartStrings();
     }
 }

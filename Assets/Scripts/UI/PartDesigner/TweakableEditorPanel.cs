@@ -31,6 +31,7 @@ public class TweakableEditorPanel : MonoBehaviour {
                 dropdown.options.Add(option);
             }
             dropdown.value = tweakable.Value;
+            dropdown.RefreshShownValue();
             dropdown.onValueChanged.AddListener(delegate { UpdateFromDropdown(); });
 
         } else if (t.tweakableType == TweakableType.Slider) {
@@ -41,7 +42,7 @@ public class TweakableEditorPanel : MonoBehaviour {
 
             slider.minValue = tweakable.minIntValue;
             slider.maxValue = tweakable.maxIntValue;
-            slider.value = tweakable.defaultIntValue;
+            slider.value = tweakable.Value;
 
             sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString()+tweakable.unit;
             slider.onValueChanged.AddListener(delegate { UpdateFromSlider(); });

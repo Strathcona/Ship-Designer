@@ -7,7 +7,7 @@ using GameConstructs;
 public abstract class Part {
     public string typeName = ""; //A descriptive name of the part like 'Cold Fusion Turbine'
     public string modelName = ""; //Name of the make of the part like 'Devastator'
-    public Company manufacturer; //Name of the maker of the Part
+    public Company manufacturer; //The maker of the Part
     public float quality = 1.0f;
     public int unitTime = 1;
     public int unitPrice = 1;
@@ -17,16 +17,9 @@ public abstract class Part {
     public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
     public Sprite sprite;
+    public PartSize size;
+    public int weight = 1;
 
-    protected int size = 1;
-
-    public int Size {
-        get { return size; }
-        set {
-            size = value;
-            UpdateProperties();
-        }
-    }
     protected int tier = 0;
     public int Tier {
         get { return tier; }
@@ -53,13 +46,14 @@ public abstract class Part {
         typeName = p.typeName;
         modelName = p.modelName;
         manufacturer = p.manufacturer;
+        size = p.size;
         sprite = p.sprite;
         quality = p.quality;
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
         partType = p.partType;
         minutesToDevelop = p.minutesToDevelop;
-        size = p.Size;
+        weight = p.weight;
         tier = p.Tier;
         netPower = p.NetPower;
     }
@@ -68,13 +62,14 @@ public abstract class Part {
         typeName = p.typeName;
         modelName = p.modelName;
         manufacturer = p.manufacturer;
+        size = p.size;
         sprite = p.sprite;
         quality = p.quality;
         unitTime = p.unitTime;
         unitPrice = p.unitPrice;
         partType = p.partType;
         minutesToDevelop = p.minutesToDevelop;
-        size = p.Size;
+        weight = p.weight;
         tier = p.Tier;
         netPower = p.NetPower;
     }
@@ -93,14 +88,14 @@ public abstract class Part {
             weightedTweakableFactor += (float)t.Value / t.maxIntValue;
         }
         weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
-        size = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)));
+        weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)));
         minutesToDevelop = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
-        unitPrice = size * 10;
+        unitPrice = weight * 10;
         unitTime = minutesToDevelop / 10;
     }
 
     public virtual string GetStatisticsString() {
-        string statisticsString = "Size:"+Size.ToString();
+        string statisticsString = "Weight:"+weight.ToString();
         foreach(Tweakable t in tweakables) {
             statisticsString += " "+t.tweakableName + ":" + t.ValueString();
         }

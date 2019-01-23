@@ -7,14 +7,14 @@ using System;
 [System.Serializable]
 public class Hardpoint {
     public PartType allowableType;
+    public PartSize allowableSize;
     public Orientation orientation;
-    public int allowableSize;
     public Part part;
     public Action onChange;
 
     public bool MountPart(Part p) {
         if (allowableType == p.partType) {
-            if(p.Size == allowableSize) {
+            if(p.size == allowableSize) {
                 part = p;
                 onChange();
                 return true;
@@ -31,7 +31,7 @@ public class Hardpoint {
         return p;
     }
 
-    public Hardpoint(int _allowableSize, PartType _allowableType, Orientation _orientation) {
+    public Hardpoint(PartSize _allowableSize, PartType _allowableType, Orientation _orientation) {
         allowableSize = _allowableSize;
         allowableType = _allowableType;
         orientation = _orientation;

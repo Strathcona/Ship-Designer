@@ -9,6 +9,8 @@ namespace GameConstructs {
     public enum SensorType { LowEnergy, HighEnergy, Gravitic };
     public enum PartType { Weapon, FireControl, Sensor, Engine, Reactor };
     public enum Orientation { Fore, Aft, Port, Starboard, Dorsal, Ventral, Internal };
+    public enum PartSize { XS, S, M, L, XL};
+    public enum ShipType { Carrier, Battlecruiser, Battleship, LightCruiser, HeavyCruiser, Destroyer, Gunboat, Fighter, Utility, Patrol, None};
     public enum TweakableType { Slider, Dropdown };
     public enum CompanyQuality { Speed, Quality, Cost, Prestige, Ethics, Quantity };
     public enum ConversationElementType { Text, Set, Choice, Branch, End }

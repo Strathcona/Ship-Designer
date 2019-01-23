@@ -64,7 +64,6 @@ public static class SpriteLoader {
     }
 
     public static Sprite GetPartSprite(string name) {
-        Debug.Log("Getting sprite:" + name);
         if (partSprites.ContainsKey(name)) {
             List<Sprite> sprites = partSprites[name];
             Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];

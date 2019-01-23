@@ -17,7 +17,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
     public GameObject overlayPanel;
     public Image overlayFill;
     public Text overlayText;
-    public Text size;
+    public Text weight;
     public Text tier;
     public Text power;
     public Text developmentText;
@@ -43,7 +43,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
         part = p;
         bgImage.color = Constants.PartColor[part.partType];
         nameText.text = part.GetDescriptionString();
-        size.text = "Size:" + part.Size.ToString();
+        weight.text = "Weight:" + part.weight.ToString();
         tier.text = "T" + part.Tier.ToString();
         power.text = "Power" + part.NetPower.ToString();
         foreach(Tweakable t in part.tweakables) {
@@ -63,7 +63,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
         part = null;
         tweakableDisplayPool.ReleaseAll();
         nameText.text = "";
-        size.text = "";
+        weight.text = "";
         power.text = "";
         bgImage.color = Color.white;
         overlayPanel.SetActive(false);

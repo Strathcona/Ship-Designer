@@ -121,31 +121,32 @@ public class Weapon : Part {
             default:
                 break;
         }
-        return turretSetup+" "+ caliberString + typeline;
+        return turretSetup+" "+ caliberString + " " + typeline;
     }
 
     public override string GetStatisticsString() {
-        return "Size: " + size.ToString() + " Damage: " + damage + " Recharge Time: " + reload.ValueString() + "s";
+        return "Weight: " + weight.ToString() + " Damage: " + damage + " Recharge Time: " + reload.ValueString();
     }
 
     protected override void UpdateProperties() {
         base.UpdateProperties();
         int turretfactor = Mathf.Max(1, turrets.Value);
-        size = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
+        weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
         damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
     }
 
     public static Weapon GetRandomLaser() {
-        Weapon w = new Weapon();
-        w.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
-        w.Tier = (Random.Range(1, 6));
-        w.weaponType.Value = 0;
-        w.caliber.Value = Random.Range(2, 20);
-        w.turrets.Value = Random.Range(0, 5);
-        w.reload.Value = Random.Range(2, 20);
-        w.modelName = Constants.GetRandomWeaponModelName();
-        Debug.Log(w.GetDescriptionString());
-        Debug.Log(w.GetStatisticsString());
-        return w;
+        Weapon p = new Weapon();
+        p.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
+        p.Tier = (Random.Range(1, 6));
+        p.weaponType.Value = 0;
+        p.size = PartSize.S;
+        p.caliber.Value = Random.Range(2, 20);
+        p.turrets.Value = Random.Range(0, 5);
+        p.reload.Value = Random.Range(2, 20);
+        p.modelName = Constants.GetRandomWeaponModelName();
+        Debug.Log(p.GetDescriptionString());
+        Debug.Log(p.GetStatisticsString());
+        return p;
     }
 }

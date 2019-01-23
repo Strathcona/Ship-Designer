@@ -56,15 +56,16 @@ public class Sensor : Part{
     }
 
     public static Sensor GetRandomSensor() {
-        Sensor s = new Sensor();
-        s.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
-        s.Tier = 1;
-        s.sensorType = SensorType.LowEnergy;
-        s.typeName = "Low Energy Sensor";
-        s.modelName = Constants.GetRandomSensorModelName();
-        s.range.Value = UnityEngine.Random.Range(2, 20);
-        s.resolution.Value = UnityEngine.Random.Range(2, 20);
-        return s;
+        Sensor p = new Sensor();
+        p.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
+        p.Tier = 1;
+        p.size = PartSize.S;
+        p.sensorType = SensorType.LowEnergy;
+        p.typeName = "Low Energy Sensor";
+        p.modelName = Constants.GetRandomSensorModelName();
+        p.range.Value = UnityEngine.Random.Range(2, 20);
+        p.resolution.Value = UnityEngine.Random.Range(2, 20);
+        return p;
 
     }
 }

@@ -8,16 +8,12 @@ using GameConstructs;
 public class PartIcon : MonoBehaviour
 {
     public Part part;
-    public Sprite defaultImage;
     public Image image;
     public Text text;
     public GameObject numberTextBG;
     public Text numberText;
 
     public void Awake() {
-        if(defaultImage == null) {
-            SpriteLoader.GetPartSprite("defaultSmall");
-        }
         Clear();
     }
 
@@ -27,7 +23,7 @@ public class PartIcon : MonoBehaviour
         text.text = part.modelName;
         image.sprite = part.sprite;
         image.color = Constants.PartColor[part.partType];
-        numberText.text = "S" + part.Size.ToString();
+        numberText.text = part.size.ToString();
         numberTextBG.SetActive(true);
     }
 
@@ -35,7 +31,7 @@ public class PartIcon : MonoBehaviour
         part = null;
         text.text = "";
         numberText.text = "";
-        image.sprite = defaultImage;
+        image.sprite = null;
         numberTextBG.SetActive(false);
     }
 }

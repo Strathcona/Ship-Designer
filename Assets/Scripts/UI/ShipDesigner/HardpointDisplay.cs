@@ -6,7 +6,6 @@ using GameConstructs;
 
 public class HardpointDisplay : MonoBehaviour {
     public Hardpoint hardpoint;
-    public Sprite defaultImage;
     public bool displayPart = true;
     public Image partImage;
     public Text allowableTypesText;
@@ -16,9 +15,6 @@ public class HardpointDisplay : MonoBehaviour {
 
 
     public void Awake() {
-        if (defaultImage == null) {
-            SpriteLoader.GetPartSprite("defaultSmall");
-        }
         Clear();
     }
 
@@ -28,12 +24,18 @@ public class HardpointDisplay : MonoBehaviour {
         if(hardpoint.part == null || displayPart == false) {
             allowableTypesText.gameObject.SetActive(true);
             allowableSizeText.gameObject.SetActive(true);
+            partImage.gameObject.SetActive(false);
+            partNameBackground.SetActive(false);
+            partNameText.gameObject.SetActive(false);
             allowableTypesText.text = Constants.ColoredPartTypeString[hardpoint.allowableType];
             allowableSizeText.text = hardpoint.allowableSize.ToString();
         } else {
+            allowableTypesText.gameObject.SetActive(false);
+            allowableSizeText.gameObject.SetActive(false);
             partNameBackground.SetActive(true);
             partNameText.gameObject.SetActive(true);
             partImage.gameObject.SetActive(true);
+            partNameText.text = hardpoint.part.modelName;
             partImage.sprite = hardpoint.part.sprite;
             partImage.color = Constants.PartColor[hardpoint.part.partType];
         }
@@ -43,12 +45,18 @@ public class HardpointDisplay : MonoBehaviour {
         if (hardpoint.part == null || displayPart == false) {
             allowableTypesText.gameObject.SetActive(true);
             allowableSizeText.gameObject.SetActive(true);
+            partImage.gameObject.SetActive(false);
+            partNameBackground.SetActive(false);
+            partNameText.gameObject.SetActive(false);
             allowableTypesText.text = Constants.ColoredPartTypeString[hardpoint.allowableType];
             allowableSizeText.text = hardpoint.allowableSize.ToString();
         } else {
+            allowableTypesText.gameObject.SetActive(false);
+            allowableSizeText.gameObject.SetActive(false);
             partNameBackground.SetActive(true);
             partNameText.gameObject.SetActive(true);
             partImage.gameObject.SetActive(true);
+            partNameText.text = hardpoint.part.modelName;
             partImage.sprite = hardpoint.part.sprite;
             partImage.color = Constants.PartColor[hardpoint.part.partType];
         }
@@ -56,7 +64,7 @@ public class HardpointDisplay : MonoBehaviour {
 
     public void Clear() {
         hardpoint = null;
-        partImage.sprite = defaultImage;
+        partImage.sprite = null;
         partImage.gameObject.SetActive(false);
         partNameBackground.SetActive(false);
         partNameText.gameObject.SetActive(false);

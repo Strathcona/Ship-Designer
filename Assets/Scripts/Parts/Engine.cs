@@ -84,15 +84,16 @@ public class Engine : Part {
     }
 
     public static Engine GetRandomEngine() {
-        Engine s = new Engine();
-        s.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
-        s.Tier = Random.Range(1, 6);
-        s.agility.Value = Random.Range(1, 20);
-        s.averageThrust.Value = Random.Range(1, 20);
-        s.typeName = Constants.TierEngineNames[s.Tier] + " Engine";
-        s.modelName = Constants.GetRandomEngineModelName();
-        Debug.Log(s.GetDescriptionString());
-        Debug.Log(s.GetStatisticsString());
-        return s;
+        Engine p = new Engine();
+        p.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
+        p.Tier = Random.Range(1, 6);
+        p.agility.Value = Random.Range(1, 20);
+        p.size = PartSize.S;
+        p.averageThrust.Value = Random.Range(1, 20);
+        p.typeName = Constants.TierEngineNames[p.Tier] + " Engine";
+        p.modelName = Constants.GetRandomEngineModelName();
+        Debug.Log(p.GetDescriptionString());
+        Debug.Log(p.GetStatisticsString());
+        return p;
     }
 }

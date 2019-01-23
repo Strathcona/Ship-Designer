@@ -23,6 +23,10 @@ public class HardpointLayout : MonoBehaviour {
     }
 
     public void Clear() {
-        hardpointDisplayPool.ReleaseAll();
+        if(hardpointDisplayPool != null) {
+            hardpointDisplayPool.ReleaseAll();
+        } else {
+            Awake();
+        }
     }
 }

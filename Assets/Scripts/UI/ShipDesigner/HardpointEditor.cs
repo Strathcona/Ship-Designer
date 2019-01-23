@@ -9,7 +9,7 @@ public class HardpointEditor : MonoBehaviour {
     public GameObject hardpointListRoot;
     public GameObjectPool hardpointListPool;
 
-    public InputFieldIncrement size;
+    public Dropdown sizeDropdown;
     public Toggle externalToggle;
     public Dropdown internalHardpointTypes;
     public Dropdown externalHardpointTypes;
@@ -57,7 +57,7 @@ public class HardpointEditor : MonoBehaviour {
     }
 
     public void AddNewHardpoint() {
-        Hardpoint h = new Hardpoint(size.FieldValue, newHardpointType, newHardpointOrientation);
+        Hardpoint h = new Hardpoint((PartSize) sizeDropdown.value, newHardpointType, newHardpointOrientation);
         GameObject g = hardpointListPool.GetGameObject();
         var passHardpoint = h;
         var passListElement = g.GetComponent<HardpointListElement>();

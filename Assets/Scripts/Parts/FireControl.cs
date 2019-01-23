@@ -68,16 +68,17 @@ public class FireControl : Part{
     }
 
     public static FireControl GetRandomFireControl() {
-        FireControl f = new FireControl();
-        f.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
-        f.tier = Random.Range(1, 6);
-        f.tracking.Value = Random.Range(1, 20);
-        f.accuracy.Value = Random.Range(1, 20);
-        f.range.Value = Random.Range(1, 20);
-        f.typeName = "Fire Control System";
-        f.modelName = Constants.GetRandomFireControlModelName();
-        Debug.Log(f.GetDescriptionString());
-        Debug.Log(f.GetStatisticsString());
-        return f;
+        FireControl p = new FireControl();
+        p.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
+        p.tier = Random.Range(1, 6);
+        p.tracking.Value = Random.Range(1, 20);
+        p.accuracy.Value = Random.Range(1, 20);
+        p.size = PartSize.S;
+        p.range.Value = Random.Range(1, 20);
+        p.typeName = "Fire Control System";
+        p.modelName = Constants.GetRandomFireControlModelName();
+        Debug.Log(p.GetDescriptionString());
+        Debug.Log(p.GetStatisticsString());
+        return p;
     }
 }

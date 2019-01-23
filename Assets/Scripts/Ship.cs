@@ -8,7 +8,8 @@ using System;
 public class Ship {
     public string shipName;
     public string className;
-
+    public ShipType classificaiton;
+    public int crew = 0;
     public int minutesToDesign = 30000;
     public int minutesToBuild = 30000;
 
@@ -51,7 +52,7 @@ public class Ship {
         }
     }
 
-    private void RecalculateStatisticsFromParts() {
+    private void RecalculateShipClassification() {
 
     }
 
