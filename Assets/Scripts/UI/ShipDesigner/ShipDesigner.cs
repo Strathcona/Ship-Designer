@@ -12,15 +12,25 @@ public class ShipDesigner : MonoBehaviour {
     public PartSelector partSelector;
     public Text summaryText;
     public Button viewSummary;
+    public Button editHardpoints;
+    public Button editParts;
     public HardpointEditor hardpointEditor;
     public HardpointLayout hardpointLayout;
     public HardpointLayout hardpointLayoutParts;
 
+    private void ToggleVisible(bool on) {
+        shipClassName.gameObject.SetActive(on);
+        summaryText.gameObject.SetActive(on);
+        viewSummary.gameObject.SetActive(on);
+        editHardpoints.gameObject.SetActive(on);
+        editParts.gameObject.SetActive(on);
+    }
+
     public void Awake() {
-        shipClassName.gameObject.SetActive(false);
         hardpointEditor.finishedEditingButton.onClick.AddListener(FinishedEditingHardpoints);
         hardpointEditor.cancelButton.onClick.AddListener(CancelEditingHardpoints);
         hardpointLayout.DisplayHardpoints(ship.hardpoints);
+        ToggleVisible(false);
     }
 
     public void AskToLoadShip() {
@@ -44,6 +54,7 @@ public class ShipDesigner : MonoBehaviour {
         ship.SetHardpoints(new List<Hardpoint>(hardpointEditor.GetHardpoints()));
         hardpointLayout.DisplayHardpoints(ship.hardpoints);
         hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
+        UpdateSummary();
     }
 
     public void CancelEditingHardpoints() {
@@ -58,20 +69,23 @@ public class ShipDesigner : MonoBehaviour {
     public void FinishedEditingParts() {
         partSelector.gameObject.SetActive(false);
         hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
+        UpdateSummary();
     }
 
     public void LoadShip(Ship s) {
         ship = s;
-        shipClassName.gameObject.SetActive(true);
+        ToggleVisible(true);
         shipClassName.text = ship.className;
         hardpointLayout.DisplayHardpoints(ship.hardpoints);
         hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
+        UpdateSummary();
     }
 
     public void Clear() {
         ship = null;
         hardpointLayout.Clear();
         hardpointLayoutParts.Clear();
+        ToggleVisible(false);
     }
 
 
@@ -85,7 +99,7 @@ public class ShipDesigner : MonoBehaviour {
     public void CreateNewShip() {
         Clear();
         ship = new Ship();
-        shipClassName.gameObject.SetActive(true);
+        ToggleVisible(true);
     }
 
     public void AskToSubmitShip() {
@@ -105,75 +119,7 @@ new List<Action>() { SubmitDesign });
         ship.className = shipClassName.text;
     }
 
-    public void UpdateShipStatistics() {
-        Dictionary<PartSize, int> crewPerHardpoint = new Dictionary<PartSize, int>() {
-            { PartSize.XS, 1 },
-            { PartSize.S, 2 },
-            { PartSize.M, 4 },
-            { PartSize.L, 8 },
-            { PartSize.XL, 16 },
-        };
-
-        ship.classificaiton = CalculateClassification(ship.hardpoints);
-        if(ship.classificaiton == ShipType.Fighter) {
-            ship.crew = 1;
-        } else {
-            foreach(Hardpoint h in ship.hardpoints) {
-                ship.crew += crewPerHardpoint[h.allowableSize];
-            }
-            ship.crew = Mathf.CeilToInt(ship.crew * 1.1f);
-        }
-
-    }
-
-    public ShipType CalculateClassification(List<Hardpoint> hardpoints) {
-        int xs = hardpoints.FindAll(h => h.allowableSize == PartSize.XS).Count;
-        int s = hardpoints.FindAll(h => h.allowableSize == PartSize.S).Count;
-        int m = hardpoints.FindAll(h => h.allowableSize == PartSize.M).Count;
-        int l = hardpoints.FindAll(h => h.allowableSize == PartSize.L).Count;
-        int xl = hardpoints.FindAll(h => h.allowableSize == PartSize.XL).Count;
-        if(xs == 0 && s == 0 && m ==0 && l == 0 && xl == 0) {
-            return ShipType.None;
-        }
-        if(s == 0 && m ==0 && l == 0 && xl == 0) {
-            //only xs
-            if(xs > 15) {
-                if(ship.hardpoints.FindAll(h => h.allowableType == PartType.Weapon).Count > 0) {
-                    //got a bunch of xs slots and weapons
-                    return ShipType.Gunboat;
-                } else {
-                    //got a bunch of xs slots but no weapons
-                    return ShipType.Utility;
-                }
-            } else {
-                //only a few slots 
-                if (ship.hardpoints.FindAll(h => h.allowableType == PartType.Weapon).Count > 0) {
-                    return ShipType.Fighter;
-                } else {
-                    return ShipType.Patrol;
-                }
-            }
-        }
-        if(m == 0 && l == 0 && xl == 0) {
-            if(xs + s > 15) {
-                return ShipType.LightCruiser;
-            } else {
-                return ShipType.Destroyer;
-            }
-        }
-        if(l == 0 && xl == 0) {
-            if (xs + s + m > 40) {
-                return ShipType.Battlecruiser;
-            } else if (xs + s + m > 20) {
-                return ShipType.HeavyCruiser;
-            } else {
-                return ShipType.LightCruiser;
-            }
-        }
-        if(xs + s + m + l + xl > 40) {
-            return ShipType.Battleship;
-        } else {
-            return ShipType.Battlecruiser;
-        }
+    public void UpdateSummary() {
+        summaryText.text = "Summary \n \n" + "Tonnage:" + ship.tonnage.ToString() + "\nCrew:" + ship.crew;
     }
 }

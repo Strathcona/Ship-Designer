@@ -133,12 +133,13 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void AskToSubmitPart() {
-        ModalPopupManager.instance.DisplayModalPopup("Confirmation",
-"Would you like to submit this part for design? It will take "+TimeManager.GetTimeString(activePart.minutesToDevelop)+".",
-new List<string>() { "Yes", "No" },
-new List<Action>() { SubmitDesign });
-
-        //refresh part list
+        if(activePart != null) {
+            ModalPopupManager.instance.DisplayModalPopup("Confirmation",
+            "Would you like to submit this part for design? It will take " + TimeManager.GetTimeString(activePart.minutesToDevelop) + ".",
+            new List<string>() { "Yes", "No" },
+            new List<Action>() { SubmitDesign });
+            //refresh part list
+        }
     }
 
     public void SubmitDesign() {

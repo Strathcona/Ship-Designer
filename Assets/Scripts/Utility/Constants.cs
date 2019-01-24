@@ -29,9 +29,12 @@ namespace GameConstructs {
         private static string[] firstNamesFeminine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesFeminine.txt");
         private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
 
-        public static Dictionary<WeaponType, int> CaliberSizeFactor = new Dictionary<WeaponType, int>() {
-            {WeaponType.laser, 4},
-            {WeaponType.railgun, 3}
+        public static Dictionary<PartSize, int> hardpointSizeFactor = new Dictionary<PartSize, int>() {
+            { PartSize.XS, 1 },
+            { PartSize.S, 2 },
+            { PartSize.M, 4 },
+            { PartSize.L, 8 },
+            { PartSize.XL, 16 },
         };
 
         public static Dictionary<PartType, string> PartTypeString = new Dictionary<PartType, string>() {
