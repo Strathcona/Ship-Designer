@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class ShipLibrary : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private static List<Ship> shipsInDevelopment = new List<Ship>();
+    private static List<Ship> shipDesigns = new List<Ship>();
+
+
+    public static void AddShipToDevelopment(Ship s) {
+        shipsInDevelopment.Add(s);
+        s.inDevelopment = true;
+        var pass = s;
+        Timer t = TimeManager.instance.SetTimer(s.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public static void CompleteDevelopmentOfPart(Ship s) {
+        Debug.Log("Ship complete development " + s.className);
+        s.inDevelopment = false;
+        shipsInDevelopment.Remove(s);
+        shipDesigns.Add(s);
     }
+
+    public static List<Ship> GetShips() {
+        return new List<Ship>(shipDesigns);
+    }
+
+    public static List<Ship> GetUndevelopedShips() {
+        return new List<Ship>(shipsInDevelopment);
+    }
+
 }

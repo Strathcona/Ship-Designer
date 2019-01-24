@@ -11,7 +11,7 @@
 [TEXT][18]["Wonderful, thank you for your time. We look forward to working with you"]
 [TEXT][12]["Ah, well, I'm afraid that as a first time customer, we don't generally negotiate, and our offer is final."]
 [TEXT][13]["Given that, would you like to reconsider?"]
-[CHOICE][14]["Yes, we'd like to accept your offer","No, we'd like to consider other options"]["SecondAgree","SecondAgree"][true,false]
+[CHOICE][14]["Yes, I'd like to accept your offer","No, I'd like to consider other options"]["SecondAgree","SecondAgree"][true,false]
 [BRANCH][15][["SecondAgree"],["SecondAgree"]][[true],[false]][10,15]
 [TEXT][16]["I understand. If you reconsider, please feel free to contact us."]
 [CHOICE][17]["End Transmission"][][]

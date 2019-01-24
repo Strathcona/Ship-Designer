@@ -46,15 +46,6 @@ public class Sensor : Part{
         tweakables.Add(resolution);
     }
 
-    public override void CopyValuesFromPart(Part p) {
-        base.CopyValuesFromPart(p);
-        Sensor s = (Sensor)p;
-        range.Value = s.range.Value;
-        resolution.Value= s.resolution.Value;
-        partType = PartType.Sensor;
-        UpdateProperties();
-    }
-
     public static Sensor GetRandomSensor() {
         Sensor p = new Sensor();
         p.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
@@ -67,5 +58,24 @@ public class Sensor : Part{
         p.resolution.Value = UnityEngine.Random.Range(2, 20);
         return p;
 
+    }
+
+    public override Part Clone() {
+        Sensor part = (Sensor)MemberwiseClone();
+        part.manufacturer = manufacturer;
+        foreach (Tweakable t in tweakables) {
+            Tweakable newt = Tweakable.MakeTweakable(
+                part,
+                t.tweakableType,
+                part.TweakableUpdate,
+                t.Value,
+                t.defaultIntValue,
+                t.minIntValue,
+                t.maxIntValue,
+                t.tweakableName);
+            newt.dropdownLabels = new List<string>(t.dropdownLabels);
+            part.tweakables.Add(newt);
+        }
+        return part;
     }
 }

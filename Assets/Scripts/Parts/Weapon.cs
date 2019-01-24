@@ -15,15 +15,7 @@ public class Weapon : Part {
         get { return damage; }
     }
 
-    public Weapon() : base(){
-        partType = PartType.Weapon;
-    }
-
-    public Weapon(Part p) : base() {
-        Weapon w = (Weapon)p;
-        for (int i = 0; i < w.tweakables.Count; i++) {
-            tweakables[i].Value = w.tweakables[i].Value;
-        }
+    public Weapon() {
         partType = PartType.Weapon;
     }
 
@@ -80,15 +72,6 @@ public class Weapon : Part {
         tweakables.Add(turrets);
         tweakables.Add(caliber);
         tweakables.Add(reload);
-    }
-
-    public override void CopyValuesFromPart(Part p) {
-        base.CopyValuesFromPart(p);
-        Weapon w = (Weapon)p;
-        for (int i = 0; i < w.tweakables.Count; i++) {
-            tweakables[i].Value = w.tweakables[i].Value;
-        }
-        partType = PartType.Weapon;
     }
 
     public override string GetDescriptionString() {
@@ -148,5 +131,24 @@ public class Weapon : Part {
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;
+    }
+
+    public override Part Clone() {
+        Weapon part = (Weapon) MemberwiseClone();
+        part.manufacturer = manufacturer;
+        foreach (Tweakable t in tweakables) {
+            Tweakable newt = Tweakable.MakeTweakable(
+                part,
+                t.tweakableType,
+                part.TweakableUpdate,
+                t.Value,
+                t.defaultIntValue,
+                t.minIntValue,
+                t.maxIntValue,
+                t.tweakableName);
+            newt.dropdownLabels = new List<string>(t.dropdownLabels);
+            part.tweakables.Add(newt);
+        }
+        return part;
     }
 }

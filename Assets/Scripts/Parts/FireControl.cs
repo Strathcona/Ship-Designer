@@ -13,16 +13,6 @@ public class FireControl : Part{
         partType = PartType.FireControl;
     }
 
-
-    public FireControl(Part p) : base() {
-        FireControl f = (FireControl)p;
-        for (int i = 0; i < f.tweakables.Count; i++) {
-            tweakables[i].Value = f.tweakables[i].Value;
-        }
-        partType = PartType.FireControl;
-        UpdateProperties();
-    }
-
     protected override void InitializeTweakables() {
         tracking = Tweakable.MakeTweakable(
             this,
@@ -57,16 +47,6 @@ public class FireControl : Part{
         tweakables.Add(range);
     }
 
-    public override void CopyValuesFromPart(Part p) {
-        base.CopyValuesFromPart(p);
-        FireControl f = (FireControl)p;
-        for (int i = 0; i < f.tweakables.Count; i++) {
-            tweakables[i].Value = f.tweakables[i].Value;
-        }
-        partType = PartType.FireControl;
-        UpdateProperties();
-    }
-
     public static FireControl GetRandomFireControl() {
         FireControl p = new FireControl();
         p.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
@@ -80,5 +60,24 @@ public class FireControl : Part{
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;
+    }
+
+    public override Part Clone() {
+        FireControl part = (FireControl)MemberwiseClone();
+        part.manufacturer = manufacturer;
+        foreach (Tweakable t in tweakables) {
+            Tweakable newt = Tweakable.MakeTweakable(
+                part,
+                t.tweakableType,
+                part.TweakableUpdate,
+                t.Value,
+                t.defaultIntValue,
+                t.minIntValue,
+                t.maxIntValue,
+                t.tweakableName);
+            newt.dropdownLabels = new List<string>(t.dropdownLabels);
+            part.tweakables.Add(newt);
+        }
+        return part;
     }
 }

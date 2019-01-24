@@ -104,7 +104,7 @@ public class ShipDesigner : MonoBehaviour {
 
     public void AskToSubmitShip() {
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
-"Would you like to submit this ship for design? It will take " + TimeManager.GetTimeString(ship.minutesToDesign) + ".",
+"Would you like to submit this ship for design? It will take " + TimeManager.GetTimeString(ship.minutesToDevelop) + ".",
 new List<string>() { "Yes", "No" },
 new List<Action>() { SubmitDesign });
 
@@ -112,7 +112,7 @@ new List<Action>() { SubmitDesign });
     }
 
     public void SubmitDesign() {
-
+        ShipLibrary.AddShipToDevelopment(ship);
     }
 
     public void UpdateShipClassName() {

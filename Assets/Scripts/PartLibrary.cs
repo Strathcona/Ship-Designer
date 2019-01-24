@@ -23,7 +23,6 @@ public static class PartLibrary {
         p.inDevelopment = true;
         var pass = p;
         Timer t = TimeManager.instance.SetTimer(p.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
-        p.timer = t;
     }
 
     public static void CompleteDevelopmentOfPart(Part p) {

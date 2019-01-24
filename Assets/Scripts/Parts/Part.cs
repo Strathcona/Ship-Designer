@@ -12,7 +12,6 @@ public abstract class Part {
     public int unitTime = 1;
     public int unitPrice = 1;
     public bool inDevelopment = false;
-    public Timer timer;
     public PartType partType;
     public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
@@ -35,43 +34,6 @@ public abstract class Part {
             netPower = value;
             UpdateProperties();
         }
-    }
-
-    public Part() {
-        InitializeTweakables();
-    }
-
-    public Part(Part p) {
-        InitializeTweakables();
-        typeName = p.typeName;
-        modelName = p.modelName;
-        manufacturer = p.manufacturer;
-        size = p.size;
-        sprite = p.sprite;
-        quality = p.quality;
-        unitTime = p.unitTime;
-        unitPrice = p.unitPrice;
-        partType = p.partType;
-        minutesToDevelop = p.minutesToDevelop;
-        weight = p.weight;
-        tier = p.Tier;
-        netPower = p.NetPower;
-    }
-
-    public virtual void CopyValuesFromPart(Part p) {
-        typeName = p.typeName;
-        modelName = p.modelName;
-        manufacturer = p.manufacturer;
-        size = p.size;
-        sprite = p.sprite;
-        quality = p.quality;
-        unitTime = p.unitTime;
-        unitPrice = p.unitPrice;
-        partType = p.partType;
-        minutesToDevelop = p.minutesToDevelop;
-        weight = p.weight;
-        tier = p.Tier;
-        netPower = p.NetPower;
     }
 
     public virtual string GetDescriptionString() {
@@ -104,7 +66,8 @@ public abstract class Part {
     public virtual void TweakableUpdate() {
         UpdateProperties();
     }
-    protected abstract void InitializeTweakables();
 
+    protected abstract void InitializeTweakables();
+    public abstract Part Clone();
 
 }

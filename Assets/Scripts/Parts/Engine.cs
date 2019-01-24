@@ -11,17 +11,8 @@ public class Engine : Part {
     public Tweakable energyEfficiency;
 
 
-    public Engine() : base(){
+    public Engine() {
         partType = PartType.Engine;
-    }
-
-    public Engine(Part p) : base() {
-        Engine e = (Engine)p;
-        for (int i = 0; i < e.tweakables.Count; i++) {
-            tweakables[i].Value = e.tweakables[i].Value;
-        }
-        partType = PartType.Engine;
-        UpdateProperties();
     }
 
     protected override void InitializeTweakables() {
@@ -73,16 +64,6 @@ public class Engine : Part {
         tweakables.Add(energyEfficiency);
     }
 
-    public override void CopyValuesFromPart(Part p) {
-        base.CopyValuesFromPart(p);
-        Engine e = (Engine)p;
-        for (int i = 0; i < e.tweakables.Count; i++) {
-            tweakables[i].Value = e.tweakables[i].Value;
-        }
-        partType = PartType.Engine;
-        UpdateProperties();
-    }
-
     public static Engine GetRandomEngine() {
         Engine p = new Engine();
         p.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
@@ -95,5 +76,24 @@ public class Engine : Part {
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;
+    }
+
+    public override Part Clone() {
+        Engine part = (Engine)MemberwiseClone();
+        part.manufacturer = manufacturer;
+        foreach (Tweakable t in tweakables) {
+            Tweakable newt = Tweakable.MakeTweakable(
+                part,
+                t.tweakableType,
+                part.TweakableUpdate,
+                t.Value,
+                t.defaultIntValue,
+                t.minIntValue,
+                t.maxIntValue,
+                t.tweakableName);
+            newt.dropdownLabels = new List<string>(t.dropdownLabels);
+            part.tweakables.Add(newt);
+        }
+        return part;
     }
 }

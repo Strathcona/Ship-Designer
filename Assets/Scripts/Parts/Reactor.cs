@@ -9,16 +9,8 @@ public class Reactor : Part{
     public Tweakable averagePower;
     public Tweakable maxPower;
 
-    public Reactor() : base(){
+    public Reactor() {
         partType = PartType.Reactor;
-    }
-
-    public Reactor(Part p) : base() {
-        partType = PartType.Reactor;
-        Reactor pp = (Reactor)p;
-        for (int i = 0; i < pp.tweakables.Count; i++) {
-            tweakables[i].Value = pp.tweakables[i].Value;
-        }
     }
 
     protected override void InitializeTweakables() {
@@ -56,5 +48,24 @@ public class Reactor : Part{
         p.averagePower.Value = Random.Range(20, 100);
         p.maxPower.Value = Random.Range(100, 120);
         return p;
+    }
+
+    public override Part Clone() {
+        Reactor part = (Reactor)MemberwiseClone();
+        part.manufacturer = manufacturer;
+        foreach (Tweakable t in tweakables) {
+            Tweakable newt = Tweakable.MakeTweakable(
+                part,
+                t.tweakableType,
+                part.TweakableUpdate,
+                t.Value,
+                t.defaultIntValue,
+                t.minIntValue,
+                t.maxIntValue,
+                t.tweakableName);
+            newt.dropdownLabels = new List<string>(t.dropdownLabels);
+            part.tweakables.Add(newt);
+        }
+        return part;
     }
 }

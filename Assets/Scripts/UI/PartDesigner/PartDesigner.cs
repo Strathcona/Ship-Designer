@@ -66,7 +66,7 @@ public class PartDesigner : MonoBehaviour {
                 activePart = new Engine();
                 break;
         }
-        activePart.CopyValuesFromPart(p);
+        activePart = p.Clone();
         previewImage.sprite = activePart.sprite;
         modelNameInput.text = activePart.modelName;
         SetPartModel();

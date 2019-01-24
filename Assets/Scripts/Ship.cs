@@ -11,7 +11,18 @@ public class Ship {
     public ShipType classificaiton;
     public int crew = 0;
     public int tonnage = 0;
-    public int minutesToDesign = 30000;
+    public bool inDevelopment;
+
+    //public int powerSupply = 0;
+    //public int powerConsumption = 0;
+    //public int powerMaxConsumption = 0;
+    //public int thrust;
+    //public int maxThrust;
+    //public int agility;
+    //public int alphaDamage;
+    //public int averageDamage;
+
+    public int minutesToDevelop = 30000;
     public int minutesToBuild = 30000;
 
     public List<Hardpoint> hardpoints = new List<Hardpoint>();
