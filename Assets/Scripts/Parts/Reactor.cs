@@ -9,7 +9,7 @@ public class Reactor : Part{
     public Tweakable averagePower;
     public Tweakable maxPower;
 
-    public Reactor() {
+    public Reactor(): base() {
         partType = PartType.Reactor;
     }
 

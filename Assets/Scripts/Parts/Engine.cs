@@ -11,7 +11,7 @@ public class Engine : Part {
     public Tweakable energyEfficiency;
 
 
-    public Engine() {
+    public Engine() :base(){
         partType = PartType.Engine;
     }
 

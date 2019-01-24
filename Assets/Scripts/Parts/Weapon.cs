@@ -15,7 +15,7 @@ public class Weapon : Part {
         get { return damage; }
     }
 
-    public Weapon() {
+    public Weapon() : base(){
         partType = PartType.Weapon;
     }
 
@@ -114,7 +114,7 @@ public class Weapon : Part {
     protected override void UpdateProperties() {
         base.UpdateProperties();
         int turretfactor = Mathf.Max(1, turrets.Value);
-        weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value) + turretfactor);
+        weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value)*turretfactor);
         damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
     }
 

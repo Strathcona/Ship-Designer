@@ -9,7 +9,7 @@ public class FireControl : Part{
     public Tweakable accuracy;
     public Tweakable range;
 
-    public FireControl() {
+    public FireControl() : base(){
         partType = PartType.FireControl;
     }
 

@@ -36,6 +36,10 @@ public abstract class Part {
         }
     }
 
+    public Part() {
+        InitializeTweakables();
+    }
+
     public virtual string GetDescriptionString() {
         if(manufacturer != null) {
             return manufacturer.name + " " + modelName + " " + typeName;

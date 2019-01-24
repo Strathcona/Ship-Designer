@@ -11,6 +11,7 @@ public class ShipDesigner : MonoBehaviour {
     public InputField shipClassName;
     public PartSelector partSelector;
     public Text summaryText;
+    public Text classificationText;
     public Button viewSummary;
     public Button editHardpoints;
     public Button editParts;
@@ -24,6 +25,7 @@ public class ShipDesigner : MonoBehaviour {
         viewSummary.gameObject.SetActive(on);
         editHardpoints.gameObject.SetActive(on);
         editParts.gameObject.SetActive(on);
+        classificationText.gameObject.SetActive(on);
     }
 
     public void Awake() {
@@ -52,9 +54,7 @@ public class ShipDesigner : MonoBehaviour {
     public void FinishedEditingHardpoints() {
         hardpointEditor.gameObject.SetActive(false);
         ship.SetHardpoints(new List<Hardpoint>(hardpointEditor.GetHardpoints()));
-        hardpointLayout.DisplayHardpoints(ship.hardpoints);
-        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
-        UpdateSummary();
+        onChange();
     }
 
     public void CancelEditingHardpoints() {
@@ -68,17 +68,14 @@ public class ShipDesigner : MonoBehaviour {
 
     public void FinishedEditingParts() {
         partSelector.gameObject.SetActive(false);
-        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
-        UpdateSummary();
+        onChange();
     }
 
     public void LoadShip(Ship s) {
         ship = s;
         ToggleVisible(true);
         shipClassName.text = ship.className;
-        hardpointLayout.DisplayHardpoints(ship.hardpoints);
-        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
-        UpdateSummary();
+        onChange();
     }
 
     public void Clear() {
@@ -115,11 +112,11 @@ new List<Action>() { SubmitDesign });
         ShipLibrary.AddShipToDevelopment(ship);
     }
 
-    public void UpdateShipClassName() {
+    public void onChange() {
         ship.className = shipClassName.text;
-    }
-
-    public void UpdateSummary() {
         summaryText.text = "Summary \n \n" + "Tonnage:" + ship.tonnage.ToString() + "\nCrew:" + ship.crew;
+        hardpointLayout.DisplayHardpoints(ship.hardpoints);
+        hardpointLayoutParts.DisplayHardpoints(ship.hardpoints);
+        classificationText.text = ship.classificaiton.ToString();
     }
 }
