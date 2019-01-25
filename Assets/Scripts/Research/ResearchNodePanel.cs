@@ -14,7 +14,7 @@ public class ResearchNodePanel : MonoBehaviour {
         node = _node;
         node.onUpdate = Refresh;
         text.text = node.name;
-        fade.fillAmount = (float)node.cost/node.progress;
+        fade.fillAmount = 1;
         image.color = node.nodeColor;
         if (node.active) {
             outline.enabled = true;
@@ -25,7 +25,7 @@ public class ResearchNodePanel : MonoBehaviour {
     }
 
     public void Refresh() {
-        fade.fillAmount = (float)node.cost / node.progress;
+        fade.fillAmount = (float)(node.cost - node.progress) / node.cost;
         if (node.active) {
             outline.enabled = true;
             outline.effectColor = Color.green;

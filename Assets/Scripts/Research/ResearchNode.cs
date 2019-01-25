@@ -15,7 +15,7 @@ public class ResearchNode {
     public Action<ResearchNode> onComplete;
     public Action onUpdate;
     public bool locked = false;
-    public Vector2 key;
+    public Vector2 key; //unlocks any tech at this location
     public Color nodeColor;
     public string name;
     public string effect;
