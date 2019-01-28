@@ -17,7 +17,6 @@ namespace GameConstructs {
     public enum CompanyTextKey { SpecialMitobahn, GenericOne }
 
     public static class Constants {
-
         private static string[] companyNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/CompanyNames.txt");
         private static string[] weaponNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/WeaponNames.txt");
         private static string[] shipNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/ShipNames.txt");
@@ -28,6 +27,10 @@ namespace GameConstructs {
         private static string[] firstNamesMasculine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesMasculine.txt");
         private static string[] firstNamesFeminine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesFeminine.txt");
         private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
+
+        public static int numberOfTiers = 8;
+        public static int researchGridSize = 6;
+
 
         public static Dictionary<PartSize, int> hardpointSizeFactor = new Dictionary<PartSize, int>() {
             { PartSize.XS, 1 },

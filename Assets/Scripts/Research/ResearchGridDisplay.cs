@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using GameConstructs;
 
 public class ResearchGridDisplay : MonoBehaviour {
     public GameObject GridRoot;
     public int xSize;
     public int ySize;
-    public ResearchNode[][] nodes;
+    public int currentTier = 0;
+    public ResearchNode[][][] nodes; // [tier][x][y]
     ResearchNode startNode;
     public List<ResearchNode> finishedNodes = new List<ResearchNode>();
     public List<ResearchNode> isolatedNodes = new List<ResearchNode>();
@@ -19,9 +21,14 @@ public class ResearchGridDisplay : MonoBehaviour {
 
     private void Start() {
         TimeManager.instance.actionsOnMinute.Add(ResearchUpdate);
-        nodes = new ResearchNode[xSize][];
-        for(int i = 0; i < xSize; i++) {
-            nodes[i] = new ResearchNode[ySize];
+        //nodes = new ResearchNode[Constants.numberOfTiers][][];
+        nodes = new ResearchNode[0][][];
+        for (int i = 0; i <nodes.Length; i++) {
+            nodes[i] = new ResearchNode[xSize][];
+            for(int j = 0; j < nodes[i].Length; j++) {
+                nodes[i][j] = new ResearchNode[ySize];
+
+            }
         }
         InitializeGrid();
         DisplayGrid();
@@ -62,45 +69,8 @@ public class ResearchGridDisplay : MonoBehaviour {
 
             for(int y = 0; y < ySize; y++) {
                 int x = 0;
-                foreach (string s in lines[y].Split(',')) {
-                    switch (s[0]) {
-                        case 'R':
-                            nodes[x][y] = new ResearchNode(x, y, Color.white, FinishedResearch);
-                            nodes[x][y].name = "Random Tech";
-                            break;
-                        case 'S':
-                            nodes[x][y] = new ResearchNode(x, y, Color.green, FinishedResearch);
-                            nodes[x][y].name = "Start Tech";
-                            startNode = nodes[x][y];
-                            break;
-                        case 'E':
-                            nodes[x][y] = new ResearchNode(x, y, Color.red, FinishedResearch);
-                            nodes[x][y].name = "End Tech";
-                            break;
-                        case 'K':
-                            nodes[x][y] = new ResearchNode(x, y, Color.grey, FinishedResearch);
-                            nodes[x][y].name = "Key Tech";
-                            int keyID;
-                            int.TryParse(s.Substring(1,1), out keyID);
-                            keys.Add(keyID, nodes[x][y]);
-                            break;
-                        case 'L':
-                            nodes[x][y] = new ResearchNode(x, y, Color.grey, FinishedResearch);
-                            nodes[x][y].name = "Locked Tech";
-                            nodes[x][y].locked = true;
-                            int lockID;
-                            int.TryParse(s.Substring(1, 1), out lockID);
-                            locks.Add(lockID, nodes[x][y]);
-                            break;
-                        default:
-                            Debug.Log("Bad character parse in reading research grid in file " + file.Name + " in line " + y);
-                            break;
-                    }
-                    x += 1;
-                }
+
             }
-
-
         }
     }
 

@@ -24,7 +24,7 @@ public static class ConversationTreeLoader {
                 } else if (lines[i].Length == 0) {
                     continue;
                 }
-                List<string> topLevelStrings = SplitOnTopLevelBrackets(lines[i]);
+                List<string> topLevelStrings = Utility.SplitOnTopLevelBrackets(lines[i]);
 
                 if(topLevelStrings[0] == "END") {
                     elements.Add(new ConversationElement());
@@ -52,12 +52,12 @@ public static class ConversationTreeLoader {
                         break;
                     case "BRANCH":
                         List<List<string>> branchVariables = new List<List<string>>();
-                        foreach(string s in SplitOnTopLevelBrackets(topLevelStrings[2])) {
+                        foreach(string s in Utility.SplitOnTopLevelBrackets(topLevelStrings[2])) {
                             branchVariables.Add(SplitCommaSeperatedList(s));
                         }
 
                         List<List<bool>> branchConditions = new List<List<bool>>();
-                        foreach (string s in SplitOnTopLevelBrackets(topLevelStrings[3])) {
+                        foreach (string s in Utility.SplitOnTopLevelBrackets(topLevelStrings[3])) {
                             List<bool> cons = new List<bool>();
                             foreach(string b in SplitCommaSeperatedList(s)) {
                                 if (s == "true") {
@@ -151,53 +151,6 @@ public static class ConversationTreeLoader {
             }
         }
         strings.Add(currentString.ToString());
-        return strings;
-    }
-
-    private static List<string> SplitOnTopLevelBrackets(string s) {
-        bool quote = false;
-        bool escape = false;
-        int nestedBrackets = 0;
-        List<string> strings = new List<string>();
-        StringBuilder currentString = new StringBuilder();
-        foreach (char c in s) {
-            if (quote) { //if we're inside a quote, we ignore everything except for escape characters and the end quote
-                if (c == '/' && escape != true) {
-                    escape = true;
-                }
-                if (escape == true) {//if we're escaped, the next character is added even if it's a quote
-                    currentString.Append(c);
-                    escape = false;
-                } else {
-                    if (c == '"') {
-                        quote = false; //we're out of the quote
-                        currentString.Append(c);
-                    } else {
-                        currentString.Append(c); // if it's not a closing quote, add it to the list
-                    }
-                }
-            } else {
-                if (c == ']') {
-                    nestedBrackets -= 1;
-                    if (nestedBrackets == 0) { //we're back at top level, store the string
-                        strings.Add(currentString.ToString());
-                        currentString.Clear();
-                    } else {
-                        currentString.Append(c);
-                    }
-                } else if (c == '[') { //head one deeper
-                    nestedBrackets += 1;
-                    if(nestedBrackets > 1) {
-                        currentString.Append(c);
-                    }
-                } else if (c == '"') {
-                    quote = true;
-                    currentString.Append(c);
-                } else {
-                    currentString.Append(c);
-                }
-            }
-        }
         return strings;
     }
 }
