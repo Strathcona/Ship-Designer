@@ -45,33 +45,54 @@ public static class ResearchLoader {
         foreach (FileInfo file in txtFiles) {
             List<ResearchNode> nodeList = new List<ResearchNode>();
             string[] lines = File.ReadAllLines(file.FullName);
-            foreach(string line in lines) {
-                List<string> strings = Utility.SplitOnTopLevelBrackets(line);
+            for(int i = 0; i < lines.Length; i++) {
+                List<string> strings = Utility.SplitOnTopLevelBrackets(lines[i]);
                 if(strings.Count < 4) {
-                    Debug.LogError("Bad string parsed in "+file.FullName);
+                    Debug.LogError("Bad string parsed in "+file.FullName+ " line "+i);
                 } else {
-                    bool mandatory = strings[0] == "MANDATORY";
-                    int.TryParse(strings[1], out int cost);
-                    string effect = strings[2];
-                    string name = strings[3];
-                    ResearchNode node = new ResearchNode(cost, name, effect, mandatory);
+                    ResearchNodeType nodeType;
+                    if(strings[0] == "MANDATORY") {
+                        nodeType = ResearchNodeType.Mandatory;
+                    }else if (strings[0] == "END") {
+                        nodeType = ResearchNodeType.End;
+                    }else if (strings[0] == "START") {
+                        nodeType = ResearchNodeType.Start;
+                    } else {
+                        nodeType = ResearchNodeType.Optional;
+                    }
+                    if (int.TryParse(strings[1], out int cost)) {
+                        string effect = strings[2];
+                        string name = strings[3];
+                        ResearchNode node = new ResearchNode(cost, name, effect, nodeType);
+                    } else {
+                        Debug.LogError("Bad int parsed in " + file.FullName + " line " + i);
+                    }
 
                 }
             }
         }
     }
 
-    public static List<ResearchGrid> GetGrids(string gridName) {
+    public static bool GetGrids(string gridName, out List<ResearchGrid> grid) {
         if (researchGrids.ContainsKey(gridName)) {
-            return researchGrids[gridName];
+            grid = researchGrids[gridName];
+            return true;
         }else {
-            Debug.LogError("Couldn't find Grid Name");
-            return null;
+            Debug.LogError("Couldn't find Grid Name "+gridName);
+            grid = null;
+            return false;
         }
     }
 
-    public static List<ResearchNode> GetNodes(int tier) {
-
+    public static bool GetNodes(string nodeName, out List<ResearchNode> nodes) {
+        if (researchNodes.ContainsKey(nodeName)) {
+            nodes = researchNodes[nodeName];
+            return true;
+        } else {
+            Debug.LogError("Couldn't find Node Name " + nodeName);
+            nodes = null;
+            return false;
+        }
     }
 
     public static string[][] GetSquareGrid(int size) {

@@ -15,6 +15,7 @@ namespace GameConstructs {
     public enum CompanyQuality { Speed, Quality, Cost, Prestige, Ethics, Quantity };
     public enum ConversationElementType { Text, Set, Choice, Branch, End }
     public enum CompanyTextKey { SpecialMitobahn, GenericOne }
+    public enum ResearchNodeType {  Start, End, Mandatory, Optional};
 
     public static class Constants {
         private static string[] companyNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/CompanyNames.txt");

@@ -31,7 +31,7 @@ public class ResearchGridDisplay : MonoBehaviour {
             }
         }
         InitializeGrid();
-        DisplayGrid();
+        DisplayGrid(0);
         FinishedResearch(startNode);
     }
 
@@ -44,7 +44,7 @@ public class ResearchGridDisplay : MonoBehaviour {
             node.active = false;
             node.complete = true;
             finishedNodes.Add(node);
-            List<ResearchNode> next = GetAdjacent(node.x, node.y);
+            List<ResearchNode> next = GetAdjacent(node.tier, node.x, node.y);
             foreach (ResearchNode n in next) {
                 n.active = true;
                 activeNodes.Add(n);
@@ -59,28 +59,16 @@ public class ResearchGridDisplay : MonoBehaviour {
     }
 
     private void InitializeGrid() {
-        Debug.Log("Loading Research Grids");
-        DirectoryInfo d = new DirectoryInfo(Application.dataPath + "/Resources/Research");
-        FileInfo[] files = d.GetFiles("*.csv");
-        foreach(FileInfo file in files) {
-            string[] lines = File.ReadAllLines(file.FullName);
-            Dictionary<int, ResearchNode> locks = new Dictionary<int, ResearchNode>();
-            Dictionary<int, ResearchNode> keys = new Dictionary<int, ResearchNode>();
-
-            for(int y = 0; y < ySize; y++) {
-                int x = 0;
-
-            }
-        }
+        
     }
 
-    private void DisplayGrid() {
+    private void DisplayGrid(int tier) {
         int xindex = 0;
         int yindex = 0;
         for(int i = 0; i < GridRoot.transform.childCount; i++) {
             ResearchNodePanel panel = GridRoot.transform.GetChild(i).GetComponent<ResearchNodePanel>();
-            panel.DisplayResearchNode(nodes[xindex][yindex]);
-            nodes[xindex][yindex].onUpdate = panel.Refresh;
+            panel.DisplayResearchNode(nodes[tier][xindex][yindex]);
+            nodes[tier][xindex][yindex].onUpdate = panel.Refresh;
             xindex += 1;
             if(xindex >= xSize) {
                 xindex = 0;
@@ -89,33 +77,32 @@ public class ResearchGridDisplay : MonoBehaviour {
         }
     }
 
-    private List<ResearchNode> GetAdjacent(int x, int y) {
+    private List<ResearchNode> GetAdjacent(int tier, int x, int y) {
         List<ResearchNode> nodesToReturn = new List<ResearchNode>();
         if( x + 1 < xSize) {//not too far right
-            ResearchNode node = nodes[x + 1][y];
+            ResearchNode node = nodes[tier][x + 1][y];
             if(!node.complete && !node.locked && !node.active) {
                 nodesToReturn.Add(node);
             }
         }
         if (x -1 >= 0) {//not too far left
-            ResearchNode node = nodes[x -1][y];
+            ResearchNode node = nodes[tier][x -1][y];
             if (!node.complete && !node.locked && !node.active) {
                 nodesToReturn.Add(node);
             }
         }
         if (y + 1 < ySize) {//not too far down
-            ResearchNode node = nodes[x][y + 1];
+            ResearchNode node = nodes[tier][x][y + 1];
             if (!node.complete && !node.locked && !node.active) {
                 nodesToReturn.Add(node);
             }
         }
         if (y - 1 >= 0) {//not too far up
-            ResearchNode node = nodes[x][y - 1];
+            ResearchNode node = nodes[tier][x][y - 1];
             if (!node.complete && !node.locked && !node.active) {
                 nodesToReturn.Add(node);
             }
         }
         return nodesToReturn;
     }
-
 }
