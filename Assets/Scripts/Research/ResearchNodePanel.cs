@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using GameConstructs;
 public class ResearchNodePanel : MonoBehaviour {
     public ResearchNode node;
     public Text text;
@@ -19,6 +19,24 @@ public class ResearchNodePanel : MonoBehaviour {
         node = _node;
         text.text = node.name;
         fade.fillAmount = 1;
+        if (node.effect.Contains("Weapon")) {
+            icon.color = Constants.PartColor[PartType.Weapon];
+        } else if(node.effect.Contains("Sensor")) {
+            icon.color = Constants.PartColor[PartType.Sensor];
+        } else if (node.effect.Contains("FireControl")) {
+            icon.color = Color.blue;
+        } else if (node.effect.Contains("Reactor")) {
+            icon.color = Constants.PartColor[PartType.Reactor];
+        } else if (node.effect.Contains("Engine")) {
+            icon.color = Constants.PartColor[PartType.Engine];
+        } else if (node.nodeType == ResearchNodeType.Start) {
+            icon.color = Color.green;
+        } else if (node.nodeType == ResearchNodeType.End) {
+            icon.color = Color.red;
+        } else {
+            icon.color = Color.cyan;
+        }
+        
         if (node.active) {
             outline.gameObject.SetActive(true);
         } else {

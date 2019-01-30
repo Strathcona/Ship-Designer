@@ -16,9 +16,7 @@ public class ResearchGridDisplay : MonoBehaviour {
     public ResearchNodePanel[][][] panels;
     ResearchNode startNode;
     public List<ResearchNode> finishedNodes = new List<ResearchNode>();
-    public List<ResearchNode> isolatedNodes = new List<ResearchNode>();
     public List<ResearchNode> activeNodes = new List<ResearchNode>();
-    public List<ResearchNode> recentlyFinishedNodes = new List<ResearchNode>();
 
     public int researchPerUpdate = 1;
 
@@ -35,7 +33,8 @@ public class ResearchGridDisplay : MonoBehaviour {
         }
         InitializeGrid();
         DisplayGrid(0);
-        recentlyFinishedNodes.Add(startNode);
+        startNode.active = true;
+        activeNodes.Add(startNode);
     }
 
     public void ResearchUpdate() {
@@ -43,15 +42,16 @@ public class ResearchGridDisplay : MonoBehaviour {
             r.progress += researchPerUpdate;
             if(r.progress > r.cost) {
                 recentlyFinishedNodes.Add(r);
+                r.active = false;
+                r.complete = true;
+                finishedNodes.Add(r);
+
             }
             panels[r.tier][r.x][r.y].Refresh();
         }
         foreach(ResearchNode node in recentlyFinishedNodes) {
             activeNodes.Remove(node);
-            node.active = false;
-            node.complete = true;
-            panels[node.tier][node.x][node.y].Refresh();
-            finishedNodes.Add(node);
+
             List<ResearchNode> next = GetAdjacent(node.tier, node.x, node.y);
             foreach (ResearchNode n in next) {
                 n.active = true;
@@ -59,7 +59,7 @@ public class ResearchGridDisplay : MonoBehaviour {
                 panels[n.tier][n.x][n.y].Refresh();
             }
         }
-
+        recentlyFinishedNodes.Clear();
     }
 
     private void InitializeGrid() {
@@ -74,6 +74,7 @@ public class ResearchGridDisplay : MonoBehaviour {
         } else {
             Debug.LogError("Could not intitialize Grid");
         }
+        startNode = nodes[0][grid.startNode.x][grid.startNode.y];
         panels = new ResearchNodePanel[1][][];
         panels[0] = new ResearchNodePanel[nodes[0].Length][];
         for(int x = 0; x < nodes[0].Length; x++) {

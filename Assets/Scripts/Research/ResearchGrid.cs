@@ -6,6 +6,7 @@ public class ResearchGrid {
     public string[][] grid;
     public int xSize;
     public int ySize;
+    public Coord startNode = new Coord(0, 0);
 
     public ResearchGrid(string[][] _grid) {
         grid = _grid;
@@ -29,18 +30,20 @@ public class ResearchGrid {
                 coords.Insert(Random.Range(0, coords.Count), new Coord(x, y));
             }
         }
-        Debug.Log(nodes.Count +" "+ grid.Length*grid[0].Length);
         int count = 0;
         foreach(Coord c in coords) {
-            Debug.Log(grid[c.x][c.y] + " " + count);
             count += 1;
             switch (grid[c.x][c.y]) {
                 case "R":
-                    if(mandatoryNodes.Count > 1) {
+                    if(mandatoryNodes.Count >= 1) {
                         filledGrid[c.x][c.y] = mandatoryNodes[0];
+                        mandatoryNodes[0].x = c.x;
+                        mandatoryNodes[0].y = c.y;
                         mandatoryNodes.RemoveAt(0);
                     } else if (optionalNodes.Count > 0) {
                         filledGrid[c.x][c.y] = optionalNodes[0];
+                        optionalNodes[0].x = c.x;
+                        optionalNodes[0].y = c.y;
                         optionalNodes.RemoveAt(0);
                     } else {
                         Debug.LogError("Not enough nodes to fill grid after " + count);
@@ -50,7 +53,10 @@ public class ResearchGrid {
                 case "S":
                     if(startNodes.Count > 0) {
                         filledGrid[c.x][c.y] = startNodes[0];
+                        startNodes[0].x = c.x;
+                        startNodes[0].y = c.y;
                         startNodes.RemoveAt(0);
+                        startNode = c;
                     } else {
                         Debug.LogError("Not enough start nodes to fill grid");
                         return false;
@@ -59,6 +65,8 @@ public class ResearchGrid {
                 case "E":
                     if (endNodes.Count > 0) {
                         filledGrid[c.x][c.y] = endNodes[0];
+                        endNodes[0].x = c.x;
+                        endNodes[0].y = c.y;
                         endNodes.RemoveAt(0);
                     } else {
                         Debug.LogError("Not enough end nodes to fill grid");
