@@ -14,35 +14,47 @@ public static class ResearchLoader {
         DirectoryInfo d = new DirectoryInfo(Application.dataPath + "/Resources/Research");
         FileInfo[] csvFiles = d.GetFiles("*.csv");
         foreach (FileInfo file in csvFiles) {
+            Debug.Log("Loading " + file.Name);
             List<ResearchGrid> gridList = new List<ResearchGrid>();
             string[] lines = File.ReadAllLines(file.FullName);
-            int currentLine = 0;
-            string[][] grid = GetSquareGrid(Constants.researchGridSize);
+            string[] row;
+            string[][] grid;
+            List<string[]> rows = new List<string[]>();
             Coord start = new Coord(0, 0);
             Coord end = new Coord(0, 0);
-            foreach(string line in lines) {
-                string[] split = line.Split(',');
-                for(int i = 0; i < line.Length; i ++ ){
-                    if(split[i][0] == 'S') {
-                        start = new Coord(currentLine, i);
-                    } else if(split[i][0] == 'E') {
-                        end = new Coord(currentLine, i);
+            for(int i = 0; i < lines.Length; i++) {
+                row = lines[i].Split(',');
+                if(row.Length > 1) {
+                    rows.Add(row);
+                } else if (rows.Count >= 1){//if we have something to add
+                    Debug.Log("Adding Grid "+rows.Count+" "+rows[0].Length);
+                    grid = new string[rows[0].Length][];
+                    for(int j = 0; j < rows.Count; j++) {
+                        grid[j] = rows[j];
                     }
-                }
-                currentLine += 1;
-                if(currentLine > Constants.researchGridSize) {
-                    ResearchGrid researchGrid = new ResearchGrid(grid, start, end);
+                    ResearchGrid researchGrid = new ResearchGrid(grid);
                     gridList.Add(researchGrid);
-                    grid = GetSquareGrid(Constants.researchGridSize);
-                    currentLine = 0;
+                    rows.Clear();
                 }
             }
-            researchGrids.Add(file.Name.Substring(0, file.Name.Length - 3), gridList);
+            //just to check at the end if we have any left over grids
+            if(rows.Count >= 1) {
+                Debug.Log("Adding Grid " + rows.Count + " " + rows[0].Length);
+                grid = new string[rows[0].Length][];
+                for (int j = 0; j < rows.Count; j++) {
+                    grid[j] = rows[j];
+                }
+                ResearchGrid researchGrid = new ResearchGrid(grid);
+                gridList.Add(researchGrid);
+                rows.Clear();
+            }
+            researchGrids.Add(file.Name.Substring(0, file.Name.Length - 4), gridList);
         }
 
         Debug.Log("Loading Research Nodes");
         FileInfo[] txtFiles = d.GetFiles("*.txt");
         foreach (FileInfo file in txtFiles) {
+            Debug.Log("Loading "+file.Name);
             List<ResearchNode> nodeList = new List<ResearchNode>();
             string[] lines = File.ReadAllLines(file.FullName);
             for(int i = 0; i < lines.Length; i++) {
@@ -64,12 +76,14 @@ public static class ResearchLoader {
                         string effect = strings[2];
                         string name = strings[3];
                         ResearchNode node = new ResearchNode(cost, name, effect, nodeType);
+                        nodeList.Add(node);
                     } else {
                         Debug.LogError("Bad int parsed in " + file.FullName + " line " + i);
                     }
 
                 }
             }
+            researchNodes.Add(file.Name.Substring(0, file.Name.Length - 4), nodeList);
         }
     }
 
@@ -96,9 +110,9 @@ public static class ResearchLoader {
     }
 
     public static string[][] GetSquareGrid(int size) {
-        string[][] grid = new string[Constants.researchGridSize][];
-        for (int i = 0; i < Constants.researchGridSize) {
-            grid[i] = new string[Constants.researchGridSize];
+        string[][] grid = new string[size][];
+        for (int i = 0; i < size; i++) {
+            grid[i] = new string[size];
         }
         return grid;
     }

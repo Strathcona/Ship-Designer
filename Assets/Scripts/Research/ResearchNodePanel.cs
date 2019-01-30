@@ -17,7 +17,6 @@ public class ResearchNodePanel : MonoBehaviour {
 
     public void DisplayResearchNode(ResearchNode _node) {
         node = _node;
-        node.onUpdate = Refresh;
         text.text = node.name;
         fade.fillAmount = 1;
         if (node.active) {

@@ -14,8 +14,6 @@ public class ResearchNode {
     public bool active = false;
     public bool complete = false;
     public ResearchNodeType nodeType;
-    public Action<ResearchNode> onComplete;
-    public Action onUpdate;
     public Color nodeColor;
     public string name;
     public string effect;
@@ -25,13 +23,5 @@ public class ResearchNode {
         name = _name;
         effect = _effect;
         nodeType = _nodeType;
-    }
-
-    public void UpdateResearch(int _progress) {
-        progress += _progress;
-        onUpdate?.Invoke();
-        if (progress > cost) {
-            onComplete(this);
-        }
     }
 }

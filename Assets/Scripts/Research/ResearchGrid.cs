@@ -4,26 +4,22 @@ using GameConstructs;
 
 public class ResearchGrid {
     public string[][] grid;
-    public Coord start;
-    public Coord end;
     public int xSize;
     public int ySize;
 
-    public ResearchGrid(string[][] _grid, Coord _start, Coord _end) {
+    public ResearchGrid(string[][] _grid) {
         grid = _grid;
-        start = _start;
-        end = _end;
         xSize = grid.Length;
         ySize = grid[0].Length;
     }
 
 
-    private ResearchNode[][] FillGrid(List<ResearchNode> nodes, int tier) {
+    public bool FillGrid(List<ResearchNode> nodes, int tier, out ResearchNode[][] filledGrid) {
         List<ResearchNode> startNodes = nodes.FindAll(i => i.nodeType == ResearchNodeType.Start);
         List<ResearchNode> endNodes = nodes.FindAll(i => i.nodeType == ResearchNodeType.End);
         List<ResearchNode> mandatoryNodes = nodes.FindAll( i => i.nodeType == ResearchNodeType.Mandatory);
         List<ResearchNode> optionalNodes = nodes.FindAll(i => i.nodeType == ResearchNodeType.Optional);
-        ResearchNode[][] filledGrid = new ResearchNode[xSize][];
+        filledGrid = new ResearchNode[xSize][];
         for (int i = 0; i < xSize; i++) {
             filledGrid[i] = new ResearchNode[ySize];
         }
@@ -33,7 +29,11 @@ public class ResearchGrid {
                 coords.Insert(Random.Range(0, coords.Count), new Coord(x, y));
             }
         }
+        Debug.Log(nodes.Count +" "+ grid.Length*grid[0].Length);
+        int count = 0;
         foreach(Coord c in coords) {
+            Debug.Log(grid[c.x][c.y] + " " + count);
+            count += 1;
             switch (grid[c.x][c.y]) {
                 case "R":
                     if(mandatoryNodes.Count > 1) {
@@ -43,7 +43,8 @@ public class ResearchGrid {
                         filledGrid[c.x][c.y] = optionalNodes[0];
                         optionalNodes.RemoveAt(0);
                     } else {
-                        Debug.LogError("Not enough nodes to fill grid");
+                        Debug.LogError("Not enough nodes to fill grid after " + count);
+                        return false;
                     }
                     break;
                 case "S":
@@ -52,6 +53,7 @@ public class ResearchGrid {
                         startNodes.RemoveAt(0);
                     } else {
                         Debug.LogError("Not enough start nodes to fill grid");
+                        return false;
                     }
                     break;
                 case "E":
@@ -59,11 +61,16 @@ public class ResearchGrid {
                         filledGrid[c.x][c.y] = endNodes[0];
                         endNodes.RemoveAt(0);
                     } else {
-                        Debug.LogError("Not enough start nodes to fill grid");
+                        Debug.LogError("Not enough end nodes to fill grid");
+                        return false;
                     }
+                    break;
+                default:
+                    Debug.LogError("Can't parse grid " + grid[c.x][c.y] + " in research grid");
                     break;
             }
         }
+        return true;
     }
 
     public void MirrorHorizontal() {
@@ -77,8 +84,6 @@ public class ResearchGrid {
                 newGrid[i][ySize - j] = grid[i][j];
             }
         }
-        start = new Coord(start.x, ySize - start.y);
-        end = new Coord(end.x, ySize - end.y);
         grid = newGrid;
     }
 
@@ -93,8 +98,6 @@ public class ResearchGrid {
                 newGrid[xSize - i][j] = grid[i][j];
             }
         }
-        start = new Coord(xSize -start.x, start.y);
-        end = new Coord(xSize - end.x, end.y);
         grid = newGrid;
     }
 }

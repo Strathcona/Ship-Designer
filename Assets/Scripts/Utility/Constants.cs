@@ -30,8 +30,6 @@ namespace GameConstructs {
         private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
 
         public static int numberOfTiers = 8;
-        public static int researchGridSize = 6;
-
 
         public static Dictionary<PartSize, int> hardpointSizeFactor = new Dictionary<PartSize, int>() {
             { PartSize.XS, 1 },
