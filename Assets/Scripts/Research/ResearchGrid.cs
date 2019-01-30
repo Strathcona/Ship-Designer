@@ -33,7 +33,7 @@ public class ResearchGrid {
         int count = 0;
         foreach(Coord c in coords) {
             count += 1;
-            switch (grid[c.x][c.y]) {
+            switch (grid[c.y][c.x]) {
                 case "R":
                     if(mandatoryNodes.Count >= 1) {
                         filledGrid[c.x][c.y] = mandatoryNodes[0];

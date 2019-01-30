@@ -10,13 +10,35 @@ public class ResearchNode {
     public int y;
     public int tier;
     public int cost = 100;
-    public int progress = 0;
-    public bool active = false;
-    public bool complete = false;
+    private int progress = 0;
+    public int Progress {
+        get { return progress; }
+        set {
+            progress = value;
+            onChange();
+        }
+    }
+    private bool active = false;
+    public bool Active {
+        get { return active; }
+        set {
+            active = value;
+            onChange();
+        }
+    }
+    private bool complete = false;
+    public bool Complete {
+        get { return complete; }
+        set {
+            complete = value;
+            onChange();
+        }
+    }
     public ResearchNodeType nodeType;
     public Color nodeColor;
     public string name;
     public string effect;
+    public Action onChange;
 
     public ResearchNode(int _cost, string _name, string _effect, ResearchNodeType _nodeType) {
         cost = _cost;
@@ -24,4 +46,6 @@ public class ResearchNode {
         effect = _effect;
         nodeType = _nodeType;
     }
+
+
 }

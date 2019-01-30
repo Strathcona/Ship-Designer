@@ -15687,9 +15687,7 @@ MonoBehaviour:
   ySize: 5
   currentTier: 0
   finishedNodes: []
-  isolatedNodes: []
   activeNodes: []
-  recentlyFinishedNodes: []
   researchPerUpdate: 1
 --- !u!1 &1552634942
 GameObject:

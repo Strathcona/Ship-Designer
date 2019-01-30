@@ -18,7 +18,7 @@ public class ResearchGridDisplay : MonoBehaviour {
     public List<ResearchNode> finishedNodes = new List<ResearchNode>();
     public List<ResearchNode> activeNodes = new List<ResearchNode>();
 
-    public int researchPerUpdate = 1;
+    public int researchPerUpdate = 24;
 
     private void Start() {
         TimeManager.instance.actionsOnMinute.Add(ResearchUpdate);
@@ -33,33 +33,26 @@ public class ResearchGridDisplay : MonoBehaviour {
         }
         InitializeGrid();
         DisplayGrid(0);
-        startNode.active = true;
+        startNode.Active = true;
         activeNodes.Add(startNode);
     }
 
     public void ResearchUpdate() {
-        foreach(ResearchNode r in activeNodes) {
-            r.progress += researchPerUpdate;
-            if(r.progress > r.cost) {
-                recentlyFinishedNodes.Add(r);
-                r.active = false;
-                r.complete = true;
-                finishedNodes.Add(r);
-
-            }
-            panels[r.tier][r.x][r.y].Refresh();
-        }
-        foreach(ResearchNode node in recentlyFinishedNodes) {
-            activeNodes.Remove(node);
-
-            List<ResearchNode> next = GetAdjacent(node.tier, node.x, node.y);
-            foreach (ResearchNode n in next) {
-                n.active = true;
-                activeNodes.Add(n);
-                panels[n.tier][n.x][n.y].Refresh();
+        for(int i = activeNodes.Count - 1; i >= 0; i--) {
+            activeNodes[i].Progress += researchPerUpdate;
+            if (activeNodes[i].Progress >= activeNodes[i].cost) {
+                activeNodes[i].Active = false;
+                activeNodes[i].Complete = true;
+                finishedNodes.Add(activeNodes[i]);
+                List<ResearchNode> next = GetAdjacent(activeNodes[i].tier, activeNodes[i].x, activeNodes[i].y);
+                foreach (ResearchNode n in next) {
+                    n.Active = true;
+                    activeNodes.Add(n);
+                    panels[n.tier][n.x][n.y].Refresh();
+                }
+                activeNodes.RemoveAt(i);
             }
         }
-        recentlyFinishedNodes.Clear();
     }
 
     private void InitializeGrid() {
@@ -105,25 +98,25 @@ public class ResearchGridDisplay : MonoBehaviour {
         List<ResearchNode> nodesToReturn = new List<ResearchNode>();
         if( x + 1 < xSize) {//not too far right
             ResearchNode node = nodes[tier][x + 1][y];
-            if(!node.complete && !node.active) {
+            if(!node.Complete && !node.Active) {
                 nodesToReturn.Add(node);
             }
         }
         if (x -1 >= 0) {//not too far left
             ResearchNode node = nodes[tier][x -1][y];
-            if (!node.complete && !node.active) {
+            if (!node.Complete && !node.Active) {
                 nodesToReturn.Add(node);
             }
         }
         if (y + 1 < ySize) {//not too far down
             ResearchNode node = nodes[tier][x][y + 1];
-            if (!node.complete && !node.active) {
+            if (!node.Complete && !node.Active) {
                 nodesToReturn.Add(node);
             }
         }
         if (y - 1 >= 0) {//not too far up
             ResearchNode node = nodes[tier][x][y - 1];
-            if (!node.complete && !node.active) {
+            if (!node.Complete && !node.Active) {
                 nodesToReturn.Add(node);
             }
         }

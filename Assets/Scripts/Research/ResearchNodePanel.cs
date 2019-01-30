@@ -17,6 +17,7 @@ public class ResearchNodePanel : MonoBehaviour {
 
     public void DisplayResearchNode(ResearchNode _node) {
         node = _node;
+        node.onChange = Refresh;
         text.text = node.name;
         fade.fillAmount = 1;
         if (node.effect.Contains("Weapon")) {
@@ -37,7 +38,7 @@ public class ResearchNodePanel : MonoBehaviour {
             icon.color = Color.cyan;
         }
         
-        if (node.active) {
+        if (node.Active) {
             outline.gameObject.SetActive(true);
         } else {
             outline.gameObject.SetActive(false);
@@ -45,8 +46,8 @@ public class ResearchNodePanel : MonoBehaviour {
     }
 
     public void Refresh() {
-        fade.fillAmount = (float)(node.cost - node.progress) / node.cost;
-        if (node.active) {
+        fade.fillAmount = (float)(node.cost - node.Progress) / node.cost;
+        if (node.Active) {
             outline.gameObject.SetActive(true);
         } else {
             outline.gameObject.SetActive(false);
