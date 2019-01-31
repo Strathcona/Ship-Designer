@@ -11,8 +11,9 @@ public class Engine : Part {
     public Tweakable energyEfficiency;
 
 
-    public Engine() :base(){
+    public Engine() {
         partType = PartType.Engine;
+        InitializeTweakables();
     }
 
     protected override void InitializeTweakables() {
@@ -21,7 +22,6 @@ public class Engine : Part {
             TweakableType.Slider,
             TweakableUpdate,
             "Agility");
-
         averageThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
@@ -67,14 +67,11 @@ public class Engine : Part {
         part.manufacturer = manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
-                part,
-                t.tweakableType,
-                part.TweakableUpdate,
-                t.Value,
-                t.DefaultValue,
-                t.MinValue,
-                t.MaxValue,
-                t.tweakableName);
+                 part,
+                 t.tweakableType,
+                 part.TweakableUpdate,
+                 t.tweakableName);
+            newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);
         }

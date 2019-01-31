@@ -15,8 +15,9 @@ public class Weapon : Part {
         get { return damage; }
     }
 
-    public Weapon() : base(){
+    public Weapon() {
         partType = PartType.Weapon;
+        InitializeTweakables();
     }
 
     protected override void InitializeTweakables() {
@@ -24,10 +25,6 @@ public class Weapon : Part {
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            5,
-            5,
-            5,
-            100,
             "Caliber");
         caliber.unit = "mm";
 
@@ -35,20 +32,12 @@ public class Weapon : Part {
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            5,
-            5,
-            5,
-            100,
             "Reload");
         reload.unit = "s";
         turrets = Tweakable.MakeTweakable(
             this,
             TweakableType.Dropdown,
             TweakableUpdate,
-            0,
-            0,
-            0,
-            4,
             "Turret Setup");
         turrets.dropdownLabels.Add("Centerline Mounted");
         turrets.dropdownLabels.Add("Single Turret");
@@ -60,10 +49,6 @@ public class Weapon : Part {
             this,
             TweakableType.Dropdown,
             TweakableUpdate,
-            0,
-            0,
-            0,
-            1,
             "Weapon Type");
         weaponType.dropdownLabels.Add("Laser");
         weaponType.dropdownLabels.Add("Railgun");
@@ -138,14 +123,11 @@ public class Weapon : Part {
         part.manufacturer = manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
-                part,
-                t.tweakableType,
-                part.TweakableUpdate,
-                t.Value,
-                t.DefaultValue,
-                t.MinValue,
-                t.MaxValue,
-                t.tweakableName);
+                 part,
+                 t.tweakableType,
+                 part.TweakableUpdate,
+                 t.tweakableName);
+            newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);
         }

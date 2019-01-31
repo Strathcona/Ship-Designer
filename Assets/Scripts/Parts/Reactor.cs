@@ -9,8 +9,9 @@ public class Reactor : Part{
     public Tweakable averagePower;
     public Tweakable maxPower;
 
-    public Reactor(): base() {
+    public Reactor() {
         partType = PartType.Reactor;
+        InitializeTweakables();
     }
 
     protected override void InitializeTweakables() {
@@ -18,22 +19,14 @@ public class Reactor : Part{
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            50,
-            50,
-            1,
-            100,
-            "Baseline Output");
+            "Output");
         tweakables.Add(averagePower);
 
         maxPower = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            100,
-            110,
-            110,
-            120,
-            "Max Output");
+            "Maximum Output");
         maxPower.unit = "%";
         tweakables.Add(maxPower);
     }
@@ -55,14 +48,11 @@ public class Reactor : Part{
         part.manufacturer = manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
-                part,
-                t.tweakableType,
-                part.TweakableUpdate,
-                t.Value,
-                t.DefaultValue,
-                t.MinValue,
-                t.MaxValue,
-                t.tweakableName);
+                 part,
+                 t.tweakableType,
+                 part.TweakableUpdate,
+                 t.tweakableName);
+            newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);
         }

@@ -42,7 +42,7 @@ namespace GameConstructs {
         public static Dictionary<PartType, string> PartTypeString = new Dictionary<PartType, string>() {
             {PartType.Engine, "Engine"},
             {PartType.Weapon, "Weapon"},
-            {PartType.Reactor, "Power Plant"},
+            {PartType.Reactor, "Reactor"},
             {PartType.Sensor, "Sensor"},
             {PartType.FireControl, "Fire Control"},
         };

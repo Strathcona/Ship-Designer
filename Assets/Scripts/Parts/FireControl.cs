@@ -9,8 +9,9 @@ public class FireControl : Part{
     public Tweakable accuracy;
     public Tweakable range;
 
-    public FireControl() : base(){
+    public FireControl() {
         partType = PartType.FireControl;
+        InitializeTweakables();
     }
 
     protected override void InitializeTweakables() {
@@ -18,29 +19,17 @@ public class FireControl : Part{
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Tracking");
 
         accuracy = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Accuracy");
         range = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Range");
         tweakables.Add(tracking);
         tweakables.Add(accuracy);
@@ -70,11 +59,8 @@ public class FireControl : Part{
                 part,
                 t.tweakableType,
                 part.TweakableUpdate,
-                t.Value,
-                t.DefaultValue,
-                t.MinValue,
-                t.MaxValue,
                 t.tweakableName);
+            newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);
         }

@@ -10,8 +10,9 @@ public class Sensor : Part{
     public Tweakable resolution;
     public SensorType sensorType;
 
-    public Sensor(): base() {
+    public Sensor() {
         partType = PartType.Sensor;
+        InitializeTweakables();
     }
 
     public Sensor(Part p) : base() {
@@ -27,19 +28,11 @@ public class Sensor : Part{
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Range");
         resolution = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Resolution");
 
         tweakables.Add(range);
@@ -65,14 +58,11 @@ public class Sensor : Part{
         part.manufacturer = manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
-                part,
-                t.tweakableType,
-                part.TweakableUpdate,
-                t.Value,
-                t.DefaultValue,
-                t.MinValue,
-                t.MaxValue,
-                t.tweakableName);
+                 part,
+                 t.tweakableType,
+                 part.TweakableUpdate,
+                 t.tweakableName);
+            newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);
         }

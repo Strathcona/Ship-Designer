@@ -19,7 +19,6 @@ public class Tweakable {
             OnValueChanged();
         }
     }
-    public int DefaultValue { get { return ResearchManager.instance.GetResearchValue(GetResearchManagerKey("DefaultValue")); } }
     public int MinValue { get { return ResearchManager.instance.GetResearchValue(GetResearchManagerKey("MinValue")); } }
     public int MaxValue { get { return ResearchManager.instance.GetResearchValue(GetResearchManagerKey("MaxValue")); } }
     public List<string> dropdownLabels = new List<string>();
@@ -46,15 +45,16 @@ public class Tweakable {
         TweakableType _tweakableType,
         Action _updatePart,
         string _tweakableName){
-
         Tweakable t = new Tweakable(_tweakableName);
         t.part = _part;
         t.UpdatePart = _updatePart;
         t.tweakableType = _tweakableType;
+        t.value = t.MinValue;
         return t;
     }
 
     private string GetResearchManagerKey(string fieldName) {
+        Debug.Log(part.typeName+" "+part.partType);
         return Constants.PartTypeString[part.partType] + " " + tweakableName + " " + fieldName;
     }
 }
