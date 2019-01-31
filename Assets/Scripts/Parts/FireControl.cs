@@ -71,9 +71,9 @@ public class FireControl : Part{
                 t.tweakableType,
                 part.TweakableUpdate,
                 t.Value,
-                t.defaultIntValue,
-                t.minIntValue,
-                t.maxIntValue,
+                t.DefaultValue,
+                t.MinValue,
+                t.MaxValue,
                 t.tweakableName);
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);

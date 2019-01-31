@@ -40,8 +40,8 @@ public class TweakableEditorPanel : MonoBehaviour {
             sliderText.gameObject.SetActive(true);
             sliderText.text = tweakable.tweakableName;
 
-            slider.minValue = tweakable.minIntValue;
-            slider.maxValue = tweakable.maxIntValue;
+            slider.minValue = tweakable.MinValue;
+            slider.maxValue = tweakable.MaxValue;
             slider.value = tweakable.Value;
 
             sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString()+tweakable.unit;

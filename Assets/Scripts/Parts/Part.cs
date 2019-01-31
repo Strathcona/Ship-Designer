@@ -51,7 +51,7 @@ public abstract class Part {
     protected virtual void UpdateProperties() {
         float weightedTweakableFactor = 0;
         foreach(Tweakable t in tweakables) {
-            weightedTweakableFactor += (float)t.Value / t.maxIntValue;
+            weightedTweakableFactor += (float)t.Value / t.MaxValue;
         }
         weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
         weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)));

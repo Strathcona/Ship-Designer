@@ -20,30 +20,18 @@ public class Engine : Part {
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Agility");
 
         averageThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            1,
-            1,
-            1,
-            100,
             "Thrust");
 
         maxThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            100,
-            100,
-            100,
-            150,
             "Maximum Thrust");
         maxThrust.unit = "%";
 
@@ -51,10 +39,6 @@ public class Engine : Part {
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            100,
-            100,
-            100,
-            125,
             "Energy Efficiency");
         energyEfficiency.unit = "%";
 
@@ -87,9 +71,9 @@ public class Engine : Part {
                 t.tweakableType,
                 part.TweakableUpdate,
                 t.Value,
-                t.defaultIntValue,
-                t.minIntValue,
-                t.maxIntValue,
+                t.DefaultValue,
+                t.MinValue,
+                t.MaxValue,
                 t.tweakableName);
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             part.tweakables.Add(newt);

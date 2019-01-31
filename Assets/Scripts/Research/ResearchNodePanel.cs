@@ -10,6 +10,7 @@ public class ResearchNodePanel : MonoBehaviour {
     public Image icon;
     public Image background;
     public Image outline;
+    public Button button;
 
     private void Awake() {
         outline.color = Color.green;
