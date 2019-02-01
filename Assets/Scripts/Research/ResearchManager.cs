@@ -29,12 +29,24 @@ public class ResearchManager: MonoBehaviour {
         {"Sensor Resolution MaxValue", 20 },
         {"Weapon Caliber MinValue", 5 },
         {"Weapon Caliber MaxValue", 100 },
-        {"Weapon Reload MinValue", 5 },
-        {"Weapon Reload MaxValue", 100 },
+        {"Weapon Reload Time MinValue", 5 },
+        {"Weapon Reload Time MaxValue", 100 },
         {"Weapon Turret Setup MinValue", 0 },
         {"Weapon Turret Setup MaxValue", 4 },
         {"Weapon Weapon Type MinValue", 0 },
         {"Weapon Weapon Type MaxValue", 1 },
+        {"Shield Shield Type MinValue", 0 },
+        {"Shield Shield Type MaxValue", 1 },
+        {"Shield Shield Strength MinValue", 1 },
+        {"Shield Shield Strength MaxValue", 20 },
+        {"Shield Recharge Time MinValue", 20 },
+        {"Shield Recharge Time MaxValue", 100 },
+        {"Weapon MaxTier", 1 },
+        {"Engine MaxTier", 1 },
+        {"Sensor MaxTier", 1 },
+        {"Fire Control MaxTier", 1 },
+        {"Reactor MaxTier", 1 },
+
     };
 
     private void Awake() {

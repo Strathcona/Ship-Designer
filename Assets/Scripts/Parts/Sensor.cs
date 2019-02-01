@@ -15,14 +15,6 @@ public class Sensor : Part{
         InitializeTweakables();
     }
 
-    public Sensor(Part p) : base() {
-        Sensor s = (Sensor)p;
-        range.Value = s.range.Value;
-        resolution.Value = s.resolution.Value;
-        partType = PartType.Sensor;
-        UpdateProperties();
-    }
-
     protected override void InitializeTweakables() {
         range = Tweakable.MakeTweakable(
             this,

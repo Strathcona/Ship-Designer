@@ -5,9 +5,10 @@ using System.IO;
 using System;
 namespace GameConstructs {
 
-    public enum WeaponType { laser, railgun };
+    public enum WeaponType { Laser, Railgun };
     public enum SensorType { LowEnergy, HighEnergy, Gravitic };
-    public enum PartType { Weapon, FireControl, Sensor, Engine, Reactor };
+    public enum ShieldType { Generator, Deflector};
+    public enum PartType { Weapon, FireControl, Sensor, Engine, Reactor, Shield };
     public enum Orientation { Fore, Aft, Port, Starboard, Dorsal, Ventral, Internal };
     public enum PartSize { XS, S, M, L, XL};
     public enum ShipType { Carrier, Battlecruiser, Battleship, LightCruiser, HeavyCruiser, Destroyer, Gunboat, Fighter, Utility, Patrol, None};
@@ -45,6 +46,7 @@ namespace GameConstructs {
             {PartType.Reactor, "Reactor"},
             {PartType.Sensor, "Sensor"},
             {PartType.FireControl, "Fire Control"},
+            {PartType.Shield, "Shield"},
         };
 
         public static Dictionary<PartType, Color> PartColor = new Dictionary<PartType, Color>() {
@@ -53,6 +55,7 @@ namespace GameConstructs {
             {PartType.Reactor, new Color(1.0f, 0.94f, 0.34f)},
             {PartType.Sensor, new Color(0.34f, 1f, 0.37f)},
             {PartType.FireControl, new Color(0.34f, 0.97f, 1f)},
+            {PartType.Shield, new Color(0.5f, 0.97f, 0.97f)},
         };
 
         public static Dictionary<PartType, string> ColoredPartTypeString = new Dictionary<PartType, string>() {
@@ -61,45 +64,7 @@ namespace GameConstructs {
             {PartType.Reactor,"<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Reactor])+">Reactor</color>"},
             {PartType.Sensor, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Sensor])+">Sensor</color>"},
             {PartType.FireControl, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.FireControl])+">Fire Control</color>"},
-        };
-
-        public static Dictionary<int, float> TierDamagePerSize = new Dictionary<int, float>() {
-            {0, 1.0f },
-            {1, 1.2f},
-            {2, 1.4f },
-            {3, 1.6f},
-            {4, 1.8f},
-            {5, 2.0f},
-            {6, 2.2f}
-        };
-        public static Dictionary<int, float> TierFireTimePerSize = new Dictionary<int, float>(){
-            {0, 5.0f },
-            {1, 4.5f},
-            {2, 4.0f },
-            {3, 3.5f},
-            {4, 3.0f},
-            {5, 2.5f},
-            {6, 2.0f}
-        };
-
-        public static Dictionary<int, float> TierFireControlAccuracy = new Dictionary<int, float>(){
-            {0, 1.0f },
-            {1, 1.2f},
-            {2, 1.4f },
-            {3, 1.6f},
-            {4, 1.8f},
-            {5, 2.0f},
-            {6, 2.2f}
-        };
-
-        public static Dictionary<int, string> TierAblativeArmorNames = new Dictionary<int, string>() {
-            {0, "Hardened Steel"},
-            {1, "Ceramic" },
-            {2, "Polymer Composite"},
-            {3, "Amorphous Metal"},
-            {4, "Tensile Alloy"},
-            {5, "Crystaline" },
-            {6, "Condensed Osmium"}
+            {PartType.Shield, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Shield])+">Shield</color>"},
         };
 
         public static Dictionary<int, string> TierEngineNames = new Dictionary<int, string>() {

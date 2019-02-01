@@ -32,8 +32,9 @@ public class Weapon : Part {
             this,
             TweakableType.Slider,
             TweakableUpdate,
-            "Reload");
+            "Reload Time");
         reload.unit = "s";
+
         turrets = Tweakable.MakeTweakable(
             this,
             TweakableType.Dropdown,
@@ -100,7 +101,7 @@ public class Weapon : Part {
         base.UpdateProperties();
         int turretfactor = Mathf.Max(1, turrets.Value);
         weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value)*turretfactor);
-        damage = Mathf.FloorToInt(caliber.Value * Constants.TierDamagePerSize[tier]) * turretfactor ;
+        damage = Mathf.FloorToInt(caliber.Value/6) * turretfactor ;
     }
 
     public static Weapon GetRandomLaser() {
