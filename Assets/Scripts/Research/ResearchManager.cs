@@ -46,6 +46,7 @@ public class ResearchManager: MonoBehaviour {
         {"Sensor MaxTier", 1 },
         {"Fire Control MaxTier", 1 },
         {"Reactor MaxTier", 1 },
+        {"Shield MaxTier", 1 }
 
     };
 
@@ -56,7 +57,7 @@ public class ResearchManager: MonoBehaviour {
             Debug.LogError("You've put another research manager somewhere...");
         }
     }
-    public static void SetEffect(string effect) {
+    public void SetEffect(string effect) {
         string[] args = effect.Split();
         switch (args[0]) {
             case "UnlockTier":

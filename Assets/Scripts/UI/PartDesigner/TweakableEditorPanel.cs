@@ -16,13 +16,15 @@ public class TweakableEditorPanel : MonoBehaviour {
     public Slider slider;
     public Text sliderDisplay;
     public Text sliderText;
+    public Text sliderMinText;
+    public Text sliderMaxText;
+    public GameObject sliderRuler;
 
     public void DisplayTweakable(Tweakable t) {
         tweakable = t;
         Clear();
         if(t.tweakableType == TweakableType.Dropdown) {
-            dropdown.gameObject.SetActive(true);
-            dropdownText.gameObject.SetActive(true);
+            SetDropdownElements(true);
             dropdownText.text = tweakable.tweakableName;
             dropdown.ClearOptions();
             foreach(string s in tweakable.dropdownLabels) {
@@ -35,14 +37,14 @@ public class TweakableEditorPanel : MonoBehaviour {
             dropdown.onValueChanged.AddListener(delegate { UpdateFromDropdown(); });
 
         } else if (t.tweakableType == TweakableType.Slider) {
-            slider.gameObject.SetActive(true);
-            sliderDisplay.gameObject.SetActive(true);
-            sliderText.gameObject.SetActive(true);
+            SetSliderElements(true);
             sliderText.text = tweakable.tweakableName;
 
             slider.minValue = tweakable.MinValue;
             slider.maxValue = tweakable.MaxValue;
             slider.value = tweakable.Value;
+            sliderMinText.text = slider.minValue.ToString() + tweakable.unit;
+            sliderMaxText.text = slider.maxValue.ToString() + tweakable.unit;
 
             sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString()+tweakable.unit;
             slider.onValueChanged.AddListener(delegate { UpdateFromSlider(); });
@@ -62,10 +64,22 @@ public class TweakableEditorPanel : MonoBehaviour {
 
 
     public void Clear() {
-        dropdown.gameObject.SetActive(false);
-        dropdownText.gameObject.SetActive(false);
-        slider.gameObject.SetActive(false);
-        sliderDisplay.gameObject.SetActive(false);
-        sliderText.gameObject.SetActive(false);
+        SetSliderElements(false);
+        SetDropdownElements(false);
+
+    }
+
+    public void SetSliderElements(bool on) {
+        slider.gameObject.SetActive(on);
+        sliderDisplay.gameObject.SetActive(on);
+        sliderText.gameObject.SetActive(on);
+        sliderRuler.gameObject.SetActive(on);
+        sliderMaxText.gameObject.SetActive(on);
+        sliderMinText.gameObject.SetActive(on);
+    }
+
+    public void SetDropdownElements(bool on) {
+        dropdown.gameObject.SetActive(on);
+        dropdownText.gameObject.SetActive(on);
     }
 }

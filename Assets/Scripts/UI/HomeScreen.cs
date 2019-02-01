@@ -11,12 +11,14 @@ public class HomeScreen : MonoBehaviour {
     public Canvas homescreenCanvas;
     public Canvas partProductionCanvas;
     public PartSupplierSelection partProduction;
+    public Canvas researchCanvas;
 
     private void Clear() {
         partDesignerCanvas.gameObject.SetActive(false);
         shipDisplayCanvas.gameObject.SetActive(false);
         partProductionCanvas.gameObject.SetActive(false);
         homescreenCanvas.gameObject.SetActive(false);
+        researchCanvas.gameObject.SetActive(false);
     }
 
     public void BackToHomescreen() {
@@ -37,5 +39,9 @@ public class HomeScreen : MonoBehaviour {
 
     public void ShowPartProduction() {
         partProductionCanvas.gameObject.SetActive(true);
+    }
+
+    public void ShowResearch() {
+        researchCanvas.gameObject.SetActive(true);
     }
 }

@@ -43,6 +43,7 @@ public class ResearchGridDisplay : MonoBehaviour {
             if (activeNodes[i].Progress >= activeNodes[i].cost) {
                 activeNodes[i].Active = false;
                 activeNodes[i].Complete = true;
+                ResearchManager.instance.SetEffect(activeNodes[i].effect);
                 finishedNodes.Add(activeNodes[i]);
                 List<ResearchNode> next = GetAdjacent(activeNodes[i].tier, activeNodes[i].x, activeNodes[i].y);
                 foreach (ResearchNode n in next) {
