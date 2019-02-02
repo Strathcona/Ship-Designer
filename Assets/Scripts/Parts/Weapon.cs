@@ -109,7 +109,7 @@ public class Weapon : Part {
         p.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
         p.Tier = (Random.Range(1, 6));
         p.weaponType.Value = 0;
-        p.size = PartSize.S;
+        p.Size = PartSize.S;
         p.caliber.Value = Random.Range(2, 20);
         p.turrets.Value = Random.Range(0, 5);
         p.reload.Value = Random.Range(2, 20);

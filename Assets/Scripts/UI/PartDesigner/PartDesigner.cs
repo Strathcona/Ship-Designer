@@ -17,10 +17,14 @@ public class PartDesigner : MonoBehaviour {
     public Image previewImage;
 
     public void Start() {
-        modelNameInput.gameObject.SetActive(false);
-        partTierDropdown.gameObject.SetActive(false);
-        partSizeDropdown.gameObject.SetActive(false);
-        previewImage.gameObject.SetActive(false);
+        createNewDropdown.ClearOptions();
+        createNewDropdown.options.Add(new Dropdown.OptionData("Create New"));
+        foreach (PartType t in Enum.GetValues(typeof(PartType))) {
+            createNewDropdown.options.Add(new Dropdown.OptionData(Constants.ColoredPartTypeString[t]));
+        }
+        createNewDropdown.value = 0;
+        createNewDropdown.RefreshShownValue();
+        SetElements(false);
     }
 
     public void UpdatePartModel() {
@@ -44,55 +48,64 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void LoadPart(Part p) {
-        modelNameInput.gameObject.SetActive(true);
-        partTierDropdown.gameObject.SetActive(true);
-        partSizeDropdown.gameObject.SetActive(true);
-        previewImage.gameObject.SetActive(true);
-        Debug.Log("Loading Part" + p.modelName +" "+ p.Tier);
-        switch (p.partType) {
-            case PartType.Weapon:
-                activePart = new Weapon();
-                break;
-            case PartType.Sensor:
-                activePart = new Sensor();
-                break;
-            case PartType.Reactor:
-                activePart = new Reactor();
-                break;
-            case PartType.FireControl:
-                activePart = new FireControl();
-                break;
-            case PartType.Engine:
-                activePart = new Engine();
-                break;
+        string key = Constants.PartTypeString[p.partType] + " MaxTier";
+        int maxTier = ResearchManager.instance.GetResearchValue(key);
+        if (maxTier < p.Tier) {
+            ModalPopupManager.instance.DisplayModalPopup("Unable to Edit", "The Part your are trying to load is too advanced for us to modify it. Increase your " + Constants.ColoredPartTypeString[p.partType] + " technology in order to make changes to this part.", "Okay");
+        } else {
+            modelNameInput.gameObject.SetActive(true);
+            partTierDropdown.gameObject.SetActive(true);
+            partSizeDropdown.gameObject.SetActive(true);
+            previewImage.gameObject.SetActive(true);
+
+            Debug.Log("Loading Part" + p.modelName + " " + p.Tier);
+            switch (p.partType) {
+                case PartType.Weapon:
+                    activePart = new Weapon();
+                    break;
+                case PartType.Sensor:
+                    activePart = new Sensor();
+                    break;
+                case PartType.Reactor:
+                    activePart = new Reactor();
+                    break;
+                case PartType.FireControl:
+                    activePart = new FireControl();
+                    break;
+                case PartType.Engine:
+                    activePart = new Engine();
+                    break;
+                case PartType.Shield:
+                    activePart = new Shield();
+                    break;
+            }
+            activePart = p.Clone();
+            previewImage.sprite = activePart.sprite;
+            modelNameInput.text = activePart.modelName;
+            SetPartModel();
+            UpdateTierDropdown();
+            partTierDropdown.value = activePart.Tier;
+            tweakableEditor.DisplayTweakables(activePart);
         }
-        activePart = p.Clone();
-        previewImage.sprite = activePart.sprite;
-        modelNameInput.text = activePart.modelName;
-        SetPartModel();
-        partTierDropdown.value = activePart.Tier;
-        tweakableEditor.DisplayTweakables(activePart);
+           
     }
 
     public void Clear() {
         tweakableEditor.Clear();
         descriptionDisplay.text = "---";
         statisticsDisplay.text = "---";
-        modelNameInput.gameObject.SetActive(false);
-        partTierDropdown.gameObject.SetActive(false);
-        previewImage.gameObject.SetActive(false);
-        partSizeDropdown.gameObject.SetActive(false);
+        SetElements(false);
     }
 
     public void CreateNewPart() {
-        modelNameInput.gameObject.SetActive(true);
-        partTierDropdown.gameObject.SetActive(true);
-        previewImage.gameObject.SetActive(true);
-        partSizeDropdown.gameObject.SetActive(true);
+        SetElements(true);
 
         switch (createNewDropdown.value) {
             case 0:
+                //this is the first value, the "Create New Part" value
                 break;
+            //the rest are in the order as defined in the Enum
+            //Weapon, FireControl, Sensor, Engine, Reactor, Shield 
             case 1:
                 activePart = new Weapon();
                 previewImage.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
@@ -102,24 +115,46 @@ public class PartDesigner : MonoBehaviour {
                 previewImage.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
                 break;
             case 3:
-                activePart = new Engine();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
-                break;
-            case 4:
-                activePart = new Reactor();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
-                break;
-            case 5:
                 activePart = new Sensor();
                 previewImage.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
                 break;
+            case 4:
+                activePart = new Engine();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
+                break;
+            case 5:
+                activePart = new Reactor();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
+                break;
+            case 6:
+                activePart = new Shield();
+                previewImage.sprite = SpriteLoader.GetPartSprite("defaultShieldS");
+                break;
+
         }
         activePart.sprite = previewImage.sprite;
         createNewDropdown.value = 0;
         tweakableEditor.DisplayTweakables(activePart);
+        UpdateTierDropdown();
     }
+
     public void ResetCreateNewDropdown() {
         createNewDropdown.value = 0;
+    }
+
+    public void UpdateTierDropdown() {
+        if(activePart != null) {
+            partTierDropdown.ClearOptions();
+            string key = Constants.PartTypeString[activePart.partType] + " MaxTier";
+            int maxTier = ResearchManager.instance.GetResearchValue(key);
+
+            for (int tier = 0; tier < maxTier; tier++) {
+                partTierDropdown.options.Add(new Dropdown.OptionData("Tier " + tier.ToString()));
+            }
+            partTierDropdown.value = 0;
+            partTierDropdown.RefreshShownValue();
+            
+        }
     }
 
     public void AskToCreateNewPart() {
@@ -133,7 +168,7 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void AskToSubmitPart() {
-        if(activePart != null) {
+        if (activePart != null) {
             ModalPopupManager.instance.DisplayModalPopup("Confirmation",
             "Would you like to submit this part for design? It will take " + TimeManager.GetTimeString(activePart.minutesToDevelop) + ".",
             new List<string>() { "Yes", "No" },
@@ -152,7 +187,14 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void UpdatePartSize() {
-        activePart.size = (PartSize) partSizeDropdown.value;
+        activePart.Size = (PartSize) partSizeDropdown.value;
         UpdatePartStrings();
+    }
+
+    public void SetElements(bool on) {
+        modelNameInput.gameObject.SetActive(on);
+        partTierDropdown.gameObject.SetActive(on);
+        previewImage.gameObject.SetActive(on);
+        partSizeDropdown.gameObject.SetActive(on);
     }
 }

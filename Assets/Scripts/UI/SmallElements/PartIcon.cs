@@ -23,7 +23,7 @@ public class PartIcon : MonoBehaviour
         text.text = part.modelName;
         image.sprite = part.sprite;
         image.color = Constants.PartColor[part.partType];
-        numberText.text = part.size.ToString();
+        numberText.text = part.Size.ToString();
         numberTextBG.SetActive(true);
     }
 

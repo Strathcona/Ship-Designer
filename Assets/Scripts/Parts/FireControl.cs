@@ -42,7 +42,7 @@ public class FireControl : Part{
         p.tier = Random.Range(1, 6);
         p.tracking.Value = Random.Range(1, 20);
         p.accuracy.Value = Random.Range(1, 20);
-        p.size = PartSize.S;
+        p.Size = PartSize.S;
         p.range.Value = Random.Range(1, 20);
         p.typeName = "Fire Control System";
         p.modelName = Constants.GetRandomFireControlModelName();

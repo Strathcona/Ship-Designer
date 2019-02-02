@@ -5,12 +5,12 @@ using UnityEngine;
 public class ResearchManager: MonoBehaviour {
     public static ResearchManager instance;
     public Dictionary<string, int> researchValues = new Dictionary<string, int>() {
-        {"Engine Maximum Thrust MaxValue", 120 },
         {"Engine Maximum Thrust MinValue", 100 },
-        {"Engine Agility MaxValue", 1 },
-        {"Engine Agility MinValue", 20 },
-        {"Engine Thrust MaxValue", 1 },
-        {"Engine Thrust MinValue", 20 },
+        {"Engine Maximum Thrust MaxValue", 120 },
+        {"Engine Agility MinValue", 1 },
+        {"Engine Agility MaxValue", 20 },
+        {"Engine Thrust MinValue", 1 },
+        {"Engine Thrust MaxValue", 20 },
         {"Engine Energy Efficiency MaxValue", 120 },
         {"Engine Energy Efficiency MinValue", 100 },
         {"Fire Control Tracking MinValue", 1 },

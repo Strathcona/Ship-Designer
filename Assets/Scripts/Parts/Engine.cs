@@ -22,6 +22,7 @@ public class Engine : Part {
             TweakableType.Slider,
             TweakableUpdate,
             "Agility");
+
         averageThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
@@ -53,7 +54,7 @@ public class Engine : Part {
         p.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
         p.Tier = Random.Range(1, 6);
         p.agility.Value = Random.Range(1, 20);
-        p.size = PartSize.S;
+        p.Size = PartSize.S;
         p.averageThrust.Value = Random.Range(1, 20);
         p.typeName = Constants.TierEngineNames[p.Tier] + " Engine";
         p.modelName = Constants.GetRandomEngineModelName();

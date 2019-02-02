@@ -49,7 +49,7 @@ public class Shield : Part {
         Shield p = new Shield();
         p.sprite = SpriteLoader.GetPartSprite("defaultShieldS");
         p.Tier = 1;
-        p.size = PartSize.S;
+        p.Size = PartSize.S;
         p.shieldType = ShieldType.Generator;
         p.typeName = "Shield Generator";
         p.modelName = Constants.GetRandomSensorModelName();

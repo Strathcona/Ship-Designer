@@ -178,7 +178,7 @@ MonoBehaviour:
   overlayPanel: {fileID: 8291600649297403880}
   overlayFill: {fileID: 1729389349998548046}
   overlayText: {fileID: 8291600650438286238}
-  size: {fileID: 8291600650206965876}
+  weight: {fileID: 8291600650206965876}
   tier: {fileID: 8291600650962213023}
   power: {fileID: 8291600649130407109}
   developmentText: {fileID: 8291600650438286238}
@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 8291600650206965879}
   - component: {fileID: 8291600650206965876}
   m_Layer: 5
-  m_Name: Size
+  m_Name: Weight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

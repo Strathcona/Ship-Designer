@@ -35,7 +35,7 @@ public class Reactor : Part{
         Reactor p = new Reactor();
         p.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
         p.tier = 1;
-        p.size = PartSize.S;
+        p.Size = PartSize.S;
         p.typeName = "Reactor";
         p.modelName = Constants.GetRandomReactorName();
         p.averagePower.Value = Random.Range(20, 100);

@@ -14,7 +14,7 @@ public class Hardpoint {
 
     public bool MountPart(Part p) {
         if (allowableType == p.partType) {
-            if(p.size == allowableSize) {
+            if(p.Size == allowableSize) {
                 part = p;
                 onChange();
                 return true;

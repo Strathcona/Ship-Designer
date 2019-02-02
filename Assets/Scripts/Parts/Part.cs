@@ -16,9 +16,16 @@ public abstract class Part {
     public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
     public Sprite sprite;
-    public PartSize size;
     public int weight = 1;
 
+    private PartSize size;
+    public PartSize Size {
+        get { return size; }
+        set {
+            size = value;
+            UpdateProperties();
+        }
+    }
     protected int tier = 0;
     public int Tier {
         get { return tier; }
@@ -50,9 +57,9 @@ public abstract class Part {
             weightedTweakableFactor += (float)t.Value / t.MaxValue;
         }
         weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
-        weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)));
+        weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)*Constants.hardpointSizeFactor[Size]));
         minutesToDevelop = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
-        unitPrice = weight * 10;
+        unitPrice = weight * Constants.hardpointSizeFactor[Size];
         unitTime = minutesToDevelop / 10;
     }
 
