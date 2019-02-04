@@ -21,8 +21,8 @@ public class ResearchManager: MonoBehaviour {
         {"Fire Control Range MaxValue", 20 },
         {"Reactor Output MinValue", 1 },
         {"Reactor Output MaxValue", 20 },
-        {"Reactor Maximum Output MinValue", 1 },
-        {"Reactor Maximum Output MaxValue", 20 },
+        {"Reactor Maximum Output MinValue", 100 },
+        {"Reactor Maximum Output MaxValue", 120 },
         {"Sensor Range MinValue", 1 },
         {"Sensor Range MaxValue", 20 },
         {"Sensor Resolution MinValue", 1 },
@@ -58,13 +58,21 @@ public class ResearchManager: MonoBehaviour {
         }
     }
     public void SetEffect(string effect) {
-        string[] args = effect.Split();
+        string[] args = effect.Split(':');
         switch (args[0]) {
             case "UnlockTier":
-                Debug.Log("Unlocking Tier " + args[2] + " for " + args[1]);
+                if(int.TryParse(args[2], out int tier)) {
+                    researchValues[args[1] + " MaxTier"] += tier;
+                } else {
+                    Debug.LogError("Couldn't parse effect " + effect);
+                }
                 break;
             case "AddTweakableMax":
-                Debug.Log("Adding " + args[3] + " to " + args[1]+" "+args[2]);
+                if (int.TryParse(args[3], out int val)) {
+                    researchValues[args[1] + " "+args[2] + " MaxValue"] += val;
+                } else {
+                    Debug.LogError("Couldn't parse effect " + effect);
+                }
                 break;
             case "Nothing":
                 Debug.Log("Doing Nothing");
