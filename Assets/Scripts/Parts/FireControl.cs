@@ -52,7 +52,8 @@ public class FireControl : Part{
     }
 
     public override Part Clone() {
-        FireControl part = (FireControl)MemberwiseClone();
+        FireControl part = (FireControl) MemberwiseClone();
+        List<Tweakable> newTweakables = new List<Tweakable>();
         part.manufacturer = manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
@@ -62,8 +63,9 @@ public class FireControl : Part{
                 t.tweakableName);
             newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
-            part.tweakables.Add(newt);
+            newTweakables.Add(newt);
         }
+        part.tweakables = newTweakables;
         return part;
     }
 }

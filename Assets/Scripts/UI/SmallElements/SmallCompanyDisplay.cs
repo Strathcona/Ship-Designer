@@ -8,11 +8,13 @@ public class SmallCompanyDisplay : MonoBehaviour {
     public Company company;
     public Text companyName;
     public Text companyType;
+    public Image companyLogo;
     public NPCDisplay npcDisplay;
 
     public void DisplayCompany(Company c) {
         Clear();
         company = c;
+        companyLogo.sprite = company.logo;
         companyName.text = company.name;
         companyType.text = company.companyType;
         npcDisplay.DisplayNPC(company.ceo);
@@ -20,6 +22,7 @@ public class SmallCompanyDisplay : MonoBehaviour {
 
 
     public void Clear() {
+        companyLogo.sprite = null;
         company = null;
         companyName.text = "";
         companyType.text = "";

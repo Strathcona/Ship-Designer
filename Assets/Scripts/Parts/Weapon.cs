@@ -121,17 +121,19 @@ public class Weapon : Part {
 
     public override Part Clone() {
         Weapon part = (Weapon) MemberwiseClone();
+        List<Tweakable> newTweakables = new List<Tweakable>();
         part.manufacturer = manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
-                 part,
-                 t.tweakableType,
-                 part.TweakableUpdate,
-                 t.tweakableName);
+                part,
+                t.tweakableType,
+                part.TweakableUpdate,
+                t.tweakableName);
             newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
-            part.tweakables.Add(newt);
+            newTweakables.Add(newt);
         }
+        part.tweakables = newTweakables;
         return part;
     }
 }

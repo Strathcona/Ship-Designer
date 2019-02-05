@@ -10,12 +10,15 @@ public static class SpriteLoader {
 
     private static Dictionary<string, List<Sprite>> partSprites = new Dictionary<string, List<Sprite>>();
     private static Dictionary<string, List<Sprite>> npcSprites = new Dictionary<string, List<Sprite>>();
+    private static Dictionary<string, List<Sprite>> companyLogos = new Dictionary<string, List<Sprite>>();
 
     static SpriteLoader() {
         Debug.Log("Loading NPC sprites");
         AddToDictionary(npcSprites, "Images/NPCs");
         Debug.Log("Loading Default Part sprites");
         AddToDictionary(partSprites, "Images/Parts/Default");
+        Debug.Log("Loading Company Logos");
+        AddToDictionary(companyLogos, "Images/Logos");
     }
 
     private static void AddToDictionary(Dictionary<string, List<Sprite>> dictionary, string path) {
@@ -70,6 +73,18 @@ public static class SpriteLoader {
             return toReturn;
         } else {
             Debug.LogError("Couldn't find Part sprite " + name);
+            return null;
+        }
+    }
+
+
+    public static Sprite GetCompanyLogo(string name) {
+        if (companyLogos.ContainsKey(name)) {
+            List<Sprite> sprites = companyLogos[name];
+            Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];
+            return toReturn;
+        } else {
+            Debug.LogError("Couldn't find Company Logo sprite " + name);
             return null;
         }
     }

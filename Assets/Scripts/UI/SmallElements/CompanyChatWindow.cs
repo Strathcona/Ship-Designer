@@ -8,7 +8,6 @@ using GameConstructs;
 public class CompanyChatWindow : MonoBehaviour, IConversationReader 
 {
     public Company company;
-    public PartSupplyAgreement partOrder;
     public TextScroll companyChatMessages;
     public SmallCompanyDisplay companyChatDisplay;
     public GameObject choiceButtonParent;
@@ -18,18 +17,14 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
     public float timer = 0.0f;
     public float timeTillResponse = 1.0f;
     private static Dictionary<string, string> keywordReplacements;
-    public Action<Company, PartSupplyAgreement, bool> OnConversationFinish;
+    public Action OnConversationFinish;
 
-    public void StartChatWith(Company c, PartSupplyAgreement po, Action<Company, PartSupplyAgreement, bool> onConversationFinish) {
+    public void StartChatWith(Company c, Action onConversationFinish) {
         OnConversationFinish = onConversationFinish;
         Clear();
         company = c;
-        partOrder = po;
         keywordReplacements = new Dictionary<string, string>() {
             {"*COMPANY*", company.name },
-            {"*PARTTYPE*", Constants.ColoredPartTypeString[po.part.partType] },
-            {"*PRICE*",  po.price.ToString()+" credits"},
-            {"*TIME*",  po.time.ToString()+" ticks"}
         };
         conversationTree = ConversationTreeLoader.GetTree("GenericFirstPartSupply");
         conversationTree.currentReader = this;
@@ -98,15 +93,6 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
     }
 
     public void EndConversation() {
-        if (conversationTree.conversationVariables.ContainsKey("Agree")) {
-            CloseChatWindow(conversationTree.conversationVariables["Agree"]);
-        } else {
-            CloseChatWindow(false);
-        }
-    }
-
-    public bool CloseChatWindow(bool agree) {
-        OnConversationFinish(company, partOrder, agree);
-        return agree;
+        OnConversationFinish();
     }
 }

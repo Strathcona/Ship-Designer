@@ -54,7 +54,6 @@ public class Tweakable {
     }
 
     private string GetResearchManagerKey(string fieldName) {
-        Debug.Log(part.typeName+" "+part.partType);
         return Constants.PartTypeString[part.partType] + " " + tweakableName + " " + fieldName;
     }
 }

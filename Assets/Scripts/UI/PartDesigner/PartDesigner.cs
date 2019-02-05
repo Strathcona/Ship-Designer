@@ -15,6 +15,10 @@ public class PartDesigner : MonoBehaviour {
     public InputField modelNameInput;
     public TweakableEditor tweakableEditor;
     public Image previewImage;
+    public Button setManufacturerButton;
+    public Image manufacturerImage;
+    public GameObject manufacturerDisplay;
+    public ManufacturerEditor manufacturerEditor;
 
     public void Start() {
         createNewDropdown.ClearOptions();
@@ -24,7 +28,7 @@ public class PartDesigner : MonoBehaviour {
         }
         createNewDropdown.value = 0;
         createNewDropdown.RefreshShownValue();
-        SetElements(false);
+        ToggleVisible(false);
     }
 
     public void UpdatePartModel() {
@@ -53,11 +57,7 @@ public class PartDesigner : MonoBehaviour {
         if (maxTier < p.Tier) {
             ModalPopupManager.instance.DisplayModalPopup("Unable to Edit", "The Part your are trying to load is too advanced for us to modify it. Increase your " + Constants.ColoredPartTypeString[p.partType] + " technology in order to make changes to this part.", "Okay");
         } else {
-            modelNameInput.gameObject.SetActive(true);
-            partTierDropdown.gameObject.SetActive(true);
-            partSizeDropdown.gameObject.SetActive(true);
-            previewImage.gameObject.SetActive(true);
-
+            ToggleVisible(true);
             Debug.Log("Loading Part" + p.modelName + " " + p.Tier);
             switch (p.partType) {
                 case PartType.Weapon:
@@ -86,19 +86,20 @@ public class PartDesigner : MonoBehaviour {
             UpdateTierDropdown();
             partTierDropdown.value = activePart.Tier;
             tweakableEditor.DisplayTweakables(activePart);
+            DisplayManufacturer();
         }
-           
+
     }
 
     public void Clear() {
         tweakableEditor.Clear();
         descriptionDisplay.text = "---";
         statisticsDisplay.text = "---";
-        SetElements(false);
+        ToggleVisible(false);
     }
 
     public void CreateNewPart() {
-        SetElements(true);
+        ToggleVisible(true);
 
         switch (createNewDropdown.value) {
             case 0:
@@ -136,6 +137,7 @@ public class PartDesigner : MonoBehaviour {
         createNewDropdown.value = 0;
         tweakableEditor.DisplayTweakables(activePart);
         UpdateTierDropdown();
+
     }
 
     public void ResetCreateNewDropdown() {
@@ -177,6 +179,26 @@ public class PartDesigner : MonoBehaviour {
         }
     }
 
+    public void DisplayManufacturer() {
+        if (activePart.manufacturer != null) {
+            manufacturerImage.gameObject.SetActive(true);
+            manufacturerImage.sprite = activePart.manufacturer.logo;
+        } else {
+            manufacturerImage.gameObject.SetActive(false);
+        }
+    }
+
+    public void EditManufacturer() {
+        manufacturerEditor.gameObject.SetActive(true);
+        manufacturerEditor.LoadPart(activePart);
+    }
+
+    public void FinishSelectingManufacturer() {
+        activePart.manufacturer = manufacturerEditor.company;
+        manufacturerEditor.gameObject.SetActive(false);
+        DisplayManufacturer();
+    }
+
     public void SubmitDesign() {
         PartLibrary.AddPartToDevelopment(activePart);
     }
@@ -191,10 +213,11 @@ public class PartDesigner : MonoBehaviour {
         UpdatePartStrings();
     }
 
-    public void SetElements(bool on) {
+    public void ToggleVisible(bool on) {
         modelNameInput.gameObject.SetActive(on);
         partTierDropdown.gameObject.SetActive(on);
         previewImage.gameObject.SetActive(on);
         partSizeDropdown.gameObject.SetActive(on);
+        setManufacturerButton.gameObject.SetActive(on);
     }
 }
