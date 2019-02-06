@@ -58,7 +58,8 @@ public static class SpriteLoader {
     public static Sprite GetNPCSprite(string name) {
         if (npcSprites.ContainsKey(name)) {
             List<Sprite> sprites = npcSprites[name];
-            return sprites[UnityEngine.Random.Range(0, sprites.Count)];
+            Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];
+            return toReturn;
         } else {
             Debug.LogError("Couldn't find NPC sprite " + name);
             return null;

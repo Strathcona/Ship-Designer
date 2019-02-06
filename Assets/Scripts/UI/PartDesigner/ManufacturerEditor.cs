@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
 public class ManufacturerEditor: MonoBehaviour {
 
     public PartDesigner partDesigner;
@@ -16,12 +16,14 @@ public class ManufacturerEditor: MonoBehaviour {
     }
 
     public void LoadPart(Part p) {
+        part = p;
         Clear();
         companies = CompanyLibrary.GetCompanies(p.partType);
         GameObject defaultObject = companyMessagePool.GetGameObject();
         CompanyMessage defaultMessage = defaultObject.GetComponent<CompanyMessage>();
         defaultMessage.DisplayCompanyMessage("We can always manufacture these parts in house. There'll be no great bonuses, but no additional costs either, and you won't be placed at the mercy of an external supplier");
-
+        defaultMessage.bottomButtonText.text = "Select";
+        
         foreach (Company c in companies) {
             GameObject g = companyMessagePool.GetGameObject();
             CompanyMessage cm = g.GetComponent<CompanyMessage>();
@@ -37,9 +39,16 @@ public class ManufacturerEditor: MonoBehaviour {
                 message += "Speed: " + (c.speedMod * 100).ToString() + "%\n";
             }
             cm.DisplayCompanyMessage(message);
+            cm.bottomButtonText.text = "Select";
             cm.bottomButton.onClick.RemoveAllListeners();
             var pass = c;
             cm.bottomButton.onClick.AddListener(delegate { AskToSelectCompany(pass); });
+
+            if (part.manufacturer == c) {
+                cm.SetSelected(true);
+            } else {
+                cm.SetSelected(false);
+            }
         }
     }
 
@@ -52,7 +61,8 @@ public class ManufacturerEditor: MonoBehaviour {
     }
 
     public void SelectCompany(Company c) {
-        partDesigner.FinishSelectingManufacturer();
+        company = c;
+        partDesigner.FinishedEditingManufacturer();
     }
 
     public Company GetCompany() {

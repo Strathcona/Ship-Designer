@@ -188,6 +188,14 @@ namespace GameConstructs {
             }
             return "Generic Megabrand";
         }
+
+        public static Color GetRandomPastelColor() {
+            byte R = (byte)((UnityEngine.Random.Range(0, 255) + 126) / 2);
+            byte G = (byte)((UnityEngine.Random.Range(0, 255) + 126) / 2);
+            byte B = (byte)((UnityEngine.Random.Range(0, 255) + 126) / 2);
+            //averaged with grey to make it more pastel like and pleasing
+            return new Color32(R, G, B, 255);            
+        }
     }
 }
 

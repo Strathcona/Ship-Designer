@@ -15,10 +15,11 @@ public class PartDesigner : MonoBehaviour {
     public InputField modelNameInput;
     public TweakableEditor tweakableEditor;
     public Image previewImage;
-    public Button setManufacturerButton;
     public Image manufacturerImage;
     public GameObject manufacturerDisplay;
     public ManufacturerEditor manufacturerEditor;
+    public Text manufacturerButtonText;
+    public Button manufacturerEditButton;
 
     public void Start() {
         createNewDropdown.ClearOptions();
@@ -92,13 +93,16 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void Clear() {
+        activePart = null;
         tweakableEditor.Clear();
         descriptionDisplay.text = "---";
         statisticsDisplay.text = "---";
         ToggleVisible(false);
+        DisplayManufacturer();
     }
 
     public void CreateNewPart() {
+        Clear();
         ToggleVisible(true);
 
         switch (createNewDropdown.value) {
@@ -180,12 +184,20 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void DisplayManufacturer() {
-        if (activePart.manufacturer != null) {
-            manufacturerImage.gameObject.SetActive(true);
-            manufacturerImage.sprite = activePart.manufacturer.logo;
+        if(activePart != null) {
+            if (activePart.manufacturer != null) {
+                manufacturerImage.gameObject.SetActive(true);
+                manufacturerImage.sprite = activePart.manufacturer.logo;
+                manufacturerButtonText.text = activePart.manufacturer.name + "\n" + "(Change)";
+            } else {
+                manufacturerImage.gameObject.SetActive(false);
+                manufacturerButtonText.text = "Select\nManufacturer";
+            }
         } else {
             manufacturerImage.gameObject.SetActive(false);
+            manufacturerButtonText.text = "Select\nManufacturer";
         }
+
     }
 
     public void EditManufacturer() {
@@ -193,7 +205,7 @@ public class PartDesigner : MonoBehaviour {
         manufacturerEditor.LoadPart(activePart);
     }
 
-    public void FinishSelectingManufacturer() {
+    public void FinishedEditingManufacturer() {
         activePart.manufacturer = manufacturerEditor.company;
         manufacturerEditor.gameObject.SetActive(false);
         DisplayManufacturer();
@@ -218,6 +230,6 @@ public class PartDesigner : MonoBehaviour {
         partTierDropdown.gameObject.SetActive(on);
         previewImage.gameObject.SetActive(on);
         partSizeDropdown.gameObject.SetActive(on);
-        setManufacturerButton.gameObject.SetActive(on);
+        manufacturerEditButton.gameObject.SetActive(on);
     }
 }

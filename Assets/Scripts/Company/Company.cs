@@ -14,6 +14,8 @@ public class Company {
     public int opinion = 100;
     public float costMod = 1.0f; 
     public float speedMod = 1.0f;
+    public Color companyColor1;
+    public Color companyColor2;
     public float qualityMod = 1.0f;
     public CompanyTextKey textKey = CompanyTextKey.GenericOne;
 
@@ -21,6 +23,8 @@ public class Company {
         ceo = new NPC();
         name = Constants.GetRandomCompanyName();
         logo = SpriteLoader.GetCompanyLogo("Generic");
+        companyColor1 = Constants.GetRandomPastelColor();
+        companyColor2 = Constants.GetRandomPastelColor();
         //get a random company quality
         CompanyQuality quality = (CompanyQuality)System.Enum.GetValues(typeof(CompanyQuality)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(CompanyQuality)).Length));
         companyQualities.Add(quality);
@@ -36,6 +40,8 @@ public class Company {
         ceo = new NPC();
         name = Constants.GetRandomCompanyName();
         logo = SpriteLoader.GetCompanyLogo("Generic");
+        companyColor1 = Constants.GetRandomPastelColor();
+        companyColor2 = Constants.GetRandomPastelColor();
         //get a random company quality
         CompanyQuality quality = (CompanyQuality)System.Enum.GetValues(typeof(CompanyQuality)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(CompanyQuality)).Length));
         companyQualities.Add(quality);

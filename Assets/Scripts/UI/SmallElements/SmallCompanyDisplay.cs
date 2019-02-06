@@ -11,6 +11,7 @@ public class SmallCompanyDisplay : MonoBehaviour {
     public Image companyLogo;
     public NPCDisplay npcDisplay;
 
+
     public void DisplayCompany(Company c) {
         Clear();
         company = c;
