@@ -4628,10 +4628,10 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 960, y: 540}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -4940,10 +4940,10 @@ GameObject:
   m_Component:
   - component: {fileID: 427490089}
   - component: {fileID: 427490091}
-  - component: {fileID: 427490090}
   - component: {fileID: 427490092}
+  - component: {fileID: 427490090}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Galaxy Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4958,7 +4958,7 @@ RectTransform:
   m_GameObject: {fileID: 427490088}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 403012962}
   m_RootOrder: 1
@@ -4966,7 +4966,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 128, y: 128}
+  m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &427490090
 MonoBehaviour:
@@ -4977,26 +4977,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 427490088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -2095666955, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 16, y: 16}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!222 &427490091
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5017,31 +5012,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74be636088a73e5479b94c8f836de183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 427490090}
-  width: 128
-  height: 128
-  tex: {fileID: 0}
-  buldgeCount: 3000
-  armCount: 3000
+  galaxyTilePrefab: {fileID: 1825466093005626352, guid: 74b77db2db168274aa9ddb4857b2cce8,
+    type: 3}
+  width: 32
+  height: 32
+  layoutGroup: {fileID: 427490090}
+  buldgeCount: 500
+  armCount: 1000
   numberOfArms: 4
-  hubRadius: 15
-  diskRadius: 25
+  hubRadius: 5
+  diskRadius: 10
   armRadius: 45
-  armWinding: 0.5
+  armWinding: 0.45
   armWidth: 30
-  armFuzz: 5
+  fuzzFactor: 30
   gradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 1}
-    key1: {r: 0.9920671, g: 1, b: 0, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 6554
-    ctime1: 46163
+    ctime0: 0
+    ctime1: 65535
     ctime2: 0
     ctime3: 0
     ctime4: 0
@@ -5059,6 +5055,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  hovering: 0
 --- !u!1 &433820761
 GameObject:
   m_ObjectHideFlags: 0
@@ -18460,7 +18457,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 427490092}
-        m_MethodName: GenerateGalaxyImage
+        m_MethodName: GenerateGalaxy
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
