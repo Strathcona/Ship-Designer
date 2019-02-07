@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class GalaxyMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
-{
+public class GalaxyMap : MonoBehaviour {
     public GameObjectPool galaxyTilePool;
     public GameObject galaxyTilePrefab;
     public int width = 32;
     public int height = 32;
 
     public GalaxyTile[][] galaxyTiles;
+    public List<GalaxyTile> allGalaxyTiles = new List<GalaxyTile>();
     public GridLayoutGroup layoutGroup;
 
     public int buldgeCount = 3000;
@@ -35,24 +35,35 @@ public class GalaxyMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         new GradientAlphaKey(1.0f,1.0f)
     };
 
-    public bool hovering = false;
+    public Text galaxyTileDescription;
 
-    public void OnPointerEnter(PointerEventData data) {
-        hovering = true;
+    public void SetGalaxyTile(GameObject g) {
+        g.GetComponent<GalaxyTile>().map = this;
     }
 
-    public void OnPointerExit(PointerEventData data) {
-        hovering = false;
+    public void ShowTerritory() {
+        foreach(GalaxyTile t in allGalaxyTiles) {
+            t.ShowOwnerColor();
+        }
     }
 
-    private void Awake() {
-        galaxyTilePool = new GameObjectPool(galaxyTilePrefab, gameObject);
+    public void ShowSystems() {
+        foreach (GalaxyTile t in allGalaxyTiles) {
+            t.ShowBaseColor();
+        }
+    }
+    
+    public void Initialize() {
+        galaxyTilePool = new GameObjectPool(galaxyTilePrefab, gameObject, SetGalaxyTile);
         galaxyTiles = new GalaxyTile[width][];
         for(int i = 0; i < width; i++) {
             galaxyTiles[i] = new GalaxyTile[height];
             for(int j = 0; j < height; j++) {
                 GameObject g = galaxyTilePool.GetGameObject();
-                galaxyTiles[i][j] = g.GetComponent<GalaxyTile>();
+                GalaxyTile t = g.GetComponent<GalaxyTile>();
+                t.coord = new Coord(i, j);
+                galaxyTiles[i][j] = t;
+                allGalaxyTiles.Add(t);
             }
         }
         //precompute Neighbours
@@ -71,19 +82,13 @@ public class GalaxyMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 if (j - 1 >= 0) {
                     neighbours.Add(galaxyTiles[i][j - 1]);
                 }
-                galaxyTiles[i][j].neighbours = neighbours;
+                GalaxyTile[] pass = neighbours.ToArray();
+                galaxyTiles[i][j].neighbours = pass;
+                neighbours.Clear();
             }
         }
-
         gradient.SetKeys(colorKeys, alphaKeys);
-        GenerateGalaxy();
-        
-    }
-
-    private void Update() {
-        if (hovering) {
-
-        }
+        GenerateGalaxy();        
     }
 
     public void GenerateGalaxy() {
@@ -98,9 +103,9 @@ public class GalaxyMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 c = GetStar(true);
             }
             if(c.x < width && c.y < height && c.x >= 0 && c.y >= 0) {
-                galaxyTiles[c.x][c.y].starCount += 1;
-                if (galaxyTiles[c.x][c.y].starCount > maxCount) {
-                    maxCount = galaxyTiles[c.x][c.y].starCount;
+                galaxyTiles[c.x][c.y].systemCount += 1;
+                if (galaxyTiles[c.x][c.y].systemCount > maxCount) {
+                    maxCount = galaxyTiles[c.x][c.y].systemCount;
                 }
             }
         }
@@ -109,13 +114,18 @@ public class GalaxyMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         int y = 0;
 
         for(int i = 0; i < width*height; i++) {
-            galaxyTiles[x][y].SetBGColor(gradient.Evaluate(galaxyTiles[x][y].starCount / (float) maxCount));
+            galaxyTiles[x][y].baseColor = gradient.Evaluate(galaxyTiles[x][y].systemCount / (float) maxCount);
+            galaxyTiles[x][y].ShowBaseColor();
             x += 1;
             if (x >= width) {
                 x = 0;
                 y += 1;
             }
         }
+    }
+
+    public void TilePointerEnter(GalaxyTile tile) {
+        galaxyTileDescription.text = "Major Systems: " + tile.systemCount.ToString();
     }
 
     private Coord GetStar(bool buldge) {
