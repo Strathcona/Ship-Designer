@@ -163,11 +163,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f054557950875614ea2dbc9775851461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ownerID: 0
-  starCount: 0
+  claimedIDs: 
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  systemCount: 0
   backgroundImage: {fileID: 1825466093005626357}
   foregroundImage: {fileID: 1825466091708316661}
-  selectionOutline: {fileID: 7782203723802810495}
+  foregroundColorHover: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  foregroundColorSelect: {r: 0, g: 1, b: 0, a: 1}
+  selectionOutline: {fileID: 4499862417916943814}
   neighbours: []
   map: {fileID: 0}
 --- !u!1 &7782203723802810495
@@ -182,7 +185,7 @@ GameObject:
   - component: {fileID: 2801706195171766963}
   - component: {fileID: 4499862417916943814}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Selection Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

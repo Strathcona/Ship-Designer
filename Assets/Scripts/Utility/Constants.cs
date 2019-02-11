@@ -17,6 +17,8 @@ namespace GameConstructs {
     public enum ConversationElementType { Text, Set, Choice, Branch, End }
     public enum CompanyTextKey { SpecialMitobahn, GenericOne }
     public enum ResearchNodeType {  Start, End, Mandatory, Optional};
+    public enum GalaxyFeatureType { None, EntityCapital };
+
 
     public static class Constants {
         private static string[] companyNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/CompanyNames.txt");
@@ -29,6 +31,8 @@ namespace GameConstructs {
         private static string[] firstNamesMasculine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesMasculine.txt");
         private static string[] firstNamesFeminine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesFeminine.txt");
         private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
+        private static string[] entityStrings = File.ReadAllLines(Application.dataPath + "/Resources/Text/EntityStrings.txt");
+
 
         public static int numberOfTiers = 8;
 
@@ -153,6 +157,14 @@ namespace GameConstructs {
 
         public static string GetRandomReactorName() {
             return powerNames[UnityEngine.Random.Range(0, powerNames.Length)];
+        }
+
+        public static string[] GetRandomEntityStrings() {
+            List<string[]> strings = new List<string[]>();
+            foreach(string line in entityStrings) {
+                strings.Add(line.Split(','));
+            }
+            return strings[UnityEngine.Random.Range(0, strings.Count)];
         }
 
         public static string GetRandomFirstName(bool feminine) {

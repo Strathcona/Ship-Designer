@@ -22,7 +22,7 @@ public class Company {
     public Company() {
         ceo = new NPC();
         name = Constants.GetRandomCompanyName();
-        logo = SpriteLoader.GetCompanyLogo("Generic");
+        logo = SpriteLoader.GetSymbolPart("Generic");
         companyColor1 = Constants.GetRandomPastelColor();
         companyColor2 = Constants.GetRandomPastelColor();
         //get a random company quality
@@ -39,7 +39,7 @@ public class Company {
     public Company(PartType _partType) {
         ceo = new NPC();
         name = Constants.GetRandomCompanyName();
-        logo = SpriteLoader.GetCompanyLogo("Generic");
+        logo = SpriteLoader.GetSymbolPart("Generic");
         companyColor1 = Constants.GetRandomPastelColor();
         companyColor2 = Constants.GetRandomPastelColor();
         //get a random company quality

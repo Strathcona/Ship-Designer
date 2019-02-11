@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class GalaxyMap : MonoBehaviour {
+using GameConstructs;
+
+public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
     public GameObjectPool galaxyTilePool;
     public GameObject galaxyTilePrefab;
     public int width = 32;
     public int height = 32;
 
-    public GalaxyTile[][] galaxyTiles;
-    public List<GalaxyTile> allGalaxyTiles = new List<GalaxyTile>();
+    public Sector[][] galaxyTiles;
+    public List<Sector> allSectors = new List<Sector>();
     public GridLayoutGroup layoutGroup;
+    public Sector hoverSector;
+    public Sector selectedSector;
 
     public int buldgeCount = 3000;
     public int armCount = 3000;
@@ -38,53 +42,61 @@ public class GalaxyMap : MonoBehaviour {
     public Text galaxyTileDescription;
 
     public void SetGalaxyTile(GameObject g) {
-        g.GetComponent<GalaxyTile>().map = this;
+        g.GetComponent<Sector>().map = this;
     }
 
     public void ShowTerritory() {
-        foreach(GalaxyTile t in allGalaxyTiles) {
-            t.ShowOwnerColor();
+        foreach(Sector s in allSectors) {
+            s.ShowOwnerColor();
         }
     }
 
     public void ShowSystems() {
-        foreach (GalaxyTile t in allGalaxyTiles) {
-            t.ShowBaseColor();
+        foreach (Sector s in allSectors) {
+            s.ShowBaseColor();
+        }
+    }
+
+    public void ShowNoFeatures() {
+        ShowFeatures(GalaxyFeatureType.None);
+    }
+
+    public void ShowCapitalFeatures() {
+        ShowFeatures(GalaxyFeatureType.EntityCapital);
+    }
+
+    private void ShowFeatures(GalaxyFeatureType t) {
+        foreach(Sector s in allSectors) {
+            s.ShowFeatures(t);
         }
     }
     
     public void Initialize() {
         galaxyTilePool = new GameObjectPool(galaxyTilePrefab, gameObject, SetGalaxyTile);
-        galaxyTiles = new GalaxyTile[width][];
+        galaxyTiles = new Sector[width][];
         for(int i = 0; i < width; i++) {
-            galaxyTiles[i] = new GalaxyTile[height];
+            galaxyTiles[i] = new Sector[height];
             for(int j = 0; j < height; j++) {
                 GameObject g = galaxyTilePool.GetGameObject();
-                GalaxyTile t = g.GetComponent<GalaxyTile>();
-                t.coord = new Coord(i, j);
-                galaxyTiles[i][j] = t;
-                allGalaxyTiles.Add(t);
+                Sector s = g.GetComponent<Sector>();
+                s.name = "Sector " + (j + i * width).ToString();
+                s.coord = new Coord(i, j);
+                galaxyTiles[i][j] = s;
+                allSectors.Add(s);
             }
         }
         //precompute Neighbours
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                List<GalaxyTile> neighbours = new List<GalaxyTile>();
-                if(i + 1 < width) {
-                    neighbours.Add(galaxyTiles[i + 1][j]);
+                for (int k = 0; k < 8; k++) {
+                    int neighbourX = i + Sector.neighbourDeltas[k].x;
+                    int neighbourY = j + Sector.neighbourDeltas[k].y;
+                    if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height) {
+                        galaxyTiles[i][j].neighbours[k] = galaxyTiles[neighbourX][neighbourY];
+                    } else {
+                        galaxyTiles[i][j].neighbours[k] = null;
+                    }
                 }
-                if (i - 1 >= 0) {
-                    neighbours.Add(galaxyTiles[i - 1][j]);
-                }
-                if (j + 1 < height) {
-                    neighbours.Add(galaxyTiles[i][j + 1]);
-                }
-                if (j - 1 >= 0) {
-                    neighbours.Add(galaxyTiles[i][j - 1]);
-                }
-                GalaxyTile[] pass = neighbours.ToArray();
-                galaxyTiles[i][j].neighbours = pass;
-                neighbours.Clear();
             }
         }
         gradient.SetKeys(colorKeys, alphaKeys);
@@ -124,8 +136,45 @@ public class GalaxyMap : MonoBehaviour {
         }
     }
 
-    public void TilePointerEnter(GalaxyTile tile) {
-        galaxyTileDescription.text = "Major Systems: " + tile.systemCount.ToString();
+    public void TilePointerEnter(Sector tile) {
+        hoverSector = tile;
+        tile.SetHover(true);
+        string displayString = "Major Systems: " + tile.systemCount.ToString();
+        if (tile.Owner != null) {
+            displayString += "\nOwner: " + tile.Owner.name;
+        } else {
+            displayString += "\nUnclaimed";
+        }
+        foreach(GalaxyFeature f in tile.features) {
+            switch (f.featureType) {
+                case GalaxyFeatureType.EntityCapital:
+                    displayString += "\nCapital of " + tile.Owner.name;
+                    break;
+                default:
+                    Debug.LogError("Unsupported feature type on tile pointer enter");
+                    break;
+            }
+        }
+        galaxyTileDescription.text = displayString;
+    }
+
+    public void TilePointerExit(Sector tile) {
+        tile.SetHover(false);
+        if(hoverSector == tile) {
+            hoverSector = null;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData data) {
+        if(hoverSector != null) {
+            if (selectedSector != null) {
+                selectedSector.SetSelection(false);
+            }
+            if (selectedSector != hoverSector) {
+                selectedSector = hoverSector;
+                selectedSector.SetSelection(true);
+            }
+        } 
     }
 
     private Coord GetStar(bool buldge) {

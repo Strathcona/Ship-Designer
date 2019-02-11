@@ -8,6 +8,9 @@ public class NPC {
     public string lastName;
     public bool feminine;
     public Sprite sprite;
+    public Color spriteColor;
+    public string title = "";
+    public GalaxyEntity affliation;
 
     public NPC() {
         if(Random.Range(0,2) == 0) {
@@ -18,5 +21,6 @@ public class NPC {
         firstName = Constants.GetRandomFirstName(feminine);
         lastName = Constants.GetRandomLastName();
         sprite = SpriteLoader.GetNPCSprite("Generic");
+        spriteColor = Constants.GetRandomPastelColor();
     }
 }

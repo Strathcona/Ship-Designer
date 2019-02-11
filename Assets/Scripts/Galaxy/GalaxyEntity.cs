@@ -4,25 +4,51 @@ using UnityEngine;
 using GameConstructs;
 
 public class GalaxyEntity {
-    public List<GalaxyTile> territory = new List<GalaxyTile>();
+    public List<Sector> territory = new List<Sector>();
+    public Sector capitalSector;
+    public Sprite symbol;
     public int controlledSystem = 0;
     public Color color;
+    public NPC leader;
     public string name;
-    public int ID;
+    public string leaderTitle;
+    public string adjective;
+    public string governmentName;
 
-    public GalaxyEntity(int _ID) {
-        color = Constants.GetRandomPastelColor();
-        ID = _ID;
-    }
-    public void LoseTerritory(GalaxyTile tile) {
+    public Dictionary<ShipType, int> demandForShipType = new Dictionary<ShipType, int>() {
+        {ShipType.Battlecruiser,0 },
+        {ShipType.Battleship, 0 },
+        {ShipType.Carrier, 0 },
+        {ShipType.Destroyer, 0 },
+        {ShipType.Fighter, 0 },
+        {ShipType.Gunboat, 0 },
+        {ShipType.HeavyCruiser, 0 },
+        {ShipType.LightCruiser, 0 },
+        {ShipType.Patrol, 0 },
+        {ShipType.Utility, 0 }
+    };
+
+    public void LoseTerritory(Sector tile) {
         territory.Remove(tile);
     }
 
-    public void GainTerritory(GalaxyTile tile) {
+    public void GainTerritory(Sector tile) {
         if(tile.Owner != null) {
             tile.Owner.LoseTerritory(tile);
         }
         tile.Owner = this;
         territory.Add(tile);
+    }
+
+    public static GalaxyEntity GetRandomGalaxyEntity(Sector _capitalSector) {
+        string[] entityStrings = Constants.GetRandomEntityStrings();
+        GalaxyEntity g = new GalaxyEntity();
+        g.capitalSector = _capitalSector;
+        g.color = Constants.GetRandomPastelColor();
+        g.name = entityStrings[1];
+        g.governmentName = entityStrings[0];
+        g.adjective = entityStrings[2];
+        g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.name + " Capital", GalaxyFeatureType.EntityCapital, g.color));
+        return g;
     }
 }
