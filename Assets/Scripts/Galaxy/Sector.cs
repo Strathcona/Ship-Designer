@@ -14,7 +14,7 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler{
         }
     }
     public Coord coord;
-    public string name = "";
+    public string sectorName = "";
     public List<int> claimedIDs = new List<int>();
     public Color baseColor;
     public int systemCount = 0;
@@ -23,7 +23,7 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler{
     public Color foregroundColorHover = Color.yellow;
     public Color foregroundColorSelect = Color.green;
     public Image selectionOutline;
-    public Sector[] neighbours =  new Sector[8];
+    public Sector[] neighbours = new Sector[8] { null, null, null, null, null, null, null, null };
     //arranged
     // 0, 1, 2
     // 3, X, 4

@@ -6,17 +6,32 @@ using UnityEngine.EventSystems;
 using GameConstructs;
 
 public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
-    public GameObjectPool galaxyTilePool;
-    public GameObject galaxyTilePrefab;
-    public int width = 32;
-    public int height = 32;
-
-    public Sector[][] galaxyTiles;
+    public GameObjectPool sectorPool;
+    public GameObject sectorPrefab;
+    public GameObject galaxyMapRoot;
+    public GalaxyEntityPanel galaxyEntityPanel;
+    public Sector[][] sectors;
     public List<Sector> allSectors = new List<Sector>();
     public GridLayoutGroup layoutGroup;
-    public Sector hoverSector;
-    public Sector selectedSector;
+    private Sector hoverSector;
+    public Sector HoverSector {
+        get { return hoverSector; }
+        set {
+            hoverSector = value;
+            SectorDisplayUpdate();            
+        }
+    }
+    private Sector selectedSector;
+    public Sector SelectedSector {        
+        get { return selectedSector; }
+        set {
+            selectedSector = value;
+            SectorDisplayUpdate();
+        }
+    }
 
+    public int width = 32;
+    public int height = 32;
     public int buldgeCount = 3000;
     public int armCount = 3000;
     public int numberOfArms = 4;
@@ -72,16 +87,16 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
     }
     
     public void Initialize() {
-        galaxyTilePool = new GameObjectPool(galaxyTilePrefab, gameObject, SetGalaxyTile);
-        galaxyTiles = new Sector[width][];
+        sectorPool = new GameObjectPool(sectorPrefab, galaxyMapRoot, SetGalaxyTile);
+        sectors = new Sector[width][];
         for(int i = 0; i < width; i++) {
-            galaxyTiles[i] = new Sector[height];
+            sectors[i] = new Sector[height];
             for(int j = 0; j < height; j++) {
-                GameObject g = galaxyTilePool.GetGameObject();
+                GameObject g = sectorPool.GetGameObject();
                 Sector s = g.GetComponent<Sector>();
-                s.name = "Sector " + (j + i * width).ToString();
+                s.sectorName = "Sector " + (j + i * width).ToString();
                 s.coord = new Coord(i, j);
-                galaxyTiles[i][j] = s;
+                sectors[i][j] = s;
                 allSectors.Add(s);
             }
         }
@@ -92,9 +107,9 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
                     int neighbourX = i + Sector.neighbourDeltas[k].x;
                     int neighbourY = j + Sector.neighbourDeltas[k].y;
                     if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height) {
-                        galaxyTiles[i][j].neighbours[k] = galaxyTiles[neighbourX][neighbourY];
+                        sectors[i][j].neighbours[k] = sectors[neighbourX][neighbourY];
                     } else {
-                        galaxyTiles[i][j].neighbours[k] = null;
+                        sectors[i][j].neighbours[k] = null;
                     }
                 }
             }
@@ -115,9 +130,9 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
                 c = GetStar(true);
             }
             if(c.x < width && c.y < height && c.x >= 0 && c.y >= 0) {
-                galaxyTiles[c.x][c.y].systemCount += 1;
-                if (galaxyTiles[c.x][c.y].systemCount > maxCount) {
-                    maxCount = galaxyTiles[c.x][c.y].systemCount;
+                sectors[c.x][c.y].systemCount += 1;
+                if (sectors[c.x][c.y].systemCount > maxCount) {
+                    maxCount = sectors[c.x][c.y].systemCount;
                 }
             }
         }
@@ -126,8 +141,8 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
         int y = 0;
 
         for(int i = 0; i < width*height; i++) {
-            galaxyTiles[x][y].baseColor = gradient.Evaluate(galaxyTiles[x][y].systemCount / (float) maxCount);
-            galaxyTiles[x][y].ShowBaseColor();
+            sectors[x][y].baseColor = gradient.Evaluate(sectors[x][y].systemCount / (float) maxCount);
+            sectors[x][y].ShowBaseColor();
             x += 1;
             if (x >= width) {
                 x = 0;
@@ -137,18 +152,18 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
     }
 
     public void TilePointerEnter(Sector tile) {
-        hoverSector = tile;
+        HoverSector = tile;
         tile.SetHover(true);
         string displayString = "Major Systems: " + tile.systemCount.ToString();
         if (tile.Owner != null) {
-            displayString += "\nOwner: " + tile.Owner.name;
+            displayString += "\nOwner: " + tile.Owner.entityName;
         } else {
             displayString += "\nUnclaimed";
         }
         foreach(GalaxyFeature f in tile.features) {
             switch (f.featureType) {
                 case GalaxyFeatureType.EntityCapital:
-                    displayString += "\nCapital of " + tile.Owner.name;
+                    displayString += "\nCapital of " + tile.Owner.entityName;
                     break;
                 default:
                     Debug.LogError("Unsupported feature type on tile pointer enter");
@@ -160,21 +175,33 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
 
     public void TilePointerExit(Sector tile) {
         tile.SetHover(false);
-        if(hoverSector == tile) {
-            hoverSector = null;
+        if(HoverSector == tile) {
+            HoverSector = null;
         }
     }
 
     public void OnPointerClick(PointerEventData data) {
-        if(hoverSector != null) {
-            if (selectedSector != null) {
-                selectedSector.SetSelection(false);
+        if(HoverSector != null) {
+            if (SelectedSector != null) {
+                SelectedSector.SetSelection(false);
             }
-            if (selectedSector != hoverSector) {
-                selectedSector = hoverSector;
-                selectedSector.SetSelection(true);
+            if (SelectedSector != HoverSector) {
+                SelectedSector = HoverSector;
+                SelectedSector.SetSelection(true);
             }
         } 
+    }
+
+    private void SectorDisplayUpdate() {
+        if(selectedSector != null && selectedSector.Owner != null) {
+            galaxyEntityPanel.gameObject.SetActive(true);
+            galaxyEntityPanel.DisplayEntity(selectedSector.Owner);
+        } else if (hoverSector != null && hoverSector.Owner != null) {
+            galaxyEntityPanel.gameObject.SetActive(true);
+            galaxyEntityPanel.DisplayEntity(hoverSector.Owner);
+        } else {
+            galaxyEntityPanel.gameObject.SetActive(false);
+        }
     }
 
     private Coord GetStar(bool buldge) {
@@ -208,7 +235,7 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
     private void ResetTiles() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                galaxyTiles[i][j].Clear();
+                sectors[i][j].Clear();
             }
         }
     }
