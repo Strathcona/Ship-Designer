@@ -12,6 +12,7 @@ public static class SpriteLoader {
     private static Dictionary<string, List<Sprite>> npcSprites = new Dictionary<string, List<Sprite>>();
     private static Dictionary<string, List<Sprite>> symbolParts = new Dictionary<string, List<Sprite>>();
     private static Dictionary<string, List<Sprite>> featureSprites = new Dictionary<string, List<Sprite>>();
+    public readonly static Dictionary<string, Sprite> bitmaskBorderSprites = new Dictionary<string, Sprite>();
 
     static SpriteLoader() {
         Debug.Log("Loading NPC sprites");
@@ -22,7 +23,8 @@ public static class SpriteLoader {
         AddToDictionary(symbolParts, "Images/Symbols");
         Debug.Log("Loading Galaxy Feature Icons");
         AddToDictionary(featureSprites, "Images/Features");
-
+        Debug.Log("Loading Border Sprites");
+        ConfigureBorderSprites();
     }
 
     private static void AddToDictionary(Dictionary<string, List<Sprite>> dictionary, string path) {
@@ -59,7 +61,17 @@ public static class SpriteLoader {
         Debug.Log("Loaded " + i + " sprites");
     }
 
-    public static Sprite GetNPCSprite(string name) {
+    public static void ConfigureBorderSprites() {
+        DirectoryInfo d = new DirectoryInfo(Application.dataPath + "/Resources/Images/Border");
+        FileInfo[] files = d.GetFiles("*.png");
+        foreach (FileInfo file in files) {
+            string fileName = file.Name.Substring(0, file.Name.Length - 4);
+            Sprite s = Resources.Load<Sprite>("Images/Border/" + fileName);
+            bitmaskBorderSprites.Add(fileName, s);
+        }
+    }
+
+        public static Sprite GetNPCSprite(string name) {
         if (npcSprites.ContainsKey(name)) {
             List<Sprite> sprites = npcSprites[name];
             Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];

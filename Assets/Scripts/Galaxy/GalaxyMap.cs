@@ -163,7 +163,7 @@ public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
         foreach(GalaxyFeature f in tile.features) {
             switch (f.featureType) {
                 case GalaxyFeatureType.EntityCapital:
-                    displayString += "\nCapital of " + tile.Owner.entityName;
+                    displayString += "\nCapital System of " + tile.Owner.entityName;
                     break;
                 default:
                     Debug.LogError("Unsupported feature type on tile pointer enter");
