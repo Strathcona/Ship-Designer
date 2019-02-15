@@ -23,6 +23,7 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public List<int> claimedIDs = new List<int>();
     public Color baseColor;
     public int systemCount = 0;
+
     public Image backgroundImage;
     public Image foregroundImage;
     public Image borderImage;
@@ -36,6 +37,10 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     // 3, X, 4
     // 5, 6, 7
     //may be null if there's nothing there on the edge
+    public GalaxyMap map;
+    public bool selected;
+    public List<GalaxyFeature> features = new List<GalaxyFeature>();
+
     public static int[] orthogonal = new int[4] { 1, 3, 4, 6 };
     public static Coord[] neighbourDeltas = new Coord[8] {
         new Coord(-1, -1),
@@ -47,9 +52,6 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
         new Coord(1, 0),
         new Coord(1, 1),
     };
-    public GalaxyMap map;
-    public bool selected;
-    public List<GalaxyFeature> features = new List<GalaxyFeature>();
 
     public void Refresh() {
         RecalculateBorder();

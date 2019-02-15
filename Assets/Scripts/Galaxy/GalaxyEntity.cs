@@ -1,10 +1,12 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
 
 public class GalaxyEntity {
     public List<Sector> territory = new List<Sector>();
+    public HashSet<Sector> neighbouringSectors = new HashSet<Sector>();
     public Sector capitalSector;
     public Sprite symbol;
     public int controlledSystems = 0;
@@ -14,19 +16,7 @@ public class GalaxyEntity {
     public string leaderTitle;
     public string adjective;
     public string governmentName;
-
-    public Dictionary<ShipType, int> demandForShipType = new Dictionary<ShipType, int>() {
-        {ShipType.Battlecruiser,0 },
-        {ShipType.Battleship, 0 },
-        {ShipType.Carrier, 0 },
-        {ShipType.Destroyer, 0 },
-        {ShipType.Fighter, 0 },
-        {ShipType.Gunboat, 0 },
-        {ShipType.HeavyCruiser, 0 },
-        {ShipType.LightCruiser, 0 },
-        {ShipType.Patrol, 0 },
-        {ShipType.Utility, 0 }
-    };
+    public List<EntityGoal> hashtagEntityGoals = new List<EntityGoal>();
 
     public void LoseTerritory(Sector tile) {
         territory.Remove(tile);
@@ -42,11 +32,27 @@ public class GalaxyEntity {
         territory.Add(tile);
     }
 
+    public void RecaluclateNeighboringSectors() {
+        foreach(Sector s in territory) {
+            foreach(Sector n in Array.FindAll(s.neighbours, i => i != null && i.Owner != this)) {
+                neighbouringSectors.Add(n);
+            }
+        }
+    }
+
     public string GetDetailString() {
         string detailString = "";
         detailString += "Sectors: " + territory.Count.ToString() + "\n";
         detailString += "Controlled Systems: " + controlledSystems.ToString();
         return detailString;
+    }
+
+    public void RequestNewGoals() {
+
+    }
+
+    public void RequestNewShips() {
+
     }
 
     public static GalaxyEntity GetRandomGalaxyEntity(Sector _capitalSector) {
@@ -59,6 +65,7 @@ public class GalaxyEntity {
         g.governmentName = entityStrings[0];
         g.adjective = entityStrings[2];
         g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
+        TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
         return g;
     }
 }

@@ -5,7 +5,7 @@ using System;
 
 public class TimeManager : MonoBehaviour {
     public static TimeManager instance;
-    public int totalMinutes = 0;
+    public static int totalMinutes = 0;
     //individually track these so we can easily see if they change.
     public int minutes = 0;
     public int hours = 0;
@@ -27,7 +27,7 @@ public class TimeManager : MonoBehaviour {
 
     public List<Action<int>> actionsOnTick = new List<Action<int>>();
     public List<Action> actionsOnMinute =  new List<Action>();
-    public List<Timer> timers = new List<Timer>();
+    public static List<TimeTrigger> triggers = new List<TimeTrigger>();
 
     public static TickDate currentTime;
 
@@ -105,17 +105,18 @@ public class TimeManager : MonoBehaviour {
     }
 
     private void DeltaMinute(int delta) {
-        List<Timer> done = new List<Timer>();
+        List<TimeTrigger> done = new List<TimeTrigger>();
         foreach (Action action in actionsOnMinute) {
             action();
         }
-        foreach (Timer t in timers) {
-            if (t.CountDown(delta)) {
+        foreach (TimeTrigger t in triggers) {
+            if (totalMinutes > t.totalMinutesOfEnd) {
                 done.Add(t);
+                t.onEnd();
             }
         }
-        foreach (Timer t in done) {
-            timers.Remove(t);
+        foreach (TimeTrigger t in done) {
+            triggers.Remove(t);
         }
     }
 
@@ -142,9 +143,9 @@ public class TimeManager : MonoBehaviour {
         }
     }
 
-    public Timer SetTimer(int lengthInMinutes, Action onEnd) {
-        Timer t = new Timer(lengthInMinutes, onEnd);
-        timers.Add(t);
+    public static TimeTrigger SetTimeTrigger(int lengthInMinutes, Action onEnd) {
+        TimeTrigger t = new TimeTrigger(lengthInMinutes, onEnd);
+        triggers.Add(t);
         return t;
     }
 

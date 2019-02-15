@@ -12,7 +12,7 @@ public class ShipLibrary : MonoBehaviour
         shipsInDevelopment.Add(s);
         s.inDevelopment = true;
         var pass = s;
-        Timer t = TimeManager.instance.SetTimer(s.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
+        TimeTrigger t = TimeManager.instance.SetTimeTrigger(s.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
     }
 
     public static void CompleteDevelopmentOfPart(Ship s) {
