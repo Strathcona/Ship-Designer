@@ -70,6 +70,10 @@ namespace GameConstructs {
             {PartType.FireControl, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.FireControl])+">Fire Control</color>"},
             {PartType.Shield, "<color=#"+ColorUtility.ToHtmlStringRGB(PartColor[PartType.Shield])+">Shield</color>"},
         };
+               
+        public static Dictionary<ShipType, string> ShipTypeString = new Dictionary<ShipType, string>() {
+            {ShipType.Battlecruiser, "Battlecruiser" }
+        };
 
         public static Dictionary<int, string> TierEngineNames = new Dictionary<int, string>() {
             {0, "Liquid Oxygen"},

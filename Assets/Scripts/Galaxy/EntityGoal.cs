@@ -21,8 +21,8 @@ public class EntityGoal{
         Action<GalaxyEntity> action = delegate (GalaxyEntity e) {
             e.RequestNewShips();
         };
-        EntityGoal e = new EntityGoal(util, action);
-        e.goalName = "Expand the Navy";
-        return e;
+        EntityGoal eg = new EntityGoal(util, action);
+        eg.goalName = "Expand the Navy";
+        return eg;
     }
 }

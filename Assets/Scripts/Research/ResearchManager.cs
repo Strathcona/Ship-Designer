@@ -44,7 +44,7 @@ public class ResearchManager: MonoBehaviour {
         {"Weapon MaxTier", 1 },
         {"Engine MaxTier", 1 },
         {"Sensor MaxTier", 1 },
-        {"Fire Control MaxTier", 1 },
+        {"FireControl MaxTier", 1 },
         {"Reactor MaxTier", 1 },
         {"Shield MaxTier", 1 }
 

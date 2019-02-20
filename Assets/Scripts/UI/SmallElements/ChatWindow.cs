@@ -5,11 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using GameConstructs;
 
-public class CompanyChatWindow : MonoBehaviour, IConversationReader 
+public class ChatWindow : MonoBehaviour, IConversationReader 
 {
-    public Company company;
-    public TextScroll companyChatMessages;
-    public SmallCompanyDisplay companyChatDisplay;
+    public TextScroll chatMessages;
     public GameObject choiceButtonParent;
     public GameObject choiceButtonPrefab;
     public ConversationTree conversationTree;
@@ -19,16 +17,11 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
     private static Dictionary<string, string> keywordReplacements;
     public Action OnConversationFinish;
 
-    public void StartChatWith(Company c, Action onConversationFinish) {
+    public void PlayConversationTree(ConversationTree tree, Action onConversationFinish) {
         OnConversationFinish = onConversationFinish;
         Clear();
-        company = c;
-        keywordReplacements = new Dictionary<string, string>() {
-            {"*COMPANY*", company.name },
-        };
         conversationTree = ConversationTreeLoader.GetTree("GenericFirstPartSupply");
         conversationTree.currentReader = this;
-        companyChatDisplay.DisplayCompany(company);
         conversationTree.StartTree(conversationTree.elements[0], this);
     }
 
@@ -44,11 +37,11 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
 
 
     public void DisplayText(string text) {
-        companyChatMessages.DisplayMessage(text, true);
+        chatMessages.DisplayMessage(text, true);
     }
 
     public void DisplayText(string text, bool left) {
-        companyChatMessages.DisplayMessage(text, left);
+        chatMessages.DisplayMessage(text, left);
     }
 
 
@@ -89,7 +82,7 @@ public class CompanyChatWindow : MonoBehaviour, IConversationReader
     }
     public void Clear() {
         conversationTree = null;
-        companyChatMessages.Clear();
+        chatMessages.Clear();
     }
 
     public void EndConversation() {

@@ -22,7 +22,7 @@ public static class PartLibrary {
         partsInDevelopment.Add(p);
         p.inDevelopment = true;
         var pass = p;
-        TimeTrigger t = TimeManager.instance.SetTimeTrigger(p.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
+        TimeTrigger t = TimeManager.SetTimeTrigger(p.minutesToDevelop, delegate { CompleteDevelopmentOfPart(pass); });
     }
 
     public static void CompleteDevelopmentOfPart(Part p) {
