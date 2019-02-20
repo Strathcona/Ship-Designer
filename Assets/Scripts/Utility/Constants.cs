@@ -5,6 +5,7 @@ using System.IO;
 using System;
 namespace GameConstructs {
 
+    //ship and part enums
     public enum WeaponType { Laser, Railgun };
     public enum SensorType { LowEnergy, HighEnergy, Gravitic };
     public enum ShieldType { Generator, Deflector};
@@ -13,12 +14,17 @@ namespace GameConstructs {
     public enum PartSize { XS, S, M, L, XL};
     public enum ShipType { Carrier, Battlecruiser, Battleship, LightCruiser, HeavyCruiser, Destroyer, Gunboat, Fighter, Utility, Patrol, None};
     public enum TweakableType { Slider, Dropdown };
+
+    //company enums
     public enum CompanyQuality { Speed, Quality, Cost, Prestige, Ethics, Quantity };
+
+    //galaxy entity enums
+    public enum EntityFleetDoctrine { BorderPatrol, SmallNavy};
+
     public enum ConversationElementType { Text, Set, Choice, Branch, End }
     public enum CompanyTextKey { SpecialMitobahn, GenericOne }
     public enum ResearchNodeType {  Start, End, Mandatory, Optional};
     public enum GalaxyFeatureType { None, EntityCapital };
-
 
     public static class Constants {
         private static string[] companyNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/CompanyNames.txt");
@@ -72,8 +78,65 @@ namespace GameConstructs {
         };
                
         public static Dictionary<ShipType, string> ShipTypeString = new Dictionary<ShipType, string>() {
-            {ShipType.Battlecruiser, "Battlecruiser" }
+            {ShipType.Battlecruiser, "Battlecruiser" },
+            {ShipType.Battleship, "Battleship" },
+            {ShipType.Carrier, "Carrier" },
+            {ShipType.Destroyer, "Destroyer" },
+            {ShipType.Fighter, "Fighter" },
+            {ShipType.Gunboat, "Gunboat" },
+            {ShipType.HeavyCruiser, "Heavy Cruiser" },
+            {ShipType.LightCruiser, "Light Cruiser" },
+            {ShipType.None, "Ship" },
+            {ShipType.Patrol, "Patrol Craft" },
+            {ShipType.Utility, "Utility Craft" }
         };
+
+        public static Dictionary<ShipType, float> FleetDoctrineCompositions(EntityFleetDoctrine doctrine){
+            switch (doctrine) {
+                case EntityFleetDoctrine.BorderPatrol:
+                    return new Dictionary<ShipType, float>() {
+                        {ShipType.Battlecruiser, 0.02f },
+                        {ShipType.Battleship, 0.0f },
+                        {ShipType.Carrier, 0.02f },
+                        {ShipType.Destroyer, 0.25f },
+                        {ShipType.Fighter, 0.0f },
+                        {ShipType.Gunboat, 0.0f },
+                        {ShipType.HeavyCruiser, 0.05f },
+                        {ShipType.LightCruiser, 0.10f },
+                        {ShipType.None, 0.0f },
+                        {ShipType.Patrol, 0.50f },
+                        {ShipType.Utility, 0.06f }
+                    };
+                case EntityFleetDoctrine.SmallNavy:
+                    return new Dictionary<ShipType, float>() {
+                        {ShipType.Battlecruiser, 0.00f },
+                        {ShipType.Battleship, 0.7f },
+                        {ShipType.Carrier, 0.07f },
+                        {ShipType.Destroyer, 0.15f },
+                        {ShipType.Fighter, 0.0f },
+                        {ShipType.Gunboat, 0.0f },
+                        {ShipType.HeavyCruiser, 0.25f },
+                        {ShipType.LightCruiser, 0.30f },
+                        {ShipType.None, 0.0f },
+                        {ShipType.Patrol, 0.10f },
+                        {ShipType.Utility, 0.06f }
+                    };
+                default:
+                    return new Dictionary<ShipType, float>() {
+                        {ShipType.Battlecruiser, 0.00f },
+                        {ShipType.Battleship, 0.7f },
+                        {ShipType.Carrier, 0.07f },
+                        {ShipType.Destroyer, 0.15f },
+                        {ShipType.Fighter, 0.0f },
+                        {ShipType.Gunboat, 0.0f },
+                        {ShipType.HeavyCruiser, 0.25f },
+                        {ShipType.LightCruiser, 0.30f },
+                        {ShipType.None, 0.0f },
+                        {ShipType.Patrol, 0.10f },
+                        {ShipType.Utility, 0.06f }
+                    };
+            }
+        }
 
         public static Dictionary<int, string> TierEngineNames = new Dictionary<int, string>() {
             {0, "Liquid Oxygen"},

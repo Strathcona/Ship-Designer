@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
 
+[System.Serializable]
 public class GalaxyEntity {
     public List<Sector> territory = new List<Sector>();
     public HashSet<Sector> neighbouringSectors = new HashSet<Sector>();
@@ -16,7 +17,11 @@ public class GalaxyEntity {
     public string leaderTitle;
     public string adjective;
     public string governmentName;
+    public EntityFleetDoctrine fleetDoctrine;
     public List<EntityGoal> hashtagEntityGoals = new List<EntityGoal>();
+    public List<Ship> navy;
+    public List<ContractBid> contractBids = new List<ContractBid>();
+    public int desiredNavySize = 0;
 
     public void LoseTerritory(Sector tile) {
         territory.Remove(tile);
@@ -48,16 +53,38 @@ public class GalaxyEntity {
     }
 
     public void RequestNewGoals() {
+        hashtagEntityGoals.Add(EntityGoal.GetRandomGoal());
+    }
 
+    public void EvaluateGoals() {
+        EntityGoal bestGoal = null;
+        float bestUtility = 0.0f;
+        foreach(EntityGoal g in hashtagEntityGoals) {
+            float util = g.CalculateUtility(this);
+            if(util > bestUtility) {
+                bestGoal = g;
+                bestUtility = util;
+            }
+        }
+        if(bestGoal != null) {
+            bestGoal.PerformAction(this);
+        }
+        TimeManager.SetTimeTrigger(30000, EvaluateGoals);
     }
 
     public void RequestNewShips() {
-
+        List<ContractBid.ContractBidRequirement> bidRequirements = new List<ContractBid.ContractBidRequirement>();
+        bidRequirements.Add(ContractBid.ContractBidRequirement.ShipTypeRequirement(ShipType.Destroyer));
+        List<ContractBid.ContractBidCriteria> bidCriteria = new List<ContractBid.ContractBidCriteria>();
+        bidCriteria.Add(ContractBid.ContractBidCriteria.LowMinimumCrewCriteria(3));
+        int units = UnityEngine.Random.Range(1, 5);
+        ContractBid newContract = new ContractBid(this, units, bidCriteria, bidRequirements);
     }
 
     public static GalaxyEntity GetRandomGalaxyEntity(Sector _capitalSector) {
         string[] entityStrings = Constants.GetRandomEntityStrings();
         GalaxyEntity g = new GalaxyEntity();
+        g.fleetDoctrine = (EntityFleetDoctrine) UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
         g.capitalSector = _capitalSector;
         g.GainTerritory(_capitalSector);
         g.color = Constants.GetRandomPastelColor();
@@ -66,6 +93,8 @@ public class GalaxyEntity {
         g.adjective = entityStrings[2];
         g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
         TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
+        TimeManager.SetTimeTrigger(2, g.EvaluateGoals);
+
         return g;
     }
 }

@@ -106,16 +106,17 @@ public class TimeManager : MonoBehaviour {
 
     private void DeltaMinute(int delta) {
         List<TimeTrigger> done = new List<TimeTrigger>();
+
         foreach (Action action in actionsOnMinute) {
             action();
         }
         foreach (TimeTrigger t in triggers) {
             if (totalMinutes > t.totalMinutesOfEnd) {
                 done.Add(t);
-                t.onEnd();
             }
         }
         foreach (TimeTrigger t in done) {
+            t.onEnd();
             triggers.Remove(t);
         }
     }

@@ -7,23 +7,70 @@ using GameConstructs;
 public class ContractBid {
     public GalaxyEntity requester;
     public int units;
-    public ShipType shipType;
     public int lengthInMinutes;
     public List<ContractBidResponse> responses = new List<ContractBidResponse>();
     public HashSet<Company> companies = new HashSet<Company>();
     public List<ContractBidCriteria> criteria = new List<ContractBidCriteria>();
     public List<ContractBidRequirement> requirements = new List<ContractBidRequirement>();
 
+    public ContractBid(GalaxyEntity _requester, int _units, List<ContractBidCriteria> _criteria, List<ContractBidRequirement> _requirements, int _lengthInMinutes = 30000) {
+        requester = _requester;
+        units = _units;
+        lengthInMinutes = _lengthInMinutes;
+        foreach(ContractBidCriteria c in _criteria) {
+            criteria.Add(c);
+        }
+        foreach(ContractBidRequirement r in _requirements) {
+            requirements.Add(r);
+        }
+    }
+
+    public List<string> SubmitResponse(Company company, Ship ship, int price) {
+        ContractBidResponse response = new ContractBidResponse(company, ship, price);
+        List<string> failureMessages = new List<string>();
+        if (companies.Add(company)) {
+            foreach (ContractBidRequirement r in requirements) {
+                if (r.evaluate(response) == false) {
+                    failureMessages.Add(r.failureMessage);
+                }
+            }
+            if (failureMessages.Count == 0) {
+                responses.Add(response);
+                return failureMessages;
+            } else {
+                companies.Remove(company);
+                return failureMessages;
+            }
+        } else {
+            failureMessages.Add("You've already submited a response to this Contract Bid");
+            return failureMessages;
+        }
+    }
+
+    public ContractBidResponse[] GetBestBidsInOrder() {
+        foreach (ContractBidCriteria c in criteria) {
+            c.evaluate(responses);
+        }
+        foreach (ContractBidResponse response in responses) {
+            responses.Sort(delegate(ContractBidResponse x, ContractBidResponse y) {
+                if (x.score > y.score) return 1;
+                else if (x.score < y.score) return -1;
+                else return 0; //ie. they are equal
+            });
+        }
+        return responses.ToArray();
+    }
+
     public struct ContractBidResponse {
         public Ship ship;
         public int price;
         public Company company;
-        public int favorability;
+        public int score;
         public ContractBidResponse(Company _company, Ship _ship, int _price) {
             company = _company;
             ship = _ship;
             price = _price;
-            favorability = 0;
+            score = 0;
         }
     }
 
@@ -36,6 +83,21 @@ public class ContractBid {
             criteriaSummary = _criteriaSummary;
             criteriaExplaination = _criteriaExplaination;
             evaluate = _evaluate;
+        }
+
+        public static ContractBidCriteria LowMinimumCrewCriteria(int scoring) {
+            return new ContractBidCriteria(
+                "Low Crew",
+                "The submitted ship should be opperated with minimal crew",
+                (List<ContractBidResponse> bidResponses) => {
+                    ContractBidResponse bestResponse = bidResponses[0];
+                    foreach(ContractBidResponse br in bidResponses) {
+                        if(br.ship.crew < bestResponse.ship.crew) {
+                            bestResponse = br;
+                        }
+                    }
+                    bestResponse.score += scoring;
+                });
         }
     }
 
@@ -52,40 +114,13 @@ public class ContractBid {
             evaluate = _evaluate;
         }
 
-    }
+        public static ContractBidRequirement ShipTypeRequirement(ShipType type) {
+            return new ContractBidRequirement(
+            Constants.ShipTypeString[type],
+            "The submitted ship must be a " + Constants.ShipTypeString[type],
+            "The submitted ship doesn't match the requested classification",
+            (ContractBidResponse bid) => bid.ship.classificaiton == type);
+        }
 
-    public List<string> SubmitResponse(Company company, Ship ship, int price) {
-        ContractBidResponse response = new ContractBidResponse(company, ship, price);
-        List<string> failureMessages = new List<string>();
-        if (companies.Add(company)) {
-            foreach (ContractBidRequirement r in requirements) {
-                if (r.evaluate(response) == false) {
-                    failureMessages.Add(r);
-                }
-            }
-            if (failureMessages.Count == 0) {
-                responses.Add(response);
-                return failureMessages;
-            } else {
-            return failureMessages;
-            }
-        } else {
-            failureMessages.Add("You've already submited a response to this Contract Bid");
-            return failureMessages;
-        }
-    }
-
-    public ContractBidResponse[] GetBestBidsInOrder() {
-        foreach (ContractBidCriteria c in criteria) {
-            c.evaluate(responses);
-        }
-        foreach (ContractBidResponse response in responses) {
-            responses.Sort(delegate(ContractBidResponse x, ContractBidResponse y) {
-                if (x.favorability > y.favorability) return 1;
-                else if (x.favorability < y.favorability) return -1;
-                else return 0; //ie. they are equal
-            });
-        }
-        return responses.ToArray();
     }
 }
