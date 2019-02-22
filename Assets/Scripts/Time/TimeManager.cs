@@ -40,12 +40,16 @@ public class TimeManager : MonoBehaviour {
         currentTime = new TickDate(0);
     }
 
-    public string GetTimeString() {
+    public string GetCurrentTimeString() {
         if (!warped) {
             return hours.ToString("D2") + ":" + minutes.ToString("D2");
         } else {
             return hours.ToString("D2") + ":" + UnityEngine.Random.Range(0, 6).ToString() + UnityEngine.Random.Range(0, 10).ToString();
         }
+    }
+
+    public string GetCurrentDateString() {
+        return "Tick:" + ticks.ToString() + ", " + tocks.ToString();
     }
 
     private void Update() {

@@ -78,7 +78,7 @@ public class GalaxyEntity {
         List<ContractBid.ContractBidCriteria> bidCriteria = new List<ContractBid.ContractBidCriteria>();
         bidCriteria.Add(ContractBid.ContractBidCriteria.LowMinimumCrewCriteria(3));
         int units = UnityEngine.Random.Range(1, 5);
-        ContractBid newContract = new ContractBid(this, units, bidCriteria, bidRequirements);
+        ContractBid newContract = new ContractBid(this, units, bidCriteria, bidRequirements, adjective + " Naval Expansion");
     }
 
     public static GalaxyEntity GetRandomGalaxyEntity(Sector _capitalSector) {

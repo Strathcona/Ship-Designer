@@ -7,15 +7,17 @@ using GameConstructs;
 public class ContractBid {
     public GalaxyEntity requester;
     public int units;
+    public string name;
     public int lengthInMinutes;
     public List<ContractBidResponse> responses = new List<ContractBidResponse>();
     public HashSet<Company> companies = new HashSet<Company>();
     public List<ContractBidCriteria> criteria = new List<ContractBidCriteria>();
     public List<ContractBidRequirement> requirements = new List<ContractBidRequirement>();
 
-    public ContractBid(GalaxyEntity _requester, int _units, List<ContractBidCriteria> _criteria, List<ContractBidRequirement> _requirements, int _lengthInMinutes = 30000) {
+    public ContractBid(GalaxyEntity _requester, int _units, List<ContractBidCriteria> _criteria, List<ContractBidRequirement> _requirements, string _name, int _lengthInMinutes = 30000) {
         requester = _requester;
         units = _units;
+        name = _name;
         lengthInMinutes = _lengthInMinutes;
         foreach(ContractBidCriteria c in _criteria) {
             criteria.Add(c);
