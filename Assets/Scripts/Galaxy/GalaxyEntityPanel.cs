@@ -19,4 +19,10 @@ public class GalaxyEntityPanel : MonoBehaviour {
         detailText.text = galaxyEntity.GetDetailString();
     }
 
+    public void ViewEntityScreen() {
+        if(galaxyEntity != null) {
+            EntityScreen.instance.DisplayEntity(galaxyEntity);
+        }
+    }
+
 }

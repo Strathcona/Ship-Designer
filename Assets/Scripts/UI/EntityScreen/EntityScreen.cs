@@ -6,8 +6,12 @@ public class EntityScreen : MonoBehaviour {
     public static EntityScreen instance;
     public GalaxyEntity galaxyEntity;
     public GameObject mainScreen;
-    public GameObject intelScreen;
+
     public GameObject contractScreen;
+    public GameObject contractBidPanelPrefab;
+    public GameObjectPool contractBidPanelPool;
+    public GameObject contractBidRoot;
+
     public GameObject conversationScreen;
 
     private void Awake() {
@@ -16,6 +20,8 @@ public class EntityScreen : MonoBehaviour {
         } else {
             Debug.LogError("You've put another entity screen somewhere...");
         }
+        contractBidPanelPool = new GameObjectPool(contractBidPanelPrefab, contractBidRoot);
+        gameObject.SetActive(false);
     }
 
     public void DisplayEntity(GalaxyEntity _galaxyEntity) {
@@ -36,11 +42,18 @@ public class EntityScreen : MonoBehaviour {
     public void ShowContractScreen() {
         ToggleVisible(false);
         contractScreen.SetActive(true);
+        foreach(ContractBid bid in galaxyEntity.contractBids) {
+            GameObject g = contractBidPanelPool.GetGameObject();
+            g.GetComponent<ContractBidPanel>().DisplayContractBid(bid);
+        }
+    }
+
+    public void ClearContractScreen() {
+        contractBidPanelPool.ReleaseAll();
     }
 
     public void ToggleVisible(bool on) {
         mainScreen.SetActive(on);
-        intelScreen.SetActive(on);
         contractScreen.SetActive(on);
         conversationScreen.SetActive(on);
     }

@@ -57,10 +57,12 @@ public class GalaxyEntity {
     }
 
     public void EvaluateGoals() {
+        Debug.Log("Galaxy Entity " + entityName + " is evaluating goals");
         EntityGoal bestGoal = null;
         float bestUtility = 0.0f;
         foreach(EntityGoal g in hashtagEntityGoals) {
             float util = g.CalculateUtility(this);
+            Debug.Log("Goal " + g.goalName + " has a utility of " + util);
             if(util > bestUtility) {
                 bestGoal = g;
                 bestUtility = util;
@@ -73,12 +75,14 @@ public class GalaxyEntity {
     }
 
     public void RequestNewShips() {
+        Debug.Log("Galaxy Entity " + entityName + " is requesting new ships");
         List<ContractBid.ContractBidRequirement> bidRequirements = new List<ContractBid.ContractBidRequirement>();
         bidRequirements.Add(ContractBid.ContractBidRequirement.ShipTypeRequirement(ShipType.Destroyer));
         List<ContractBid.ContractBidCriteria> bidCriteria = new List<ContractBid.ContractBidCriteria>();
         bidCriteria.Add(ContractBid.ContractBidCriteria.LowMinimumCrewCriteria(3));
         int units = UnityEngine.Random.Range(1, 5);
         ContractBid newContract = new ContractBid(this, units, bidCriteria, bidRequirements, adjective + " Naval Expansion");
+        contractBids.Add(newContract);
     }
 
     public static GalaxyEntity GetRandomGalaxyEntity(Sector _capitalSector) {
