@@ -4,15 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using GameConstructs;
+using System;
 
 public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     public GameObjectPool sectorPool;
     public GameObject sectorPrefab;
     public GameObject galaxyMapRoot;
-    public GalaxyEntityPanel galaxyEntityPanel;
+    public int size = 25;
     public Sector[][] sectors;
     public List<Sector> allSectors = new List<Sector>();
     public GridLayoutGroup layoutGroup;
+    public List<Action> onHoverOrSelect = new List<Action>();
     private Sector hoverSector;
     public Sector HoverSector {
         get { return hoverSector; }
@@ -29,19 +31,6 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
             SectorDisplayUpdate();
         }
     }
-
-    public int width = 32;
-    public int height = 32;
-    public int buldgeCount = 3000;
-    public int armCount = 3000;
-    public int numberOfArms = 4;
-    public float hubRadius = 15.0f; //radius of buldge
-    public float diskRadius = 25.0f; //radius of disk
-    public float armRadius = 45.0f; //radius of arms
-    public float armWinding = 0.5f; // how tightly the spirals wind
-    public float armWidth = 30.0f; // in degrees
-    public float fuzzFactor = 10.0f;
-
     public Gradient gradient;
     public GradientColorKey[] colorKeys = new GradientColorKey[4] {
         new GradientColorKey(Color.black, 0.0f),
@@ -53,8 +42,25 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
         new GradientAlphaKey(1.0f, 0.0f),
         new GradientAlphaKey(1.0f,1.0f)
     };
+    public GalaxyData displayedData;
 
-    public Text galaxyTileDescription;
+    public void Awake() {
+        sectorPool = new GameObjectPool(sectorPrefab, galaxyMapRoot, SetGalaxyTile);
+    }
+
+    public void DisplayGalaxyData(GalaxyData data) {
+        displayedData = data;
+        sectors = new Sector[displayedData.sectors.Length][];
+        for (int x = 0; x< displayedData.sectors.Length; x++) {
+            sectors[x] = new Sector[displayedData.sectors[x].Length];
+            for(int y = 0; y < displayedData.sectors[0].Length; y++) {
+                GameObject sector = sectorPool.GetGameObject();
+                Sector s = sector.GetComponent<Sector>();
+                s.DisplaySector(displayedData.sectors[x][y]);
+                sectors[x][y] = s;
+            }
+        }
+    }
 
     public void SetGalaxyTile(GameObject g) {
         g.GetComponent<Sector>().map = this;
@@ -88,7 +94,7 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     
     public void Initialize() {
         sectorPool = new GameObjectPool(sectorPrefab, galaxyMapRoot, SetGalaxyTile);
-        sectors = new Sector[width][];
+        sectors = new Sector[size][];
         gradient.SetKeys(colorKeys, alphaKeys);
     }
 
@@ -111,7 +117,6 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
                     break;
             }
         }
-        galaxyTileDescription.text = displayString;
     }
 
     public void TilePointerExit(Sector tile) {
@@ -133,21 +138,15 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
         } 
     }
 
-    private void SectorDisplayUpdate() {
-        if(selectedSector != null && selectedSector.sectorData.Owner != null) {
-            galaxyEntityPanel.gameObject.SetActive(true);
-            galaxyEntityPanel.DisplayEntity(selectedSector.sectorData.Owner);
-        } else if (hoverSector != null && hoverSector.sectorData.Owner != null) {
-            galaxyEntityPanel.gameObject.SetActive(true);
-            galaxyEntityPanel.DisplayEntity(hoverSector.sectorData.Owner);
-        } else {
-            galaxyEntityPanel.gameObject.SetActive(false);
+    public void SectorDisplayUpdate() {
+        foreach(Action a in onHoverOrSelect) {
+            a();
         }
     }
 
     private void ResetTiles() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 sectors[i][j].Clear();
             }
         }

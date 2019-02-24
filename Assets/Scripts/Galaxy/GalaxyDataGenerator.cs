@@ -17,14 +17,11 @@ public class GalaxyDataGenerator : MonoBehaviour {
     public float armWidth = 30.0f; // in degrees
     public float fuzzFactor = 15.0f;
 
+    public GalaxyDisplay previewDisplay;
+
     public GalaxyData data;
 
-    private void Awake() {
-        
-    }
-
-
-    public GalaxyData GenerateGalaxy() {
+    public void GenerateGalaxy() {
         GalaxyData newData = new GalaxyData(size);
         int maxCount = 0; //used for normalizing
         for (int i = 0; i < buldgeCount + armCount; i++) {
@@ -42,7 +39,8 @@ public class GalaxyDataGenerator : MonoBehaviour {
             }
         }
         newData.maxCount = maxCount;
-        return newData;
+        data = newData;
+        previewDisplay.DisplayGalaxyData(data);
     }
 
     private Coord GetSystem(bool buldge) {
