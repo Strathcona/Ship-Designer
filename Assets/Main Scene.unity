@@ -5488,8 +5488,6 @@ MonoBehaviour:
   detailText: {fileID: 246050394}
   viewButton: {fileID: 80973094}
   galaxyEntity:
-    territory: []
-    capitalSector: {fileID: 0}
     symbol: {fileID: 0}
     controlledSystems: 0
     color: {r: 0, g: 0, b: 0, a: 0}
@@ -7850,7 +7848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a1918fdc8872145a7cfa2101956622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 1438565114}
+  display: {fileID: 0}
   entities: []
   lastID: 0
 --- !u!114 &631009561
@@ -13158,7 +13156,7 @@ GameObject:
   - component: {fileID: 1104625440}
   - component: {fileID: 1104625439}
   m_Layer: 5
-  m_Name: Galaxy Gener
+  m_Name: Galaxy Generation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13749,8 +13747,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   galaxyEntity:
-    territory: []
-    capitalSector: {fileID: 0}
     symbol: {fileID: 0}
     controlledSystems: 0
     color: {r: 0, g: 0, b: 0, a: 0}

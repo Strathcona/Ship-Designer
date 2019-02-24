@@ -1,26 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class InputFieldIncrement : MonoBehaviour {
+public class InputFieldIncrementFloat : MonoBehaviour {
     public UnityEvent onSubmit = new UnityEvent();
     public Button up;
     public Button down;
     public InputField inputField;
     [SerializeField] //can't serialize properties, so you gotta seralize the private field so we can see it. Setter won't be called from the editor BTW
-    private int fieldValue = 1;
-    public int incrementAmount = 1;
-    public int FieldValue {
+    private float fieldValue = 1.0f;
+    public float incrementAmount = 0.1f;
+    public float FieldValue {
         get { return fieldValue; }
         set {
-            fieldValue = value;
+            fieldValue = (float) Math.Round((Decimal) value, sigFigs);
             inputField.text = fieldValue.ToString();
         }
     }
-    public int minValue = 0;
-    public int maxValue = 100;
+    public float minValue = 0.0f;
+    public float maxValue = 100.0f;
+    public int sigFigs = 2;
 
     private void Awake() {
         up.onClick.AddListener(IncrementUp);
@@ -30,16 +32,17 @@ public class InputFieldIncrement : MonoBehaviour {
     }
 
     public void IncrementUp() {
-        if(FieldValue < maxValue) {
+        if (FieldValue < maxValue) {
             FieldValue += incrementAmount;
             FieldValue = Mathf.Min(maxValue, FieldValue);
+            FieldValue = (float)Math.Round((Decimal)FieldValue, sigFigs);
         }
         inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
     public void IncrementDown() {
-        if(FieldValue > minValue) {
+        if (FieldValue > minValue) {
             FieldValue -= incrementAmount;
             FieldValue = Mathf.Max(minValue, FieldValue);
         }
@@ -49,7 +52,7 @@ public class InputFieldIncrement : MonoBehaviour {
 
     public void OnValueChanged(string s) {
         Debug.Log(s);
-        if(int.TryParse(s, out int temp)) {
+        if (float.TryParse(s, out float temp)) {
             if (temp > maxValue) {
                 FieldValue = maxValue;
             } else if (temp < minValue) {

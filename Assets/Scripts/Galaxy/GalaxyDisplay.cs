@@ -89,81 +89,22 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     public void Initialize() {
         sectorPool = new GameObjectPool(sectorPrefab, galaxyMapRoot, SetGalaxyTile);
         sectors = new Sector[width][];
-        for(int i = 0; i < width; i++) {
-            sectors[i] = new Sector[height];
-            for(int j = 0; j < height; j++) {
-                GameObject g = sectorPool.GetGameObject();
-                Sector s = g.GetComponent<Sector>();
-                s.sectorName = "Sector " + (j + i * width).ToString();
-                s.coord = new Coord(i, j);
-                sectors[i][j] = s;
-                allSectors.Add(s);
-            }
-        }
-        //precompute Neighbours
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                for (int k = 0; k < 8; k++) {
-                    int neighbourX = i + Sector.neighbourDeltas[k].x;
-                    int neighbourY = j + Sector.neighbourDeltas[k].y;
-                    if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height) {
-                        sectors[i][j].neighbours[k] = sectors[neighbourX][neighbourY];
-                    } else {
-                        sectors[i][j].neighbours[k] = null;
-                    }
-                }
-            }
-        }
         gradient.SetKeys(colorKeys, alphaKeys);
-        GenerateGalaxy();        
-    }
-
-    public void GenerateGalaxy() {
-        ResetTiles();
-        int maxCount = 0; //used for normalizing
-
-        for(int i= 0; i < buldgeCount + armCount; i++) {
-            Coord c;
-            if( i > buldgeCount) {
-                c = GetStar(false);
-            } else {
-                c = GetStar(true);
-            }
-            if(c.x < width && c.y < height && c.x >= 0 && c.y >= 0) {
-                sectors[c.x][c.y].systemCount += 1;
-                if (sectors[c.x][c.y].systemCount > maxCount) {
-                    maxCount = sectors[c.x][c.y].systemCount;
-                }
-            }
-        }
-
-        int x = 0;
-        int y = 0;
-
-        for(int i = 0; i < width*height; i++) {
-            sectors[x][y].baseColor = gradient.Evaluate(sectors[x][y].systemCount / (float) maxCount);
-            sectors[x][y].ShowBaseColor();
-            x += 1;
-            if (x >= width) {
-                x = 0;
-                y += 1;
-            }
-        }
     }
 
     public void TilePointerEnter(Sector tile) {
         HoverSector = tile;
         tile.SetHover(true);
-        string displayString = "Major Systems: " + tile.systemCount.ToString();
-        if (tile.Owner != null) {
-            displayString += "\nOwner: " + tile.Owner.entityName;
+        string displayString = "Major Systems: " + tile.sectorData.systemCount.ToString();
+        if (tile.sectorData.Owner != null) {
+            displayString += "\nOwner: " + tile.sectorData.Owner.entityName;
         } else {
             displayString += "\nUnclaimed";
         }
-        foreach(GalaxyFeature f in tile.features) {
+        foreach(GalaxyFeature f in tile.sectorData.features) {
             switch (f.featureType) {
                 case GalaxyFeatureType.EntityCapital:
-                    displayString += "\nCapital System of " + tile.Owner.entityName;
+                    displayString += "\nCapital System of " + tile.sectorData.Owner.entityName;
                     break;
                 default:
                     Debug.LogError("Unsupported feature type on tile pointer enter");
@@ -193,43 +134,15 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     }
 
     private void SectorDisplayUpdate() {
-        if(selectedSector != null && selectedSector.Owner != null) {
+        if(selectedSector != null && selectedSector.sectorData.Owner != null) {
             galaxyEntityPanel.gameObject.SetActive(true);
-            galaxyEntityPanel.DisplayEntity(selectedSector.Owner);
-        } else if (hoverSector != null && hoverSector.Owner != null) {
+            galaxyEntityPanel.DisplayEntity(selectedSector.sectorData.Owner);
+        } else if (hoverSector != null && hoverSector.sectorData.Owner != null) {
             galaxyEntityPanel.gameObject.SetActive(true);
-            galaxyEntityPanel.DisplayEntity(hoverSector.Owner);
+            galaxyEntityPanel.DisplayEntity(hoverSector.sectorData.Owner);
         } else {
             galaxyEntityPanel.gameObject.SetActive(false);
         }
-    }
-
-    private Coord GetStar(bool buldge) {
-        if (buldge) {
-            float distance = Random.Range(0.0f, hubRadius);
-            float distanceFuzz = distance + Random.Range(-hubRadius/ fuzzFactor, hubRadius / fuzzFactor);
-
-            float theta = Random.Range(0.0f, 360.0f);
-            int x = width / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
-            int y = height / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
-            return new Coord(x, y);
-        } else {
-            //arms
-            float armDelta = 0.0f;
-            if (numberOfArms != 0) {
-                armDelta = 360 / numberOfArms;
-            }
-            float distance = hubRadius + Random.Range(0.0f, diskRadius);
-            float distanceFuzz = distance + Random.Range(-diskRadius/ fuzzFactor, diskRadius / fuzzFactor);
-            float theta = ((360.0f * armWinding * (distanceFuzz / diskRadius)));
-            theta += Random.Range(0.0f, armWidth);
-            theta += armDelta * (float)Random.Range(0, numberOfArms);
-            theta += Random.Range(0.0f, fuzzFactor);
-            int x = width / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
-            int y = height / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
-            return new Coord(x, y);
-        }
-
     }
 
     private void ResetTiles() {

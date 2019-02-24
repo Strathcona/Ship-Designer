@@ -6,9 +6,9 @@ using GameConstructs;
 
 [System.Serializable]
 public class GalaxyEntity {
-    public List<Sector> territory = new List<Sector>();
-    public HashSet<Sector> neighbouringSectors = new HashSet<Sector>();
-    public Sector capitalSector;
+    public List<SectorData> territory = new List<SectorData>();
+    public HashSet<SectorData> neighbouringSectors = new HashSet<SectorData>();
+    public SectorData capitalSector;
     public Sprite symbol;
     public int controlledSystems = 0;
     public Color color;
@@ -23,12 +23,12 @@ public class GalaxyEntity {
     public List<ContractBid> contractBids = new List<ContractBid>();
     public int desiredNavySize = 0;
 
-    public void LoseTerritory(Sector tile) {
+    public void LoseTerritory(SectorData tile) {
         territory.Remove(tile);
         controlledSystems -= tile.systemCount;
     }
 
-    public void GainTerritory(Sector tile) {
+    public void GainTerritory(SectorData tile) {
         if(tile.Owner != null) {
             tile.Owner.LoseTerritory(tile);
         }
@@ -38,8 +38,8 @@ public class GalaxyEntity {
     }
 
     public void RecaluclateNeighboringSectors() {
-        foreach(Sector s in territory) {
-            foreach(Sector n in Array.FindAll(s.neighbours, i => i != null && i.Owner != this)) {
+        foreach(SectorData s in territory) {
+            foreach(SectorData n in Array.FindAll(s.neighbours, i => i != null && i.Owner != this)) {
                 neighbouringSectors.Add(n);
             }
         }
@@ -85,7 +85,7 @@ public class GalaxyEntity {
         contractBids.Add(newContract);
     }
 
-    public static GalaxyEntity GetRandomGalaxyEntity(Sector _capitalSector) {
+    public static GalaxyEntity GetRandomGalaxyEntity(SectorData _capitalSector) {
         string[] entityStrings = Constants.GetRandomEntityStrings();
         GalaxyEntity g = new GalaxyEntity();
         g.fleetDoctrine = (EntityFleetDoctrine) UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);

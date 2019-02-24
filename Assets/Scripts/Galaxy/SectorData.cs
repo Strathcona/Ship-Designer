@@ -43,7 +43,7 @@ public class SectorData {
         }
     }
 
-    public void AddFeature(GalaxyFeature feature) {
+    public void AddGalaxyFeature(GalaxyFeature feature) {
         features.Add(feature);
     }
 
