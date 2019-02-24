@@ -11,6 +11,7 @@ public class InputFieldIncrement : MonoBehaviour {
     public InputField inputField;
     [SerializeField] //can't serialize properties, so you gotta do the private field. Setter won't be called from the editor BTW
     private int fieldValue = 1;
+    public int incrementAmount = 1;
     public int FieldValue {
         get { return fieldValue; }
         set {
@@ -30,7 +31,8 @@ public class InputFieldIncrement : MonoBehaviour {
 
     public void IncrementUp() {
         if(FieldValue < maxValue) {
-            FieldValue += 1;
+            FieldValue += incrementAmount;
+            FieldValue = Mathf.Min(maxValue, FieldValue);
         }
         inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
@@ -38,7 +40,8 @@ public class InputFieldIncrement : MonoBehaviour {
 
     public void IncrementDown() {
         if(FieldValue > minValue) {
-            FieldValue -= 1;
+            FieldValue -= incrementAmount;
+            FieldValue = Mathf.Max(minValue, FieldValue);
         }
         inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
@@ -46,13 +49,14 @@ public class InputFieldIncrement : MonoBehaviour {
 
     public void OnValueChanged(string s) {
         Debug.Log(s);
-        int temp = int.Parse(s);
-        if(temp > maxValue) {
-            FieldValue = maxValue;
-        } else if (temp < minValue) {
-            FieldValue = minValue;
-        } else {
-            FieldValue = temp;
+        if(int.TryParse(s, out int temp)) {
+            if (temp > maxValue) {
+                FieldValue = maxValue;
+            } else if (temp < minValue) {
+                FieldValue = minValue;
+            } else {
+                FieldValue = temp;
+            }
         }
         inputField.text = FieldValue.ToString();
         onSubmit.Invoke();

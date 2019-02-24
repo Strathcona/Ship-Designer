@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class ScreenManager : MonoBehaviour {
+public class ScreenManager : MonoBehaviour, IInitialized {
     private static ScreenManager instance;
     public Dictionary<string, Canvas> canvases = new Dictionary<string, Canvas>();
     public Canvas currentCanvas;
     public List<Action> onCanvasChange = new List<Action>();
 
-    private void Awake() {
+    public void Initialize() {
         if(instance == null) {
             instance = this;
         } else {
@@ -25,7 +25,6 @@ public class ScreenManager : MonoBehaviour {
             }
         }
         DisableAllCanvases();
-        DisplayCanvas("Room");
     }
 
     public string GetCurrentCanvasName() {

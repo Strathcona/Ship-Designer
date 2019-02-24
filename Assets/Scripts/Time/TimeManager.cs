@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class TimeManager : MonoBehaviour {
+public class TimeManager : MonoBehaviour, IInitialized {
     public static TimeManager instance;
     public static int totalMinutes = 0;
     //individually track these so we can easily see if they change.
@@ -31,7 +31,7 @@ public class TimeManager : MonoBehaviour {
 
     public static TickDate currentTime;
 
-    private void Awake() {
+    public void Initialize() {
         if (instance == null) {
             instance = this;
         } else {

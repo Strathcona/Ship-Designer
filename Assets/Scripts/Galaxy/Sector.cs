@@ -7,22 +7,8 @@ using GameConstructs;
 using System;
 
 public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-    private GalaxyEntity owner;
-    public GalaxyEntity Owner {
-        get { return owner; }
-        set { owner = value;
-            foreach (Sector s in Array.FindAll(neighbours, i => i != null)) {
-                s.Refresh();
-            }
-            Refresh();
-        }
-    }
     public int bitmask;
-    public Coord coord;
-    public string sectorName = "";
-    public List<int> claimedIDs = new List<int>();
     public Color baseColor;
-    public int systemCount = 0;
 
     public Image backgroundImage;
     public Image foregroundImage;
@@ -31,38 +17,22 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public Color foregroundColorHover = Color.yellow;
     public Color foregroundColorSelect = Color.green;
     public Image selectionOutline;
-    public Sector[] neighbours = new Sector[8] { null, null, null, null, null, null, null, null };
-    //arranged
-    // 0, 1, 2
-    // 3, X, 4
-    // 5, 6, 7
-    //may be null if there's nothing there on the edge
-    public GalaxyMap map;
-    public bool selected;
-    public List<GalaxyFeature> features = new List<GalaxyFeature>();
 
-    public static int[] orthogonal = new int[4] { 1, 3, 4, 6 };
-    public static Coord[] neighbourDeltas = new Coord[8] {
-        new Coord(-1, -1),
-        new Coord(-1, 0),
-        new Coord(-1, 1),
-        new Coord(0, -1),
-        new Coord(0, 1),
-        new Coord(1, -1),
-        new Coord(1, 0),
-        new Coord(1, 1),
-    };
+    public GalaxyDisplay map;
+    public bool selected;
+
+    public SectorData sectorData;
+
+    public void DisplaySector(SectorData _sectorData) {
+        sectorData = _sectorData;
+    }
 
     public void Refresh() {
         RecalculateBorder();
     }
 
-    public void AddGalaxyFeature(GalaxyFeature g) {
-        features.Add(g);
-    }
-
     public void ShowFeatures(GalaxyFeatureType t) {
-        List<GalaxyFeature> f = features.FindAll(i => i.featureType == t);
+        List<GalaxyFeature> f = sectorData.features.FindAll(i => i.featureType == t);
         if(f.Count != 0) {
             Debug.Log("Feature Found!");
             foregroundImage.gameObject.SetActive(true);
@@ -74,8 +44,8 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     }
 
     public void ShowOwnerColor() {
-        if (owner != null) {
-            backgroundImage.color = owner.color;
+        if (sectorData.Owner != null) {
+            backgroundImage.color = sectorData.Owner.color;
         } else {
             backgroundImage.color = baseColor;
         }
@@ -118,36 +88,36 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     }
 
     public void RecalculateBorder() {
-        if(owner != null) {
+        if(sectorData.Owner != null) {
             borderImage.gameObject.SetActive(true);
             bitmask = 0;
             //X, 1, X
             //2, O, 4,
             //X, 8, X
-            if(neighbours[1] != null){
-                if (neighbours[1].owner != owner) {
+            if(sectorData.neighbours[1] != null){
+                if (sectorData.neighbours[1].Owner != sectorData.Owner) {
                     bitmask += 1;
                 }
             } else {
                 bitmask += 1;
             }
 
-            if (neighbours[3] != null) {
-                if (neighbours[3].owner != owner) {
+            if (sectorData.neighbours[3] != null) {
+                if (sectorData.neighbours[3].Owner != sectorData.Owner) {
                     bitmask += 2;
                 }
             } else {
                 bitmask += 2;
             }
-            if (neighbours[4] != null) {
-                if (neighbours[4].owner != owner) {
+            if (sectorData.neighbours[4] != null) {
+                if (sectorData.neighbours[4].Owner != sectorData.Owner) {
                     bitmask += 4;
                 }
             } else {
                 bitmask += 4;
             }
-            if (neighbours[6] != null) {
-                if (neighbours[6].owner != owner) {
+            if (sectorData.neighbours[6] != null) {
+                if (sectorData.neighbours[6].Owner != sectorData.Owner) {
                     bitmask += 8;
                 }
             } else {
@@ -224,7 +194,6 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     }
 
     public void Clear() {
-        Owner = null;
-        systemCount = 0;
+        sectorData = null;
     }
 }

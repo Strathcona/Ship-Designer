@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResearchManager: MonoBehaviour {
+public class ResearchManager: MonoBehaviour, IInitialized {
     public static ResearchManager instance;
     public Dictionary<string, int> researchValues = new Dictionary<string, int>() {
         {"Engine Maximum Thrust MinValue", 100 },
@@ -50,13 +50,14 @@ public class ResearchManager: MonoBehaviour {
 
     };
 
-    private void Awake() {
+    public void Initialize() {
         if (instance == null) {
             instance = this;
         } else {
             Debug.LogError("You've put another research manager somewhere...");
         }
     }
+
     public void SetEffect(string effect) {
         string[] args = effect.Split(':');
         switch (args[0]) {

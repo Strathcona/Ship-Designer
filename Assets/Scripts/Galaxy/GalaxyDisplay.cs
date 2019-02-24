@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using GameConstructs;
 
-public class GalaxyMap : MonoBehaviour, IPointerClickHandler {
+public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     public GameObjectPool sectorPool;
     public GameObject sectorPrefab;
     public GameObject galaxyMapRoot;
