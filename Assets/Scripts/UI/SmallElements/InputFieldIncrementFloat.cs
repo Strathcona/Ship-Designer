@@ -51,7 +51,6 @@ public class InputFieldIncrementFloat : MonoBehaviour {
     }
 
     public void OnValueChanged(string s) {
-        Debug.Log(s);
         if (float.TryParse(s, out float temp)) {
             if (temp > maxValue) {
                 FieldValue = maxValue;

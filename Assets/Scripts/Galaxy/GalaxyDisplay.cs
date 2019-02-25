@@ -46,17 +46,25 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
 
     public void Awake() {
         sectorPool = new GameObjectPool(sectorPrefab, galaxyMapRoot, SetGalaxyTile);
+        gradient.alphaKeys = alphaKeys;
+        gradient.colorKeys = colorKeys;
     }
 
     public void DisplayGalaxyData(GalaxyData data) {
+        ResetTiles();
         displayedData = data;
+        float width = gameObject.GetComponent<RectTransform>().sizeDelta.x;
+        float cellSize = width / displayedData.sectors.Length;
+        layoutGroup.cellSize = new Vector2(cellSize, cellSize);
         sectors = new Sector[displayedData.sectors.Length][];
         for (int x = 0; x< displayedData.sectors.Length; x++) {
             sectors[x] = new Sector[displayedData.sectors[x].Length];
             for(int y = 0; y < displayedData.sectors[0].Length; y++) {
                 GameObject sector = sectorPool.GetGameObject();
                 Sector s = sector.GetComponent<Sector>();
+                s.baseColor = gradient.Evaluate((float) displayedData.sectors[x][y].systemCount / displayedData.maxCount);
                 s.DisplaySector(displayedData.sectors[x][y]);
+                s.ShowBaseColor();
                 sectors[x][y] = s;
             }
         }
@@ -145,10 +153,6 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     }
 
     private void ResetTiles() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                sectors[i][j].Clear();
-            }
-        }
+        sectorPool.ReleaseAll();
     }
 }

@@ -22,7 +22,7 @@ public class SectorData {
     public int systemCount = 0;
     public SectorData[] neighbours = new SectorData[8] { null, null, null, null, null, null, null, null };
     public List<Action> onRefresh = new List<Action>();
-
+    public float normalizedCount;
     public List<GalaxyFeature> features = new List<GalaxyFeature>();
 
     public static int[] orthogonal = new int[4] { 1, 3, 4, 6 };
