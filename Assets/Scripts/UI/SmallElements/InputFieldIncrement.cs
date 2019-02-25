@@ -48,7 +48,6 @@ public class InputFieldIncrement : MonoBehaviour {
     }
 
     public void OnValueChanged(string s) {
-        Debug.Log(s);
         if(int.TryParse(s, out int temp)) {
             if (temp > maxValue) {
                 FieldValue = maxValue;

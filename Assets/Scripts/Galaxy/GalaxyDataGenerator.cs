@@ -15,6 +15,7 @@ public class GalaxyDataGenerator : MonoBehaviour {
     public float armRadius = 15.0f; //radius of arms
     public InputFieldIncrementFloat armWindingInput;
     public float armWinding = 0.5f; // how tightly the spirals wind 
+    public InputFieldIncrement armWidthInput;
     public float armWidth = 30.0f; // in degrees
     public float fuzzFactor = 15.0f;
 
@@ -27,6 +28,7 @@ public class GalaxyDataGenerator : MonoBehaviour {
         armCountInput.onSubmit.AddListener(GetValuesFromFields);
         numberOfArmsInput.onSubmit.AddListener(GetValuesFromFields);
         armWindingInput.onSubmit.AddListener(GetValuesFromFields);
+        armWidthInput.onSubmit.AddListener(GetValuesFromFields);
         GetValuesFromFields();
     }
 
@@ -35,15 +37,18 @@ public class GalaxyDataGenerator : MonoBehaviour {
         armCount = armCountInput.FieldValue;
         numberOfArms = numberOfArmsInput.FieldValue;
         armWinding = armWindingInput.FieldValue;
+        armWidth = armWidthInput.FieldValue;
     }
 
     public void GenerateGalaxy() {
         GalaxyData newData = new GalaxyData(size);
         int maxCount = 0; //used for normalizing
+        float phi = Random.Range(0.0f, 180.0f);//random phase shift
+        Debug.Log(phi);
         for (int i = 0; i < buldgeCount + armCount; i++) {
             Coord c;
             if (i > buldgeCount) {
-                c = GetSystem(false);
+                c = GetSystem(false, phi);
             } else {
                 c = GetSystem(true);
             }
@@ -59,29 +64,38 @@ public class GalaxyDataGenerator : MonoBehaviour {
         previewDisplay.DisplayGalaxyData(data);
     }
 
-    private Coord GetSystem(bool buldge) {
+    private Coord GetSystem(bool buldge, float phi = 0.0f) {
+        int x = 0;
+        int y = 0;
         if (buldge) {
             float distance = Random.Range(0.0f, hubRadius);
             float distanceFuzz = distance + Random.Range(-hubRadius / 10, hubRadius / 10);
 
             float theta = Random.Range(0.0f, 360.0f);
-            int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
-            int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
+            x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
+            y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
             return new Coord(x, y);
         } else {
             //arms
             float armDelta = 0.0f;
-            if (numberOfArms != 0) {
-                armDelta = 360 / numberOfArms;
-            }
             float distance = hubRadius + Random.Range(0.0f, diskRadius);
             float distanceFuzz = distance + Random.Range(-diskRadius / 10, diskRadius / 10);
+
+            if (numberOfArms != 0) {
+                armDelta = 360 / numberOfArms;
+            } else if (numberOfArms == 0){
+                x = size / 2 + Mathf.RoundToInt(Mathf.Cos(Random.Range(0.0f, 360.0f) * Mathf.PI / 180) * Random.Range(0.0f, armRadius));
+                y = size / 2 + Mathf.RoundToInt(Mathf.Sin(Random.Range(0.0f, 360.0f) * Mathf.PI / 180) * Random.Range(0.0f, armRadius));
+                return new Coord(x, y);
+            }
+
             float theta = ((360.0f * armWinding * (distanceFuzz / diskRadius)));
             theta += Random.Range(0.0f, armWidth);
             theta += armDelta * (float)Random.Range(0, numberOfArms);
             theta += Random.Range(0.0f, fuzzFactor);
-            int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
-            int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
+            theta += phi;
+            x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
+            y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
             return new Coord(x, y);
         }
     }
