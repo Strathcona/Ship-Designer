@@ -33,4 +33,12 @@ public class GalaxyData {
             }
         }
     }
+
+    public void ClearEntityData() {
+        for(int i = 0; i < sectors.Length; i++) {
+            for(int j =0; j < sectors[0].Length; j++) {
+                sectors[i][j].RemoveOwner();
+            }
+        }
+    }
 }

@@ -15,10 +15,8 @@ public class SectorData {
             Refresh();
         }
     }
-    public int bitmask;
     public Coord coord;
     public string sectorName = "";
-    public List<int> claimedIDs = new List<int>();
     public int systemCount = 0;
     public SectorData[] neighbours = new SectorData[8] { null, null, null, null, null, null, null, null };
     public List<Action> onRefresh = new List<Action>();
@@ -45,6 +43,14 @@ public class SectorData {
 
     public void AddGalaxyFeature(GalaxyFeature feature) {
         features.Add(feature);
+    }
+
+    public float DistanceTo(SectorData sector) {
+        return Mathf.Sqrt(Mathf.Pow(coord.x - sector.coord.x, 2.0f) + Mathf.Pow(coord.y - sector.coord.y, 2.0f));
+    }
+
+    public void RemoveOwner() {
+        owner = null;
     }
 
 }

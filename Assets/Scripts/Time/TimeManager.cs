@@ -18,6 +18,7 @@ public class TimeManager : MonoBehaviour, IInitialized {
     public float baselineWarpSecondsPerHour = 0.3f;
     private float littleTimer = 0.0f;
     private float bigTimer = 0.0f;
+    public bool locked = false;
     public bool paused = false;
     public bool warped = false;
 
@@ -125,26 +126,37 @@ public class TimeManager : MonoBehaviour, IInitialized {
         }
     }
 
+    public void LockPaused(bool paused) {
+        if (paused) {
+            SetWarp(0);
+            locked = true;
+        } else {
+            locked = false;
+        }
+    }
+
     public void SetWarp(int warpfactor) {
-        if (warpfactor == 0) {
-            paused = true;
-            warped = false;
-        } else if(warpfactor == 1) {
-            secondsPerMinute = baselineSecondsPerMinute;
-            paused = false;
-            warped = false;
-        } else if (warpfactor == 2) {
-            secondsPerMinute = baselineSecondsPerMinute / 10;
-            paused = false;
-            warped = false;
-        } else if (warpfactor == 3) {
-            warpSecondsPerHour = baselineWarpSecondsPerHour;
-            paused = false;
-            warped = true;
-        } else if (warpfactor > 3) {
-            warpSecondsPerHour = baselineWarpSecondsPerHour / 10;
-            paused = false;
-            warped = true;
+        if (!locked) {
+            if (warpfactor == 0) {
+                paused = true;
+                warped = false;
+            } else if (warpfactor == 1) {
+                secondsPerMinute = baselineSecondsPerMinute;
+                paused = false;
+                warped = false;
+            } else if (warpfactor == 2) {
+                secondsPerMinute = baselineSecondsPerMinute / 10;
+                paused = false;
+                warped = false;
+            } else if (warpfactor == 3) {
+                warpSecondsPerHour = baselineWarpSecondsPerHour;
+                paused = false;
+                warped = true;
+            } else if (warpfactor > 3) {
+                warpSecondsPerHour = baselineWarpSecondsPerHour / 10;
+                paused = false;
+                warped = true;
+            }
         }
     }
 

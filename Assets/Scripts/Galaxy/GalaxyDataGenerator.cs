@@ -44,7 +44,6 @@ public class GalaxyDataGenerator : MonoBehaviour {
         GalaxyData newData = new GalaxyData(size);
         int maxCount = 0; //used for normalizing
         float phi = Random.Range(0.0f, 180.0f);//random phase shift
-        Debug.Log(phi);
         for (int i = 0; i < buldgeCount + armCount; i++) {
             Coord c;
             if (i > buldgeCount) {

@@ -17,7 +17,7 @@ public class InputFieldIncrementFloat : MonoBehaviour {
         get { return fieldValue; }
         set {
             fieldValue = (float) Math.Round((Decimal) value, sigFigs);
-            inputField.text = fieldValue.ToString();
+            inputField.text = fieldValue.ToString("R");
         }
     }
     public float minValue = 0.0f;

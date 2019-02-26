@@ -35,6 +35,7 @@ public class GalaxyEntity {
         tile.Owner = this;
         controlledSystems += tile.systemCount;
         territory.Add(tile);
+        RecaluclateNeighboringSectors();
     }
 
     public void RecaluclateNeighboringSectors() {
