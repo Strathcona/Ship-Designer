@@ -65,6 +65,7 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
                 s.baseColor = gradient.Evaluate((float) displayedData.sectors[x][y].systemCount / displayedData.maxCount);
                 s.DisplaySector(displayedData.sectors[x][y]);
                 s.ShowBaseColor();
+                allSectors.Add(s);
                 sectors[x][y] = s;
             }
         }
@@ -118,7 +119,6 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
         foreach(GalaxyFeature f in tile.sectorData.features) {
             switch (f.featureType) {
                 case GalaxyFeatureType.EntityCapital:
-                    displayString += "\nCapital System of " + tile.sectorData.Owner.entityName;
                     break;
                 default:
                     Debug.LogError("Unsupported feature type on tile pointer enter");

@@ -25,6 +25,7 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
     public void DisplaySector(SectorData _sectorData) {
         sectorData = _sectorData;
+        sectorData.onRefresh.Add(Refresh);
     }
 
     public void Refresh() {
@@ -73,6 +74,7 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
             selectionOutline.gameObject.SetActive(false);
             selected = false;
         }
+        RecalculateBorder();
     }
 
     public void ShowBaseColor() {

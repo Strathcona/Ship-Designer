@@ -40,5 +40,6 @@ public class GalaxyData {
                 sectors[i][j].RemoveOwner();
             }
         }
+        entities.Clear();
     }
 }

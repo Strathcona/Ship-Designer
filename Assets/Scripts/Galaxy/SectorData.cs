@@ -36,7 +36,9 @@ public class SectorData {
     };
 
     public void Refresh() {
-        foreach(Action a in onRefresh) {
+        Debug.Log("Refresh called on " + sectorName);
+
+        foreach (Action a in onRefresh) {
             a();
         }
     }
@@ -50,7 +52,7 @@ public class SectorData {
     }
 
     public void RemoveOwner() {
-        owner = null;
+        Owner = null;
     }
 
 }

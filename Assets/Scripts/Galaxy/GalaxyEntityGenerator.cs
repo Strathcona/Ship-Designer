@@ -25,43 +25,52 @@ public class GalaxyEntityGenerator : MonoBehaviour
     }
 
     public void GenerateEntities() {
+        data.ClearEntityData();
         for(int i =0; i < numberOfMajorPowers; i ++) {
-            data.entities.Add(GetGreatPower());
+            data.entities.Add(GetEntity(UnityEngine.Random.Range(8, 16)));
+        }
+        for (int i = 0; i < numberOfMinorPowers; i++) {
+            data.entities.Add(GetEntity(UnityEngine.Random.Range(2,7)));
         }
         previewDisplay.ShowTerritory();
     }
 
-    public GalaxyEntity GetGreatPower() {
-        string[] entityStrings = Constants.GetRandomEntityStrings();
-        GalaxyEntity g = new GalaxyEntity();
-        SectorData capital = unoccupiedSectors[UnityEngine.Random.Range(0, unoccupiedSectors.Count)];
-        unoccupiedSectors.Remove(capital);
-        g.capitalSector = capital;
-        g.GainTerritory(capital);
-        for(int i = 0; i < 10; i++) {
-            List<SectorData> neighbours = new List<SectorData>();
-            foreach(SectorData d in g.neighbouringSectors) {
-                if(d.systemCount > 0 && d.Owner == null) {
-                    neighbours.Add(d);
+    public GalaxyEntity GetEntity(int size) {
+        if(unoccupiedSectors.Count > 0) {
+            string[] entityStrings = Constants.GetRandomEntityStrings();
+            GalaxyEntity g = new GalaxyEntity();
+            SectorData capital = unoccupiedSectors[UnityEngine.Random.Range(0, unoccupiedSectors.Count)];
+            unoccupiedSectors.Remove(capital);
+            g.capitalSector = capital;
+            g.entityName = entityStrings[1];
+            g.GainTerritory(capital);
+            for (int i = 0; i < size; i++) {
+                List<SectorData> neighbours = new List<SectorData>();
+                foreach (SectorData d in g.neighbouringSectors) {
+                    if (d.systemCount > 0 && d.Owner == null) {
+                        neighbours.Add(d);
+                    }
+                }
+                if (neighbours.Count > 0) {
+                    g.GainTerritory(DistanceWeightedRandomWalk(neighbours, capital));
+                } else {
+                    break;
                 }
             }
-            if(neighbours.Count > 0) {
-                g.GainTerritory(DistanceWeightedRandomWalk(neighbours, capital));
-            } else {
-                break;
-            }
+
+            g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
+            g.color = Constants.GetRandomPastelColor();
+            g.governmentName = entityStrings[0];
+            g.adjective = entityStrings[2];
+            g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
+            TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
+            TimeManager.SetTimeTrigger(2, g.EvaluateGoals);
+            Debug.Log("Making Great Power " + g.entityName);
+            return g;
+        } else {
+            return null;
         }
 
-        g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
-        g.color = Constants.GetRandomPastelColor();
-        g.entityName = entityStrings[1];
-        g.governmentName = entityStrings[0];
-        g.adjective = entityStrings[2];
-        g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
-        TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
-        TimeManager.SetTimeTrigger(2, g.EvaluateGoals);
-        Debug.Log("Making Great Power " + g.entityName);
-        return g;
     }
 
     public SectorData DistanceWeightedRandomWalk(List<SectorData> neighbours, SectorData start) {
