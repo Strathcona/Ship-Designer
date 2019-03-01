@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using System;
 
 public class ScreenManager : MonoBehaviour, IInitialized {
-    private static ScreenManager instance;
-    public Dictionary<string, Canvas> canvases = new Dictionary<string, Canvas>();
-    public Canvas currentCanvas;
-    public List<Action> onCanvasChange = new List<Action>();
+    public static ScreenManager instance;
+    public List<GameObject> canvases = new List<GameObject>();
+    public GameObject currentCanvas;
+    public event Action OnScreenChangeEvent;
 
     public void Initialize() {
         if(instance == null) {
@@ -17,12 +17,7 @@ public class ScreenManager : MonoBehaviour, IInitialized {
             Debug.LogError("You've put another Screen Manager Somewhere");
         }
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("MainCanvas")) {
-            Canvas c = g.GetComponent<Canvas>();
-            if(c == null) {
-                Debug.LogError("No canvas on object with MainCanvas Tag "+g.name);
-            } else {
-                canvases.Add(g.name, c);
-            }
+            canvases.Add(g);
         }
         DisableAllCanvases();
     }
@@ -33,21 +28,19 @@ public class ScreenManager : MonoBehaviour, IInitialized {
 
     public void DisplayCanvas(string canvasName) {
         DisableAllCanvases();
-        if (canvases.ContainsKey(canvasName)) {
-            Canvas c = canvases[canvasName];
-            c.gameObject.SetActive(true);
-            currentCanvas = c;
+        GameObject target = canvases.Find(i => i.name == canvasName);
+        if (target != null) {
+            target.SetActive(true);
+            currentCanvas = target;
+            OnScreenChangeEvent?.Invoke();
         } else {
             Debug.LogError("Couldn't Find Canvas " + canvasName);
-        }
-        foreach(Action a in onCanvasChange) {
-            a();
         }
     }
 
     private void DisableAllCanvases() {
-        foreach(Canvas c in canvases.Values) {
-            c.gameObject.SetActive(false);
+        foreach(GameObject g in canvases) {
+            g.SetActive(false);
         }
     }
 }

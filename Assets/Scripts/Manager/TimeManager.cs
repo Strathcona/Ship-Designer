@@ -26,8 +26,9 @@ public class TimeManager : MonoBehaviour, IInitialized {
     public static int hoursPerTick = 24;
     public static int ticksPerTock = 400;
 
-    public List<Action<int>> actionsOnTick = new List<Action<int>>();
-    public List<Action> actionsOnMinute =  new List<Action>();
+    public event Action<int> OnTickEvent;
+    public event Action OnMinuteEvent;
+
     public static List<TimeTrigger> triggers = new List<TimeTrigger>();
 
     public static TickDate currentTime;
@@ -66,9 +67,7 @@ public class TimeManager : MonoBehaviour, IInitialized {
                     if (hours >= hoursPerTick) {
                         ticks += 1;
                         hours = 0;
-                        foreach (Action<int> action in actionsOnTick) {
-                            action(ticks);
-                        }
+                        OnTickEvent?.Invoke(ticks);
 
                         if (ticks >= ticksPerTock) {
                             tocks += 1;
@@ -90,9 +89,7 @@ public class TimeManager : MonoBehaviour, IInitialized {
                         if (hours >= hoursPerTick) {
                             ticks += 1;
                             hours = 0;
-                            foreach (Action<int> action in actionsOnTick) {
-                                action(ticks);
-                            }
+                            OnTickEvent?.Invoke(ticks);
 
                             if(ticks >= ticksPerTock) {
                                 tocks += 1;
@@ -110,11 +107,9 @@ public class TimeManager : MonoBehaviour, IInitialized {
     }
 
     private void DeltaMinute(int delta) {
-        List<TimeTrigger> done = new List<TimeTrigger>();
+        OnMinuteEvent?.Invoke();
 
-        foreach (Action action in actionsOnMinute) {
-            action();
-        }
+        List<TimeTrigger> done = new List<TimeTrigger>();
         foreach (TimeTrigger t in triggers) {
             if (totalMinutes > t.totalMinutesOfEnd) {
                 done.Add(t);

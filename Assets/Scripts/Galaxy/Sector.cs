@@ -74,7 +74,6 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
             selectionOutline.gameObject.SetActive(false);
             selected = false;
         }
-        RecalculateBorder();
     }
 
     public void ShowBaseColor() {

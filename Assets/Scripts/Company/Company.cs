@@ -1,16 +1,17 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
 
-public class Company {
+public class Company: IHasFunds {
     public string name;
     public string companyType;
     public Sprite logo;
    //hash sets don't take duplicates which is nice
     public HashSet<CompanyQuality> companyQualities = new HashSet<CompanyQuality>();
     public HashSet<PartType> partTypes = new HashSet<PartType>();
-    public NPC ceo;
+    public Player ceo;
     public int opinion = 100;
     public float costMod = 1.0f; 
     public float speedMod = 1.0f;
@@ -19,8 +20,25 @@ public class Company {
     public float qualityMod = 1.0f;
     public CompanyTextKey textKey = CompanyTextKey.GenericOne;
 
+    private int funds;
+    public event Action<int> OnFundsChangeEvent;
+
+    public bool TryToPurchase(IHasCost purchase) {
+        if(funds > purchase.GetCost()) {
+            ChangeFunds(purchase.GetCost());
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void ChangeFunds(int amount) {
+        funds += amount;
+    }
+    public int GetFunds() {
+        return funds;
+    }
+
     public Company() {
-        ceo = new NPC();
         name = Constants.GetRandomCompanyName();
         logo = SpriteLoader.GetSymbolPart("Generic");
         companyColor1 = Constants.GetRandomPastelColor();
@@ -30,14 +48,13 @@ public class Company {
         companyQualities.Add(quality);
         SetQualityFactors(quality); companyType = Constants.GetCompanyType(companyQualities);
         foreach (PartType pt in (PartType[]) System.Enum.GetValues(typeof(PartType))) {
-            if(Random.Range(0,2) == 0) {
+            if(UnityEngine.Random.Range(0,2) == 0) {
                 partTypes.Add(pt);
             }
         }
     }
 
     public Company(PartType _partType) {
-        ceo = new NPC();
         name = Constants.GetRandomCompanyName();
         logo = SpriteLoader.GetSymbolPart("Generic");
         companyColor1 = Constants.GetRandomPastelColor();
@@ -49,7 +66,7 @@ public class Company {
         companyType = Constants.GetCompanyType(companyQualities);
         partTypes.Add(_partType);
         foreach (PartType pt in (PartType[])System.Enum.GetValues(typeof(PartType))) {
-            if (Random.Range(0, 2) == 0) {
+            if (UnityEngine.Random.Range(0, 2) == 0) {
                 partTypes.Add(pt);
             }
         }

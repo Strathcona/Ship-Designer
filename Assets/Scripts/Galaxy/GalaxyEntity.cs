@@ -75,6 +75,12 @@ public class GalaxyEntity {
         TimeManager.SetTimeTrigger(30000, EvaluateGoals);
     }
 
+    public void ClearEntityTerritory() {
+        foreach(SectorData d in territory) {
+            d.RemoveOwner();
+        }
+    }
+
     public void RequestNewShips() {
         Debug.Log("Galaxy Entity " + entityName + " is requesting new ships");
         List<ContractBid.ContractBidRequirement> bidRequirements = new List<ContractBid.ContractBidRequirement>();

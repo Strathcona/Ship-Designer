@@ -21,7 +21,7 @@ public class ResearchGridDisplay : MonoBehaviour {
     public int researchPerUpdate = 24;
 
     private void Start() {
-        TimeManager.instance.actionsOnMinute.Add(ResearchUpdate);
+        TimeManager.instance.OnMinuteEvent += ResearchUpdate;
         ResearchPanelPool = new GameObjectPool(ResearchPanelPrefab, GridRoot);
         //nodes = new ResearchNode[Constants.numberOfTiers][][];
         nodes = new ResearchNode[1][][];

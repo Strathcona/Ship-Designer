@@ -23,13 +23,14 @@ public class GalaxyDataGenerator : MonoBehaviour {
 
     public GalaxyData data;
 
-    private void Awake() {
+    private void Start() {
         buldgeCountInput.onSubmit.AddListener(GetValuesFromFields);
         armCountInput.onSubmit.AddListener(GetValuesFromFields);
         numberOfArmsInput.onSubmit.AddListener(GetValuesFromFields);
         armWindingInput.onSubmit.AddListener(GetValuesFromFields);
         armWidthInput.onSubmit.AddListener(GetValuesFromFields);
         GetValuesFromFields();
+        data = GameDataManager.instance.masterGalaxyData;
     }
 
     public void GetValuesFromFields() {
@@ -41,7 +42,7 @@ public class GalaxyDataGenerator : MonoBehaviour {
     }
 
     public void GenerateGalaxy() {
-        GalaxyData newData = new GalaxyData(size);
+        data.SetGalaxyData(size);
         int maxCount = 0; //used for normalizing
         float phi = Random.Range(0.0f, 180.0f);//random phase shift
         for (int i = 0; i < buldgeCount + armCount; i++) {
@@ -52,14 +53,13 @@ public class GalaxyDataGenerator : MonoBehaviour {
                 c = GetSystem(true);
             }
             if (c.x < size && c.y < size && c.x >= 0 && c.y >= 0) {
-                newData.sectors[c.x][c.y].systemCount += 1;
-                if (newData.sectors[c.x][c.y].systemCount > maxCount) {
-                    maxCount = newData.sectors[c.x][c.y].systemCount;
+                data.sectors[c.x][c.y].systemCount += 1;
+                if (data.sectors[c.x][c.y].systemCount > maxCount) {
+                    maxCount = data.sectors[c.x][c.y].systemCount;
                 }
             }
         }
-        newData.maxCount = maxCount;
-        data = newData;
+        data.maxCount = maxCount;
         previewDisplay.DisplayGalaxyData(data);
     }
 

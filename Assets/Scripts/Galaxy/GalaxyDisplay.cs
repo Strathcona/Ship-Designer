@@ -153,6 +153,7 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     }
 
     private void ResetTiles() {
+        allSectors.Clear();
         sectorPool.ReleaseAll();
     }
 }

@@ -13,24 +13,21 @@ public class GalaxyEntityGenerator : MonoBehaviour
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
     public GalaxyDisplay previewDisplay;
 
-    public void GetDataFromPreview() {
-        data = previewDisplay.displayedData;
-        for(int i = 0; i < data.sectors.Length; i++) {
-            for(int j =0; j < data.sectors[0].Length; j++) {
-                if(data.sectors[i][j].Owner == null && data.sectors[i][j].systemCount > 0 ) {
+    public void GenerateEntities() {
+        data = GameDataManager.instance.masterGalaxyData;
+        GameDataManager.instance.ClearAllEntities();
+        for(int i =0; i < data.sectors.Length; i++) {
+            for(int j=0; j< data.sectors[0].Length; j++) {
+                if(data.sectors[i][j].Owner == null && data.sectors[i][j].systemCount > 0) {
                     unoccupiedSectors.Add(data.sectors[i][j]);
                 }
             }
         }
-    }
-
-    public void GenerateEntities() {
-        data.ClearEntityData();
         for(int i =0; i < numberOfMajorPowers; i ++) {
-            data.entities.Add(GetEntity(UnityEngine.Random.Range(8, 16)));
+            GameDataManager.instance.entities.Add(GetEntity(UnityEngine.Random.Range(8, 16)));
         }
         for (int i = 0; i < numberOfMinorPowers; i++) {
-            data.entities.Add(GetEntity(UnityEngine.Random.Range(2,7)));
+            GameDataManager.instance.entities.Add(GetEntity(UnityEngine.Random.Range(2,7)));
         }
         previewDisplay.ShowTerritory();
     }
@@ -52,7 +49,9 @@ public class GalaxyEntityGenerator : MonoBehaviour
                     }
                 }
                 if (neighbours.Count > 0) {
-                    g.GainTerritory(DistanceWeightedRandomWalk(neighbours, capital));
+                    SectorData d = DistanceWeightedRandomWalk(neighbours, capital);
+                    g.GainTerritory(d);
+                    unoccupiedSectors.Remove(d);
                 } else {
                     break;
                 }
@@ -65,9 +64,10 @@ public class GalaxyEntityGenerator : MonoBehaviour
             g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
             TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
             TimeManager.SetTimeTrigger(2, g.EvaluateGoals);
-            Debug.Log("Making Great Power " + g.entityName);
+            Debug.Log("Making Entity " + g.entityName);
             return g;
         } else {
+            Debug.Log("Couldn't find unoccupied sector");
             return null;
         }
 

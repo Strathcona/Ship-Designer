@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerManager : MonoBehaviour {
+public class GameLoadManager : MonoBehaviour {
 
     private void Awake() {
         foreach (Component c in GetComponents(typeof(Component))){
@@ -13,8 +13,12 @@ public class ManagerManager : MonoBehaviour {
         }
 
         //if (TitleSceneData.newGame) {
-        if (true) { 
+        //if (true) {
+           //ScreenManager.instance.DisplayCanvas("New Game");
+        //}
+    }
 
-        }
+    public void DoneStartingNewGame() {
+        ScreenManager.instance.DisplayCanvas("Room");
     }
 }

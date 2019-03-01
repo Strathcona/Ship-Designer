@@ -7,11 +7,15 @@ public class GalaxyData {
     public List<GalaxyEntity> entities = new List<GalaxyEntity>();
     public int maxCount;
 
-    public GalaxyData(int size) {
+    public GalaxyData() {
+
+    }
+
+    public void SetGalaxyData(int size) {
         sectors = new SectorData[size][];
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             sectors[i] = new SectorData[size];
-            for(int j =0; j < size; j++) {
+            for (int j = 0; j < size; j++) {
                 SectorData s = new SectorData();
                 s.sectorName = "Sector " + (j + i * size).ToString();
                 s.coord = new Coord(i, j);
@@ -34,12 +38,4 @@ public class GalaxyData {
         }
     }
 
-    public void ClearEntityData() {
-        for(int i = 0; i < sectors.Length; i++) {
-            for(int j =0; j < sectors[0].Length; j++) {
-                sectors[i][j].RemoveOwner();
-            }
-        }
-        entities.Clear();
-    }
 }

@@ -37,7 +37,6 @@ public class SectorData {
 
     public void Refresh() {
         Debug.Log("Refresh called on " + sectorName);
-
         foreach (Action a in onRefresh) {
             a();
         }

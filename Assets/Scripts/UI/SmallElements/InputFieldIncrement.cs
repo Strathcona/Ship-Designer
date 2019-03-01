@@ -19,8 +19,16 @@ public class InputFieldIncrement : MonoBehaviour {
             inputField.text = fieldValue.ToString();
         }
     }
-    public int minValue = 0;
-    public int maxValue = 100;
+    private int minValue = 0;
+    public int MinValue {
+        get { return minValue; }
+        set { ChangeMinValue(value); }
+    }
+    private int maxValue = 100;
+    public int MaxValue {
+        get { return maxValue; }
+        set { ChangeMaxValue(value); }
+    }
 
     private void Awake() {
         up.onClick.AddListener(IncrementUp);
@@ -30,29 +38,53 @@ public class InputFieldIncrement : MonoBehaviour {
     }
 
     public void IncrementUp() {
-        if(FieldValue < maxValue) {
+        if(FieldValue < MaxValue) {
             FieldValue += incrementAmount;
-            FieldValue = Mathf.Min(maxValue, FieldValue);
+            FieldValue = Mathf.Min(MaxValue, FieldValue);
         }
         inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
     public void IncrementDown() {
-        if(FieldValue > minValue) {
+        if(FieldValue > MinValue) {
             FieldValue -= incrementAmount;
-            FieldValue = Mathf.Max(minValue, FieldValue);
+            FieldValue = Mathf.Max(MinValue, FieldValue);
         }
         inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
+    public void ChangeMaxValue(int newMax) {
+        if (newMax < minValue) {
+            maxValue = minValue;
+        } else {
+            maxValue = newMax;
+        }
+
+        if(FieldValue > maxValue) {
+            FieldValue = maxValue;
+        }
+    }
+
+    public void ChangeMinValue(int newMin) {
+        if (newMin > maxValue) {
+            minValue = maxValue;
+        } else {
+            minValue = newMin;
+        }
+
+        if (FieldValue < minValue) {
+            FieldValue = minValue;
+        }
+    }
+
     public void OnValueChanged(string s) {
         if(int.TryParse(s, out int temp)) {
-            if (temp > maxValue) {
-                FieldValue = maxValue;
-            } else if (temp < minValue) {
-                FieldValue = minValue;
+            if (temp > MaxValue) {
+                FieldValue = MaxValue;
+            } else if (temp < MinValue) {
+                FieldValue = MinValue;
             } else {
                 FieldValue = temp;
             }
