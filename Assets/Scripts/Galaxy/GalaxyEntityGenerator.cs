@@ -24,10 +24,10 @@ public class GalaxyEntityGenerator : MonoBehaviour
             }
         }
         for(int i =0; i < numberOfMajorPowers; i ++) {
-            GameDataManager.instance.entities.Add(GetEntity(UnityEngine.Random.Range(8, 16)));
+            GameDataManager.instance.AddNewEntity(GetEntity(UnityEngine.Random.Range(8, 16)));
         }
         for (int i = 0; i < numberOfMinorPowers; i++) {
-            GameDataManager.instance.entities.Add(GetEntity(UnityEngine.Random.Range(2,7)));
+            GameDataManager.instance.AddNewEntity(GetEntity(UnityEngine.Random.Range(2,7)));
         }
         previewDisplay.ShowTerritory();
     }

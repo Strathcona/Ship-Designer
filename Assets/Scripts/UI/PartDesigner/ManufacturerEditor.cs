@@ -9,7 +9,7 @@ public class ManufacturerEditor: MonoBehaviour {
     public GameObject companyMessageRoot;
     public Part part;
     public Company company;
-    public List<Company> companies;
+    public Company[] companies;
 
     public void Awake() {
         companyMessagePool = new GameObjectPool(companyMessagePrefab, companyMessageRoot);
@@ -18,7 +18,7 @@ public class ManufacturerEditor: MonoBehaviour {
     public void LoadPart(Part p) {
         part = p;
         Clear();
-        companies = CompanyLibrary.GetCompanies(p.partType);
+        companies = GameDataManager.instance.Companies;
         GameObject defaultObject = companyMessagePool.GetGameObject();
         CompanyMessage defaultMessage = defaultObject.GetComponent<CompanyMessage>();
         defaultMessage.DisplayCompanyMessage("We can always manufacture these parts in house. There'll be no great bonuses, but no additional costs either, and you won't be placed at the mercy of an external supplier");
@@ -29,15 +29,6 @@ public class ManufacturerEditor: MonoBehaviour {
             CompanyMessage cm = g.GetComponent<CompanyMessage>();
             cm.DisplayCompany(c);
             string message = "";
-            if(c.costMod != 1.0f) {
-                message += "Cost: " + (c.costMod * 100).ToString() + "%\n";
-            }
-            if (c.qualityMod != 1.0f) {
-                message += "Quality: " + (c.qualityMod * 100).ToString() + "%\n";
-            }
-            if (c.speedMod != 1.0f) {
-                message += "Speed: " + (c.speedMod * 100).ToString() + "%\n";
-            }
             cm.DisplayCompanyMessage(message);
             cm.bottomButtonText.text = "Select";
             cm.bottomButton.onClick.RemoveAllListeners();

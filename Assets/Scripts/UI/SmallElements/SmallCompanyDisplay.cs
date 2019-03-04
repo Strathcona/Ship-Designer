@@ -15,7 +15,6 @@ public class SmallCompanyDisplay : MonoBehaviour {
     public void DisplayCompany(Company c) {
         Clear();
         company = c;
-        companyLogo.sprite = company.logo;
         companyName.text = company.name;
         companyType.text = company.companyType;
 

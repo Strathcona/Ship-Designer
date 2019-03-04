@@ -187,7 +187,6 @@ public class PartDesigner : MonoBehaviour {
         if(activePart != null) {
             if (activePart.manufacturer != null) {
                 manufacturerImage.gameObject.SetActive(true);
-                manufacturerImage.sprite = activePart.manufacturer.logo;
                 manufacturerButtonText.text = activePart.manufacturer.name + "\n" + "(Change)";
             } else {
                 manufacturerImage.gameObject.SetActive(false);

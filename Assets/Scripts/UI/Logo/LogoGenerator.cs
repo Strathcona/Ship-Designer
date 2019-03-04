@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 public class LogoGenerator: MonoBehaviour {
     private Logo logo;
+    public Logo Logo {
+        get { return logo; }
+    }
     public Button cycleLayer1;
     public Button cycleLayer2;
     public Button cycleLayer3;
