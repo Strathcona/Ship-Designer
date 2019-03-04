@@ -12,7 +12,6 @@ public class Company: IHasFunds {
     public HashSet<CompanyQuality> companyQualities = new HashSet<CompanyQuality>();
     public HashSet<PartType> partTypes = new HashSet<PartType>();
     public Player ceo;
-    public int opinion = 100;
     public float costMod = 1.0f; 
     public float speedMod = 1.0f;
     public Color companyColor1;
@@ -44,7 +43,7 @@ public class Company: IHasFunds {
         companyColor1 = Constants.GetRandomPastelColor();
         companyColor2 = Constants.GetRandomPastelColor();
         //get a random company quality
-        CompanyQuality quality = (CompanyQuality)System.Enum.GetValues(typeof(CompanyQuality)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(CompanyQuality)).Length));
+        CompanyQuality quality = (CompanyQuality)System.Enum.GetValues(typeof(CompanyQuality)).GetValue(UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(CompanyQuality)).Length));
         companyQualities.Add(quality);
         SetQualityFactors(quality); companyType = Constants.GetCompanyType(companyQualities);
         foreach (PartType pt in (PartType[]) System.Enum.GetValues(typeof(PartType))) {
@@ -60,7 +59,7 @@ public class Company: IHasFunds {
         companyColor1 = Constants.GetRandomPastelColor();
         companyColor2 = Constants.GetRandomPastelColor();
         //get a random company quality
-        CompanyQuality quality = (CompanyQuality)System.Enum.GetValues(typeof(CompanyQuality)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(CompanyQuality)).Length));
+        CompanyQuality quality = (CompanyQuality)System.Enum.GetValues(typeof(CompanyQuality)).GetValue(UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(CompanyQuality)).Length));
         companyQualities.Add(quality);
         SetQualityFactors(quality);
         companyType = Constants.GetCompanyType(companyQualities);

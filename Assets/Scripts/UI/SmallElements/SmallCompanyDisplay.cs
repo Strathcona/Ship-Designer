@@ -18,7 +18,7 @@ public class SmallCompanyDisplay : MonoBehaviour {
         companyLogo.sprite = company.logo;
         companyName.text = company.name;
         companyType.text = company.companyType;
-        npcDisplay.DisplayNPC(company.ceo);
+
     }
 
 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player {
-    public string name;
+    public string firstName;
+    public string lastName;
+    public Portrait portait;
     public int funds;
     public Company ownedCompany;
 }

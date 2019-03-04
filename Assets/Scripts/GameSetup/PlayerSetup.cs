@@ -19,7 +19,7 @@ public class PlayerSetup : MonoBehaviour{
     }
 
     public void SetPlayerName(string input) {
-        player.name = input;
+        player.firstName = input;
         if (input != "") {
             nextButton.interactable = true;
         } else {

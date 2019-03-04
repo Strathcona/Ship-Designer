@@ -106,6 +106,15 @@ public static class SpriteLoader {
         }
     }
 
+    public static List<Sprite> GetAllSymbolParts(string name) {
+        if (symbolParts.ContainsKey(name)) {
+            return symbolParts[name];
+        } else {
+            Debug.LogError("Couldn't find Symbol sprite " + name);
+            return null;
+        }
+    }
+
     public static Sprite GetFeatureSprite(string name) {
         if (featureSprites.ContainsKey(name)) {
             List<Sprite> sprites = featureSprites[name];

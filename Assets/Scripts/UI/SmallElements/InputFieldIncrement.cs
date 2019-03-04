@@ -16,14 +16,16 @@ public class InputFieldIncrement : MonoBehaviour {
         get { return fieldValue; }
         set {
             fieldValue = value;
-            inputField.text = fieldValue.ToString();
+            inputField.text = FieldValue.ToString();
         }
     }
+    [SerializeField]
     private int minValue = 0;
     public int MinValue {
         get { return minValue; }
         set { ChangeMinValue(value); }
     }
+    [SerializeField]
     private int maxValue = 100;
     public int MaxValue {
         get { return maxValue; }
@@ -39,19 +41,15 @@ public class InputFieldIncrement : MonoBehaviour {
 
     public void IncrementUp() {
         if(FieldValue < MaxValue) {
-            FieldValue += incrementAmount;
-            FieldValue = Mathf.Min(MaxValue, FieldValue);
+            FieldValue = Mathf.Min(MaxValue, FieldValue + incrementAmount);
         }
-        inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
     public void IncrementDown() {
         if(FieldValue > MinValue) {
-            FieldValue -= incrementAmount;
-            FieldValue = Mathf.Max(MinValue, FieldValue);
+            FieldValue = Mathf.Max(MinValue, FieldValue - incrementAmount);
         }
-        inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 
@@ -89,7 +87,6 @@ public class InputFieldIncrement : MonoBehaviour {
                 FieldValue = temp;
             }
         }
-        inputField.text = FieldValue.ToString();
         onSubmit.Invoke();
     }
 

@@ -17,7 +17,7 @@ public class PlayerNameDisplay : MonoBehaviour {
     }
     
     public void UpdatePlayerName(HumanPlayer player) {
-        text.text = player.name;
+        text.text = player.firstName;
     }
     
 }

@@ -60,4 +60,10 @@ public class Logo {
     }
 
     public event Action<Logo> OnLogoChangedEvent;
+
+    public Logo() {
+        color1 = Color.white;
+        color2 = Color.white;
+        color3 = Color.white;
+    }
 }

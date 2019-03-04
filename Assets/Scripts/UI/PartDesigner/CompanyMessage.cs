@@ -35,12 +35,6 @@ public class CompanyMessage : MonoBehaviour {
         } else {
             companyLogo.gameObject.SetActive(false);
         }
-        if(company.ceo.sprite != null) {
-            CEOImage.gameObject.SetActive(true);
-            CEOImage.sprite = company.ceo.sprite;
-        } else {
-            CEOImage.gameObject.SetActive(false);
-        }
     }
 
     public void SetSelected(bool selected) {
