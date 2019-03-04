@@ -10,6 +10,7 @@ public class PlayerSetup : MonoBehaviour{
 
     private void Start() {
         player = new HumanPlayer();
+        player.ChangeFunds(1000);
         playerNameInput.onValueChanged.AddListener(SetPlayerName);
         nextButton.interactable = false;
     }

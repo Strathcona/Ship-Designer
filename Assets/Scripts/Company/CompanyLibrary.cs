@@ -8,10 +8,6 @@ public static class CompanyLibrary {
 
     static CompanyLibrary() {
         Company weyland = new Company();
-
-        foreach (PartType pt in (PartType[])System.Enum.GetValues(typeof(PartType))) {
-            companies.Add(new Company(pt));
-        }
     }
 
     public static List<Company> GetCompanies(int number) {
@@ -21,16 +17,6 @@ public static class CompanyLibrary {
             Company[] array = new Company[returnPool.Count];
             returnPool.CopyTo(array);
             cs.Add(array[Random.Range(0,array.Length)]);
-        }
-        return cs;
-    }
-
-    public static List<Company> GetCompanies(PartType partType) {
-        List<Company> cs = new List<Company>();
-        foreach(Company c in companies) {
-            if (c.partTypes.Contains(partType)) {
-                cs.Add(c);
-            }
         }
         return cs;
     }

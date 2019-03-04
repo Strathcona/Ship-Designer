@@ -14,7 +14,7 @@ public class GameLoadManager : MonoBehaviour {
 
         //if (TitleSceneData.newGame) {
         //if (true) {
-           //ScreenManager.instance.DisplayCanvas("New Game");
+           ScreenManager.instance.DisplayCanvas("New Game");
         //}
     }
 
