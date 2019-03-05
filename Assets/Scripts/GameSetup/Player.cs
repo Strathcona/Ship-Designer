@@ -55,9 +55,10 @@ public class Player: IHasFunds {
         ownedEntities.Remove(thing);
     }
 
+    private int funds;
     private int Funds {
-        get { return Funds; }
-        set { Funds = value;
+        get { return funds; }
+        set { funds = value;
             OnFundsChangeEvent?.Invoke(Funds);
         }
     }

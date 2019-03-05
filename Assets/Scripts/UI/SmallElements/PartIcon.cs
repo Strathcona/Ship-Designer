@@ -20,7 +20,7 @@ public class PartIcon : MonoBehaviour
     public void DisplayPart(Part p) {
         Clear();
         part = p;
-        text.text = part.modelName;
+        text.text = part.ModelName;
         image.sprite = part.sprite;
         image.color = Constants.PartColor[part.partType];
         numberText.text = part.Size.ToString();

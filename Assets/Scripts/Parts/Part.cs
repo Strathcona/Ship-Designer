@@ -2,27 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
+using System;
 
 [System.Serializable]
 public abstract class Part {
-    public string typeName = ""; //A descriptive name of the part like 'Cold Fusion Turbine'
-    public string modelName = ""; //Name of the make of the part like 'Devastator'
-    public Company manufacturer; //The maker of the Part
+    public string descriptionName = "";//A descriptive name of the part like 'Cold Fusion Turbine'
+    public string DescriptionName {
+        get { return descriptionName; }
+        set {
+            descriptionName = value;
+            OnPartChangeEvent?.Invoke(this);
+        }
+    }
+    private string modelName = ""; //Name of the make of the part like 'Devastator MkII'
+    public string ModelName {
+        get { return modelName; }
+        set { modelName = value;
+            OnPartChangeEvent?.Invoke(this);
+        }
+    }
+
+    private Company manufacturer;//The maker of the Part
+    public Company Manufacturer {
+        get { return manufacturer; }
+        set {
+            manufacturer = value;
+            OnPartChangeEvent?.Invoke(this);
+        }
+    }
+
     public float quality = 1.0f;
     public int unitTime = 1;
     public int unitPrice = 1;
-    public bool inDevelopment = false;
     public PartType partType;
-    public int minutesToDevelop = 6000;
     public List<Tweakable> tweakables = new List<Tweakable>();
     public Sprite sprite;
     public int weight = 1;
+    public event Action<Part> OnPartChangeEvent;
 
     private PartSize size;
     public PartSize Size {
         get { return size; }
         set {
             size = value;
+            OnPartChangeEvent?.Invoke(this);
             UpdateProperties();
         }
     }
@@ -31,6 +54,7 @@ public abstract class Part {
         get { return tier; }
         set {
             tier = value;
+            OnPartChangeEvent?.Invoke(this);
             UpdateProperties();
         }
     }
@@ -39,15 +63,16 @@ public abstract class Part {
         get { return netPower; }
         set {
             netPower = value;
+            OnPartChangeEvent?.Invoke(this);
             UpdateProperties();
         }
     }
 
     public virtual string GetDescriptionString() {
-        if(manufacturer != null) {
-            return manufacturer.name + " " + modelName + " " + typeName;
+        if(Manufacturer != null) {
+            return Manufacturer.name + " " + ModelName + " " + DescriptionName;
         } else {
-            return modelName + " " + typeName;
+            return ModelName + " " + DescriptionName;
         }
     }
 
@@ -71,6 +96,7 @@ public abstract class Part {
         return statisticsString;
     }
     public virtual void TweakableUpdate() {
+        OnPartChangeEvent?.Invoke(this);
         UpdateProperties();
     }
 

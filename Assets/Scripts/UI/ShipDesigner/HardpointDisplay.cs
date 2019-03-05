@@ -35,7 +35,7 @@ public class HardpointDisplay : MonoBehaviour {
             partNameBackground.SetActive(true);
             partNameText.gameObject.SetActive(true);
             partImage.gameObject.SetActive(true);
-            partNameText.text = hardpoint.part.modelName;
+            partNameText.text = hardpoint.part.ModelName;
             partImage.sprite = hardpoint.part.sprite;
             partImage.color = Constants.PartColor[hardpoint.part.partType];
         }
@@ -56,7 +56,7 @@ public class HardpointDisplay : MonoBehaviour {
             partNameBackground.SetActive(true);
             partNameText.gameObject.SetActive(true);
             partImage.gameObject.SetActive(true);
-            partNameText.text = hardpoint.part.modelName;
+            partNameText.text = hardpoint.part.ModelName;
             partImage.sprite = hardpoint.part.sprite;
             partImage.color = Constants.PartColor[hardpoint.part.partType];
         }

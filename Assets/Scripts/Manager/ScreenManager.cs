@@ -17,7 +17,9 @@ public class ScreenManager : MonoBehaviour, IInitialized {
             Debug.LogError("You've put another Screen Manager Somewhere");
         }
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("MainCanvas")) {
-            canvases.Add(g);
+            if(canvases.Contains(g) != true) {
+                canvases.Add(g);
+            }
         }
         DisableAllCanvases();
     }

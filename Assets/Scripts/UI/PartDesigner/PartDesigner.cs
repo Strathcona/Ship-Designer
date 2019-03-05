@@ -15,11 +15,11 @@ public class PartDesigner : MonoBehaviour {
     public InputField modelNameInput;
     public TweakableEditor tweakableEditor;
     public Image previewImage;
-    public Image manufacturerImage;
     public GameObject manufacturerDisplay;
     public ManufacturerEditor manufacturerEditor;
     public Text manufacturerButtonText;
     public Button manufacturerEditButton;
+    public event Action<Part> OnActivePartChangeEvent;
 
     public void Start() {
         createNewDropdown.ClearOptions();
@@ -30,15 +30,16 @@ public class PartDesigner : MonoBehaviour {
         createNewDropdown.value = 0;
         createNewDropdown.RefreshShownValue();
         ToggleVisible(false);
+        manufacturerDisplay.SetActive(false);
     }
 
     public void UpdatePartModel() {
-        activePart.modelName = modelNameInput.text;
+        activePart.ModelName = modelNameInput.text;
         UpdatePartStrings();
     }
 
     public void SetPartModel() {
-        modelNameInput.text = activePart.modelName;
+        modelNameInput.text = activePart.ModelName;
     }
 
     public void UpdatePartStrings() {
@@ -59,7 +60,7 @@ public class PartDesigner : MonoBehaviour {
             ModalPopupManager.instance.DisplayModalPopup("Unable to Edit", "The Part your are trying to load is too advanced for us to modify it. Increase your " + Constants.ColoredPartTypeString[p.partType] + " technology in order to make changes to this part.", "Okay");
         } else {
             ToggleVisible(true);
-            Debug.Log("Loading Part" + p.modelName + " " + p.Tier);
+            Debug.Log("Loading Part" + p.ModelName + " " + p.Tier);
             switch (p.partType) {
                 case PartType.Weapon:
                     activePart = new Weapon();
@@ -82,12 +83,12 @@ public class PartDesigner : MonoBehaviour {
             }
             activePart = p.Clone();
             previewImage.sprite = activePart.sprite;
-            modelNameInput.text = activePart.modelName;
+            modelNameInput.text = activePart.ModelName;
             SetPartModel();
             UpdateTierDropdown();
             partTierDropdown.value = activePart.Tier;
             tweakableEditor.DisplayTweakables(activePart);
-            DisplayManufacturer();
+            OnActivePartChangeEvent?.Invoke(activePart);
         }
 
     }
@@ -98,7 +99,7 @@ public class PartDesigner : MonoBehaviour {
         descriptionDisplay.text = "---";
         statisticsDisplay.text = "---";
         ToggleVisible(false);
-        DisplayManufacturer();
+        OnActivePartChangeEvent?.Invoke(activePart);
     }
 
     public void CreateNewPart() {
@@ -141,7 +142,7 @@ public class PartDesigner : MonoBehaviour {
         createNewDropdown.value = 0;
         tweakableEditor.DisplayTweakables(activePart);
         UpdateTierDropdown();
-
+        OnActivePartChangeEvent?.Invoke(activePart);
     }
 
     public void ResetCreateNewDropdown() {
@@ -183,31 +184,8 @@ public class PartDesigner : MonoBehaviour {
         }
     }
 
-    public void DisplayManufacturer() {
-        if(activePart != null) {
-            if (activePart.manufacturer != null) {
-                manufacturerImage.gameObject.SetActive(true);
-                manufacturerButtonText.text = activePart.manufacturer.name + "\n" + "(Change)";
-            } else {
-                manufacturerImage.gameObject.SetActive(false);
-                manufacturerButtonText.text = "Select\nManufacturer";
-            }
-        } else {
-            manufacturerImage.gameObject.SetActive(false);
-            manufacturerButtonText.text = "Select\nManufacturer";
-        }
-
-    }
-
     public void EditManufacturer() {
-        manufacturerEditor.gameObject.SetActive(true);
         manufacturerEditor.LoadPart(activePart);
-    }
-
-    public void FinishedEditingManufacturer() {
-        activePart.manufacturer = manufacturerEditor.company;
-        manufacturerEditor.gameObject.SetActive(false);
-        DisplayManufacturer();
     }
 
     public void SubmitDesign() {
@@ -229,6 +207,6 @@ public class PartDesigner : MonoBehaviour {
         partTierDropdown.gameObject.SetActive(on);
         previewImage.gameObject.SetActive(on);
         partSizeDropdown.gameObject.SetActive(on);
-        manufacturerEditButton.gameObject.SetActive(on);
+        manufacturerDisplay.gameObject.SetActive(on);
     }
 }

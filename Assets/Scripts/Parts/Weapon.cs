@@ -64,10 +64,10 @@ public class Weapon : Part {
         string caliberString = caliber.ValueString();
         string partTypeName = Constants.GetWeaponTypeName(tier, weaponType.Value);
         string typeline;
-        if(manufacturer != null) {
-            typeline = manufacturer.name + " " + modelName + " " + partTypeName;
+        if(Manufacturer != null) {
+            typeline = Manufacturer.name + " " + ModelName + " " + partTypeName;
         } else {
-            typeline = modelName + " " + partTypeName;
+            typeline = ModelName + " " + partTypeName;
         }
 ;
         string turretSetup = "";
@@ -113,7 +113,7 @@ public class Weapon : Part {
         p.caliber.Value = Random.Range(2, 20);
         p.turrets.Value = Random.Range(0, 5);
         p.reload.Value = Random.Range(2, 20);
-        p.modelName = Constants.GetRandomWeaponModelName();
+        p.ModelName = Constants.GetRandomWeaponModelName();
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;
@@ -122,7 +122,7 @@ public class Weapon : Part {
     public override Part Clone() {
         Weapon part = (Weapon) MemberwiseClone();
         List<Tweakable> newTweakables = new List<Tweakable>();
-        part.manufacturer = manufacturer;
+        part.Manufacturer = Manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,

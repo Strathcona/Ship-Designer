@@ -13,7 +13,7 @@ public class PartListPanel : MonoBehaviour {
     public void DisplayPart(Part p) {
         Clear();
         part = p;
-        topText.text = p.modelName + " tier "+ p.Tier.ToString()+ " " + Constants.PartTypeString[p.partType];
+        topText.text = p.ModelName + " tier "+ p.Tier.ToString()+ " " + Constants.PartTypeString[p.partType];
     }
 
     public void Clear() {

@@ -6,11 +6,12 @@ public class CompanyList : MonoBehaviour
 {
     public GameObject companyListPanelPrefab;
     public GameObjectPool companyListPanelPool;
+    public GameObject companyListRoot;
     public GameObject foundNewCompanyButton;
     public Company playerCompany;
 
     private void Start() {
-        companyListPanelPool = new GameObjectPool(companyListPanelPrefab, gameObject);
+        companyListPanelPool = new GameObjectPool(companyListPanelPrefab, companyListRoot);
         GameDataManager.instance.OnCompaniesChangeEvent += UpdateCompanyList;
         UpdateCompanyList(GameDataManager.instance.Companies);
     }

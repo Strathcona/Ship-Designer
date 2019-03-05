@@ -51,8 +51,8 @@ public class Shield : Part {
         p.Tier = 1;
         p.Size = PartSize.S;
         p.shieldType = ShieldType.Generator;
-        p.typeName = "Shield Generator";
-        p.modelName = Constants.GetRandomSensorModelName();
+        p.DescriptionName = "Shield Generator";
+        p.ModelName = Constants.GetRandomSensorModelName();
         p.strength.Value = UnityEngine.Random.Range(2, 20);
         p.rechargeTime.Value = UnityEngine.Random.Range(20, 100);
         return p;
@@ -62,7 +62,7 @@ public class Shield : Part {
     public override Part Clone() {
         Shield part = (Shield)MemberwiseClone();
         List<Tweakable> newTweakables = new List<Tweakable>();
-        part.manufacturer = manufacturer;
+        part.Manufacturer = Manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,

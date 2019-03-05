@@ -44,8 +44,8 @@ public class FireControl : Part{
         p.accuracy.Value = Random.Range(1, 20);
         p.Size = PartSize.S;
         p.range.Value = Random.Range(1, 20);
-        p.typeName = "Fire Control System";
-        p.modelName = Constants.GetRandomFireControlModelName();
+        p.DescriptionName = "Fire Control System";
+        p.ModelName = Constants.GetRandomFireControlModelName();
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;
@@ -54,7 +54,7 @@ public class FireControl : Part{
     public override Part Clone() {
         FireControl part = (FireControl) MemberwiseClone();
         List<Tweakable> newTweakables = new List<Tweakable>();
-        part.manufacturer = manufacturer;
+        part.Manufacturer = Manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,

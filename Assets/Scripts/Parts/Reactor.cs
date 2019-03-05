@@ -36,8 +36,8 @@ public class Reactor : Part{
         p.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
         p.tier = 1;
         p.Size = PartSize.S;
-        p.typeName = "Reactor";
-        p.modelName = Constants.GetRandomReactorName();
+        p.DescriptionName = "Reactor";
+        p.ModelName = Constants.GetRandomReactorName();
         p.averagePower.Value = Random.Range(20, 100);
         p.maxPower.Value = Random.Range(100, 120);
         return p;
@@ -46,7 +46,7 @@ public class Reactor : Part{
     public override Part Clone() {
         Reactor part = (Reactor)MemberwiseClone();
         List<Tweakable> newTweakables = new List<Tweakable>();
-        part.manufacturer = manufacturer;
+        part.Manufacturer = Manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,

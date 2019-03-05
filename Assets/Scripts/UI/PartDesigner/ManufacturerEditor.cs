@@ -16,26 +16,29 @@ public class ManufacturerEditor: MonoBehaviour {
     }
 
     public void LoadPart(Part p) {
+        gameObject.SetActive(true);
         part = p;
         Clear();
         companies = GameDataManager.instance.Companies;
         GameObject defaultObject = companyMessagePool.GetGameObject();
-        CompanyMessage defaultMessage = defaultObject.GetComponent<CompanyMessage>();
-        defaultMessage.DisplayCompanyMessage("We can always manufacture these parts in house. There'll be no great bonuses, but no additional costs either, and you won't be placed at the mercy of an external supplier");
-        defaultMessage.bottomButtonText.text = "Select";
         
         foreach (Company c in companies) {
             GameObject g = companyMessagePool.GetGameObject();
             CompanyMessage cm = g.GetComponent<CompanyMessage>();
             cm.DisplayCompany(c);
             string message = "";
+            if (c == PlayerManager.instance.activePlayer.ActiveCompany) {
+                message = "Manufacture in-house";
+            } else {
+                message = "Negotiate a better deal from a competitor"; 
+            }
             cm.DisplayCompanyMessage(message);
             cm.bottomButtonText.text = "Select";
             cm.bottomButton.onClick.RemoveAllListeners();
             var pass = c;
             cm.bottomButton.onClick.AddListener(delegate { AskToSelectCompany(pass); });
 
-            if (part.manufacturer == c) {
+            if (part.Manufacturer == c) {
                 cm.SetSelected(true);
             } else {
                 cm.SetSelected(false);
@@ -48,16 +51,16 @@ public class ManufacturerEditor: MonoBehaviour {
         ModalPopupManager.instance.DisplayModalPopup("Confirmation",
             "Are you sure you wish to select " + c.name + "?",
             new List<string>() { "Yes", "No" },
-            new List<System.Action>() { delegate { SelectCompany(pass); } });
+            new List<System.Action>() { delegate { FinishEditingManufacturer(pass); } });
     }
 
-    public void SelectCompany(Company c) {
-        company = c;
-        partDesigner.FinishedEditingManufacturer();
+    public void FinishEditingManufacturer(Company c) {
+        part.Manufacturer = c;
+        gameObject.SetActive(false);
     }
 
-    public Company GetCompany() {
-        return company;
+    public void CancelEditingManufacturer() {
+        gameObject.SetActive(false);
     }
 
     public void Clear() {

@@ -56,8 +56,8 @@ public class Engine : Part {
         p.agility.Value = Random.Range(1, 20);
         p.Size = PartSize.S;
         p.averageThrust.Value = Random.Range(1, 20);
-        p.typeName = Constants.TierEngineNames[p.Tier] + " Engine";
-        p.modelName = Constants.GetRandomEngineModelName();
+        p.DescriptionName = Constants.TierEngineNames[p.Tier] + " Engine";
+        p.ModelName = Constants.GetRandomEngineModelName();
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;
@@ -66,7 +66,7 @@ public class Engine : Part {
     public override Part Clone() {
         Engine part = (Engine)MemberwiseClone();
         List<Tweakable> newTweakables = new List<Tweakable>();
-        part.manufacturer = manufacturer;
+        part.Manufacturer = Manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,

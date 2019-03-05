@@ -37,8 +37,8 @@ public class Sensor : Part{
         p.Tier = 1;
         p.Size = PartSize.S;
         p.sensorType = SensorType.LowEnergy;
-        p.typeName = "Low Energy Sensor";
-        p.modelName = Constants.GetRandomSensorModelName();
+        p.DescriptionName = "Low Energy Sensor";
+        p.ModelName = Constants.GetRandomSensorModelName();
         p.range.Value = UnityEngine.Random.Range(2, 20);
         p.resolution.Value = UnityEngine.Random.Range(2, 20);
         return p;
@@ -48,7 +48,7 @@ public class Sensor : Part{
     public override Part Clone() {
         Sensor part = (Sensor)MemberwiseClone();
         List<Tweakable> newTweakables = new List<Tweakable>();
-        part.manufacturer = manufacturer;
+        part.Manufacturer = Manufacturer;
         foreach (Tweakable t in tweakables) {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,

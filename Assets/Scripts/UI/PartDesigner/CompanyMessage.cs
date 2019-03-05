@@ -9,9 +9,7 @@ public class CompanyMessage : MonoBehaviour {
     public Text companyName;
     public Text companyType;
     public Text companyMessage;
-    public Image companyLogo;
-    public Image CEOImage;
-    public Text CEOName;
+    public LogoDisplay logoDisplay;
     public Button button;
     public Button bottomButton;
     public Text bottomButtonText;
@@ -26,13 +24,7 @@ public class CompanyMessage : MonoBehaviour {
         company = c;
         companyName.text = company.name;
         companyType.text = company.companyType;
-
-        CEOName.text = "CEO: "+company.Owner.FirstName + " " + company.Owner.LastName;
-        if(company.logo != null) {
-            companyLogo.gameObject.SetActive(true);
-        } else {
-            companyLogo.gameObject.SetActive(false);
-        }
+        logoDisplay.DisplayLogo(company.logo);
     }
 
     public void SetSelected(bool selected) {
@@ -52,8 +44,6 @@ public class CompanyMessage : MonoBehaviour {
         companyName.text = "";
         companyType.text = "";
         companyMessage.text = "";
-        companyLogo.sprite = null;
-        CEOImage.sprite = null;
     }
 
 }
