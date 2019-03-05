@@ -27,7 +27,7 @@ public class CompanyMessage : MonoBehaviour {
         companyName.text = company.name;
         companyType.text = company.companyType;
 
-        CEOName.text = "CEO: "+company.owner.firstName + " " + company.owner.lastName;
+        CEOName.text = "CEO: "+company.Owner.FirstName + " " + company.Owner.LastName;
         if(company.logo != null) {
             companyLogo.gameObject.SetActive(true);
         } else {

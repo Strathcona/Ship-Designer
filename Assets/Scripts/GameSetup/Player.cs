@@ -4,11 +4,48 @@ using System;
 using Funds;
 
 public class Player: IHasFunds {
-    public string firstName;
-    public string lastName;
-    public Portrait portait;
-    public List<IHasOwner> ownedEntities;
+    private string title;
+    public string Title {
+        get { return title; }
+        set { title = value;
+            OnPlayerDetailsChangeEvent?.Invoke(this);
+        }
+    }
+    private string firstName;
+    public string FirstName {
+        get { return firstName; }
+        set {
+            firstName = value;
+            OnPlayerDetailsChangeEvent?.Invoke(this);
+        }
+    }
+    private string lastName;
+    public string LastName {
+        get { return lastName; }
+        set {
+            lastName = value;
+            OnPlayerDetailsChangeEvent?.Invoke(this);
+        }
+    }
+    private Portrait portrait;
+    public Portrait Portrait {
+        get { return portrait; }
+        set {
+            portrait = value;
+            OnPlayerDetailsChangeEvent?.Invoke(this);
+        }
+    }
+    private Company activeCompany;
+    public Company ActiveCompany {
+        get { return activeCompany; }
+        set { activeCompany = value;
+            OnActiveCompanyChangeEvent?.Invoke(activeCompany);
+        }
+    }
+    public List<IHasOwner> ownedEntities = new List<IHasOwner>();
+    public event Action<Player> OnPlayerDetailsChangeEvent;
     public event Action<int> OnFundsChangeEvent;
+    public event Action<Company> OnActiveCompanyChangeEvent;
 
     public void GainOwnership(IHasOwner thing) {
         thing.ChangeOwner(this);
@@ -18,12 +55,17 @@ public class Player: IHasFunds {
         ownedEntities.Remove(thing);
     }
 
-    private int funds;
+    private int Funds {
+        get { return Funds; }
+        set { Funds = value;
+            OnFundsChangeEvent?.Invoke(Funds);
+        }
+    }
     public int GetFunds() {
-        return funds;
+        return Funds;
     }
     public bool TryToPurchase(IHasCost purchase) {
-        if (funds > purchase.GetCost()) {
+        if (Funds > purchase.GetCost()) {
             ChangeFunds(purchase.GetCost());
             return true;
         } else {
@@ -31,7 +73,7 @@ public class Player: IHasFunds {
         }
     }
     public void ChangeFunds(int amount) {
-        funds += amount;
+        Funds += amount;
     }
 
 }

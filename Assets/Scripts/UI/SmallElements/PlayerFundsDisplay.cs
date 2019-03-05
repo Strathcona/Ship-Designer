@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerNameDisplay : MonoBehaviour {
+
+public class PlayerFundsDisplay : MonoBehaviour {
     public Text text;
 
     private void Start() {
@@ -13,11 +14,11 @@ public class PlayerNameDisplay : MonoBehaviour {
                 Debug.LogError("Player Name Display couldn't find Text on " + gameObject.name);
             }
         }
-        PlayerManager.instance.activePlayer.OnPlayerDetailsChangeEvent += UpdatePlayerName;
+        PlayerManager.instance.activePlayer.OnFundsChangeEvent += UpdatePlayerFunds;
+        UpdatePlayerFunds(PlayerManager.instance.activePlayer.GetFunds());
     }
-    
-    public void UpdatePlayerName(Player player) {
-        text.text = player.FirstName;
+
+    public void UpdatePlayerFunds(int funds) {
+        text.text = funds.ToString();
     }
-    
 }
