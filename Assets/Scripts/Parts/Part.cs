@@ -5,7 +5,7 @@ using GameConstructs;
 using System;
 
 [System.Serializable]
-public abstract class Part {
+public abstract class Part: IDesigned, IHasCost {
     public string descriptionName = "";//A descriptive name of the part like 'Cold Fusion Turbine'
     public string DescriptionName {
         get { return descriptionName; }
@@ -27,9 +27,11 @@ public abstract class Part {
         get { return manufacturer; }
         set {
             manufacturer = value;
+            OnManufactuerChange?.Invoke();
             OnPartChangeEvent?.Invoke(this);
         }
     }
+
 
     public float quality = 1.0f;
     public int unitTime = 1;
@@ -68,6 +70,44 @@ public abstract class Part {
         }
     }
 
+    protected int cost = 0;
+    public int Cost{
+        get{ return cost; }
+        set{ cost = value;  }
+    }
+
+    protected bool isDesigned = false;
+    public bool IsDesigned {
+        get { return isDesigned; }
+        set { isDesigned = value; }
+    }
+
+    protected int designCost = 0;
+    public int DesignCost {
+        get { return designCost; }
+        set { designCost = value; }
+    }
+
+
+    protected float designProgress = 0;
+    public float DesignProgress {
+        get { return designProgress; }
+        set {
+            designProgress = value;
+            OnDesignProgressEvent?.Invoke(this);
+            if (designProgress > designCost) {
+                isDesigned = true;
+                designProgress = designCost;
+                OnDesignChangeEvent?.Invoke(this);
+            } else {
+                OnDesignChangeEvent?.Invoke(this);
+            }
+        }
+    }
+    public event Action<IDesigned> OnDesignChangeEvent;
+    public event Action<IDesigned> OnDesignProgressEvent;
+    public event Action OnManufactuerChange;
+
     public virtual string GetDescriptionString() {
         if(Manufacturer != null) {
             return Manufacturer.name + " " + ModelName + " " + DescriptionName;
@@ -83,9 +123,9 @@ public abstract class Part {
         }
         weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
         weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)*Constants.hardpointSizeFactor[Size]));
-        minutesToDevelop = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
-        unitPrice = weight * Constants.hardpointSizeFactor[Size];
-        unitTime = minutesToDevelop / 10;
+        designCost = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
+        cost = weight * Constants.hardpointSizeFactor[Size];
+
     }
 
     public virtual string GetStatisticsString() {
@@ -102,5 +142,4 @@ public abstract class Part {
 
     protected abstract void InitializeTweakables();
     public abstract Part Clone();
-
 }

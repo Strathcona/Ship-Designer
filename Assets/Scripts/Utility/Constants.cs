@@ -17,6 +17,7 @@ namespace GameConstructs {
 
     //company enums
     public enum CompanyQuality { Speed, Quality, Cost, Prestige, Ethics, Quantity };
+    public enum DepartmentType { Engineering, Finance, Legal, Research}
 
     //galaxy entity enums
     public enum EntityFleetDoctrine { BorderPatrol, SmallNavy};

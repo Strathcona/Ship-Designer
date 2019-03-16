@@ -21,7 +21,7 @@ public class PartList : MonoBehaviour {
 
     public void DisplayParts() {
         Clear();
-        List<Part> parts = PartLibrary.GetParts();
+        Part[] parts = DesignManager.instance.GetAllParts();
         int index = 0;
         foreach (Part p in parts) {
             GameObject g = partListPanelPool.GetGameObject();

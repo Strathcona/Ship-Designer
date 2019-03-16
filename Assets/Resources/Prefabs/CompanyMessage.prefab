@@ -649,9 +649,7 @@ MonoBehaviour:
   companyName: {fileID: 2872712498420852853}
   companyType: {fileID: 2872712499602509770}
   companyMessage: {fileID: 2872712499947325218}
-  companyLogo: {fileID: 0}
-  CEOImage: {fileID: 0}
-  CEOName: {fileID: 0}
+  logoDisplay: {fileID: 2118453395877340928}
   button: {fileID: 2872712499605369579}
   bottomButton: {fileID: 5718738154273675413}
   bottomButtonText: {fileID: 2465502732397729810}
@@ -775,6 +773,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 269edb88f922f0a46a04ea8d6d5d9f4e, type: 3}
+--- !u!114 &2118453395877340928 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3402985239412777008, guid: 269edb88f922f0a46a04ea8d6d5d9f4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 3629786023097370416}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 091eacc920c8fb845ac031c9f23e9328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2118453395877340931 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3402985239412777011, guid: 269edb88f922f0a46a04ea8d6d5d9f4e,

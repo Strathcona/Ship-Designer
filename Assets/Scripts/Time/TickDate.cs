@@ -19,33 +19,46 @@ public class TickDate {
     public int Hour {
         get { return hour; }
         set {
-            if (value >= TimeManager.hoursPerTick) {
-                hour = value % TimeManager.hoursPerTick;
-                Tick += value / TimeManager.hoursPerTick;
+            if (value >= TimeManager.hoursPerDay) {
+                hour = value % TimeManager.hoursPerDay;
+                Day += value / TimeManager.hoursPerDay;
             } else {
                 hour = value;
             }
         }
     }
-    private int tick;
-    public int Tick {
-        get { return tick; }
+    private int day;
+    public int Day {
+        get { return day; }
         set {
-            if (value >= TimeManager.ticksPerTock) {
-                tick = value % TimeManager.ticksPerTock;
-                Tock += value / TimeManager.ticksPerTock;
+            if (value >= TimeManager.daysPerMonth) {
+                day = value % TimeManager.daysPerMonth;
+                Month += value / TimeManager.daysPerMonth;
             } else {
-                tick = value;
+                day = value;
             }
         }
     }
-    public int Tock;
+    private int month;
+    public int Month {
+        get { return month; }
+        set {
+            if (value >= TimeManager.monthsPerYear) {
+                month = value % TimeManager.monthsPerYear;
+                Year += value / TimeManager.monthsPerYear;
+            } else {
+                month = value;
+            }
+        }
+    }    
+    public int Year;
 
-    public TickDate(int _minute, int _hour, int _tick, int _tock) {
-        Tock = _tock;
-        Tick = _tick;
-        Hour = _hour;
-        Minute = _minute;
+    public TickDate(int minute, int hour, int day, int month, int year) {
+        Year = year;
+        Month = month;
+        Day = day;
+        Hour = hour;
+        Minute = minute;
     }
 
     public TickDate(int minutes) {
@@ -57,13 +70,13 @@ public class TickDate {
     }
 
     public string GetDateString() {
-        return "Tick "+Tick.ToString("D3");
+        return "Day "+Day.ToString("D2")+", "+Month.ToString("D2");
     }
 
     public int ToMinutes() {
         int minutesFromHour = Hour * TimeManager.minutesPerHour;
-        int minutesFromTick = Tick * TimeManager.minutesPerHour * TimeManager.hoursPerTick;
-        int minutesFromTock = Tock * TimeManager.ticksPerTock * TimeManager.minutesPerHour * TimeManager.hoursPerTick;
+        int minutesFromTick = Day * TimeManager.minutesPerHour * TimeManager.hoursPerDay;
+        int minutesFromTock = Month * TimeManager.daysPerMonth * TimeManager.minutesPerHour * TimeManager.hoursPerDay;
         return minute + minutesFromHour + minutesFromTick + minutesFromTock;
     }
 }

@@ -56,23 +56,13 @@ public class PartLoader : MonoBehaviour {
             partLoadLabel.text = label;
         }
         partLoadPopup.SetActive(true);
-        List<Part> parts = PartLibrary.GetParts();
+        Part[] parts = DesignManager.instance.GetAllParts();
         foreach (Part p in parts) {
             GameObject g = pool.GetGameObject();
             SelectableFullPartDisplay s = g.GetComponent<SelectableFullPartDisplay>();
             s.DisplayPart(p);
             var val = s;
             s.button.onClick.AddListener(delegate { SelectDisplay(val); });
-        }
-        if (displayNonDeveloped) {
-            parts = PartLibrary.GetUndevelopedParts();
-            foreach (Part p in parts) {
-                GameObject g = pool.GetGameObject();
-                SelectableFullPartDisplay s = g.GetComponent<SelectableFullPartDisplay>();
-                s.DisplayPart(p);
-                var val = s;
-                s.button.onClick.AddListener(delegate { SelectDisplay(val); });
-            }
         }
     }
 

@@ -6,8 +6,6 @@ using UnityEngine.UI;
 using GameConstructs;
 
 public class TweakableEditorPanel : MonoBehaviour {
-    public Action partDesignerUpdateStrings; 
-
     public Tweakable tweakable;
 
     public Dropdown dropdown;
@@ -48,18 +46,15 @@ public class TweakableEditorPanel : MonoBehaviour {
 
             sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString()+tweakable.unit;
             slider.onValueChanged.AddListener(delegate { UpdateFromSlider(); });
-            partDesignerUpdateStrings();
         }
     }
     public void UpdateFromDropdown() {
         tweakable.Value = dropdown.value;
-        partDesignerUpdateStrings();
     }
 
     public void UpdateFromSlider() {
         tweakable.Value = Mathf.FloorToInt(slider.value);
         sliderDisplay.text = tweakable.ValueString();
-        partDesignerUpdateStrings();
     }
 
 

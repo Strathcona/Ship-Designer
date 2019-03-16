@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Funds;
 using GameConstructs;
 
 public class Company : IHasFunds, IHasOwner{
@@ -17,31 +16,44 @@ public class Company : IHasFunds, IHasOwner{
         }
     }
     private int funds;
+    public int Funds {
+        get { return funds; }
+        set { funds = value;
+            OnFundsChangeEvent?.Invoke(funds);
+        }
+    }
     public event Action<int> OnFundsChangeEvent;
     public event Action<Player> OnOwnerChangeEvent;
     public AIPlayer boardOfDirectors;
+    private List<Department> departments = new List<Department>();
+    public EngineeringDepartment engineeringDepartment;
+    public FinanceDepartment financeDepartment;
 
     public Company(Player founder) {
         owner = founder;
         boardOfDirectors = new AIPlayer();
         boardOfDirectors.FirstName = "Board of Directors";
+        TimeManager.instance.OnDayEvent += DailyDepartmentWork;
+        engineeringDepartment = new EngineeringDepartment();
+        financeDepartment = new FinanceDepartment();
+        departments.Add(engineeringDepartment);
+        departments.Add(financeDepartment);
     }
 
-    public bool TryToPurchase(IHasCost purchase) {
-        if (funds > purchase.GetCost()) {
-            ChangeFunds(purchase.GetCost());
-            return true;
-        } else {
-            return false;
+    private void DailyDepartmentWork() {
+        foreach(Department d in departments) {
+            d.DailyWork();
         }
     }
-    public void ChangeFunds(int amount) {
-        funds += amount;
-        OnFundsChangeEvent?.Invoke(funds);
+
+    private void MonthlyDepartmentWork() {
+        foreach(Department d in departments) {
+            int departmentFunds = financeDepartment.budget[d.departmentType];
+            d.MonthlyBudget(departmentFunds);
+            Funds -= departmentFunds;
+        }
     }
-    public int GetFunds() {
-        return funds;
-    }
+
     public Player GetOwner() {
         return Owner;
     }

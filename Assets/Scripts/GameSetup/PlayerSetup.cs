@@ -10,7 +10,7 @@ public class PlayerSetup : MonoBehaviour{
 
     private void Start() {
         player = PlayerManager.instance.activePlayer;
-        player.ChangeFunds(2000);
+        player.Funds += 2000;
         playerNameInput.onValueChanged.AddListener(SetPlayerName);
         nextButton.interactable = false;
     }

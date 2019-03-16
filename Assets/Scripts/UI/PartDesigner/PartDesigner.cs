@@ -10,14 +10,12 @@ public class PartDesigner : MonoBehaviour {
     public Dropdown partTierDropdown;
     public Dropdown createNewDropdown;
     public Dropdown partSizeDropdown;
-    public Text descriptionDisplay;
-    public Text statisticsDisplay;
     public InputField modelNameInput;
     public TweakableEditor tweakableEditor;
-    public Image previewImage;
     public GameObject manufacturerDisplay;
     public ManufacturerEditor manufacturerEditor;
     public Text manufacturerButtonText;
+    public PartManufacturerDisplay partManufacturerDisplay;
     public Button manufacturerEditButton;
     public event Action<Part> OnActivePartChangeEvent;
 
@@ -31,22 +29,19 @@ public class PartDesigner : MonoBehaviour {
         createNewDropdown.RefreshShownValue();
         ToggleVisible(false);
         manufacturerDisplay.SetActive(false);
+        Component[] components = GetComponentsInChildren(typeof(IDisplaysPart));
+        for(int i = 0; i < components.Length; i++) {
+            IDisplaysPart displaysPart = components[i] as IDisplaysPart;
+            OnActivePartChangeEvent += displaysPart.DisplayPart;
+        }
     }
 
     public void UpdatePartModel() {
         activePart.ModelName = modelNameInput.text;
-        UpdatePartStrings();
     }
 
     public void SetPartModel() {
         modelNameInput.text = activePart.ModelName;
-    }
-
-    public void UpdatePartStrings() {
-        if(activePart != null) {
-            descriptionDisplay.text = activePart.GetDescriptionString();
-            statisticsDisplay.text = activePart.GetStatisticsString();
-        }
     }
 
     public void AskToLoadPart() {
@@ -82,13 +77,11 @@ public class PartDesigner : MonoBehaviour {
                     break;
             }
             activePart = p.Clone();
-            previewImage.sprite = activePart.sprite;
             modelNameInput.text = activePart.ModelName;
             SetPartModel();
             UpdateTierDropdown();
             partTierDropdown.value = activePart.Tier;
-            tweakableEditor.DisplayTweakables(activePart);
-            OnActivePartChangeEvent?.Invoke(activePart);
+            ActivePartChange();
         }
 
     }
@@ -96,8 +89,6 @@ public class PartDesigner : MonoBehaviour {
     public void Clear() {
         activePart = null;
         tweakableEditor.Clear();
-        descriptionDisplay.text = "---";
-        statisticsDisplay.text = "---";
         ToggleVisible(false);
         OnActivePartChangeEvent?.Invoke(activePart);
     }
@@ -114,35 +105,33 @@ public class PartDesigner : MonoBehaviour {
             //Weapon, FireControl, Sensor, Engine, Reactor, Shield 
             case 1:
                 activePart = new Weapon();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
                 break;
             case 2:
                 activePart = new FireControl();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
                 break;
             case 3:
                 activePart = new Sensor();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
                 break;
             case 4:
                 activePart = new Engine();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
                 break;
             case 5:
                 activePart = new Reactor();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
                 break;
             case 6:
                 activePart = new Shield();
-                previewImage.sprite = SpriteLoader.GetPartSprite("defaultShieldS");
                 break;
 
         }
-        activePart.sprite = previewImage.sprite;
         createNewDropdown.value = 0;
-        tweakableEditor.DisplayTweakables(activePart);
         UpdateTierDropdown();
+        ActivePartChange();
+    }
+
+    private void ActivePartChange() {
+        tweakableEditor.DisplayTweakables(activePart);
         OnActivePartChangeEvent?.Invoke(activePart);
+        partManufacturerDisplay.DisplayPart(activePart);
     }
 
     public void ResetCreateNewDropdown() {
@@ -177,7 +166,7 @@ public class PartDesigner : MonoBehaviour {
     public void AskToSubmitPart() {
         if (activePart != null) {
             ModalPopupManager.instance.DisplayModalPopup("Confirmation",
-            "Would you like to submit this part for design? It will take " + TimeManager.GetTimeString(activePart.minutesToDevelop) + ".",
+            "Would you like to submit this part for development? It will take " + activePart.DesignCost + " units of design effort for your engineers to create a functional design.",
             new List<string>() { "Yes", "No" },
             new List<Action>() { SubmitDesign });
             //refresh part list
@@ -189,23 +178,21 @@ public class PartDesigner : MonoBehaviour {
     }
 
     public void SubmitDesign() {
-        PartLibrary.AddPartToDevelopment(activePart);
+        Part p = activePart.Clone();
+        PlayerManager.instance.activePlayer.ActiveCompany.engineeringDepartment.SubmitPartDesign(p);
     }
 
     public void UpdatePartTier() {
         activePart.Tier = partTierDropdown.value;
-        UpdatePartStrings();
     }
 
     public void UpdatePartSize() {
         activePart.Size = (PartSize) partSizeDropdown.value;
-        UpdatePartStrings();
     }
 
     public void ToggleVisible(bool on) {
         modelNameInput.gameObject.SetActive(on);
         partTierDropdown.gameObject.SetActive(on);
-        previewImage.gameObject.SetActive(on);
         partSizeDropdown.gameObject.SetActive(on);
         manufacturerDisplay.gameObject.SetActive(on);
     }

@@ -7,16 +7,11 @@ public class TweakableEditor : MonoBehaviour {
     public GameObjectPool tweakablePanelPool;
     public GameObject tweakablePanelRoot;
     public GameObject tweakablePanelPrefab;
-    public PartDesigner partDesigner;
 
     private void Awake() {
         Debug.Log("Loading Tweakable Editor Panel Prefab");
         tweakablePanelPrefab = Resources.Load("Prefabs/Tweakable Editor Panel", typeof(GameObject)) as GameObject;
-        tweakablePanelPool = new GameObjectPool(tweakablePanelPrefab, tweakablePanelRoot, SetPartDesignerCallback);
-    }
-
-    public void SetPartDesignerCallback(GameObject g) {
-        g.GetComponent<TweakableEditorPanel>().partDesignerUpdateStrings = partDesigner.UpdatePartStrings;
+        tweakablePanelPool = new GameObjectPool(tweakablePanelPrefab, tweakablePanelRoot);
     }
 
     public void DisplayTweakables(Part p) {

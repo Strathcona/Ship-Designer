@@ -18,7 +18,7 @@ public class CompanyGenerator : MonoBehaviour {
     public void StartGeneratingCompany() {
         gameObject.SetActive(true);
         founder = PlayerManager.instance.activePlayer;
-        personalFundsAdded.MaxValue = founder.GetFunds();
+        personalFundsAdded.MaxValue = founder.Funds;
         personalFundsAdded.onSubmit.AddListener(SetInvestorRatio);
         SetInvestorRatio();
     }
@@ -32,8 +32,8 @@ public class CompanyGenerator : MonoBehaviour {
         founder.ActiveCompany = c;
         c.name = companyName.text;
         c.logo = logoGenerator.Logo;
-        Funds.Funds.TransferFunds(founder, c, personalFundsAdded.FieldValue);
-        c.ChangeFunds(investorFundsAdded.FieldValue);
+        Funds.TransferFunds(founder, c, personalFundsAdded.FieldValue);
+        c.Funds += investorFundsAdded.FieldValue;
         GameDataManager.instance.AddNewCompany(c);
         gameObject.SetActive(false);
     }

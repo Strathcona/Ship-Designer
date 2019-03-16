@@ -38,7 +38,7 @@ public class PartSelector : MonoBehaviour, IParentDragHandler {
     public void LoadShip(Ship s) {
         Clear();
         ship = s;
-        foreach (Part p in PartLibrary.GetParts()) {
+        foreach (Part p in DesignManager.instance.GetAllParts()) {
             GameObject g = partIconPool.GetGameObject();
             PartIcon pi = g.GetComponent<PartIcon>();
             pi.DisplayPart(p);

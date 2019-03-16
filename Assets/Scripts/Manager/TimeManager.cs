@@ -9,8 +9,9 @@ public class TimeManager : MonoBehaviour, IInitialized {
     //individually track these so we can easily see if they change.
     public int minutes = 0;
     public int hours = 0;
-    public int ticks = 0;
-    public int tocks = 0;
+    public int days = 0;
+    public int months = 0;
+    public int years = 0;
 
     public float secondsPerMinute = 0.8f;
     public float baselineSecondsPerMinute = 0.8f;
@@ -23,11 +24,13 @@ public class TimeManager : MonoBehaviour, IInitialized {
     public bool warped = false;
 
     public static int minutesPerHour = 60;
-    public static int hoursPerTick = 24;
-    public static int ticksPerTock = 400;
+    public static int hoursPerDay = 24;
+    public static int daysPerMonth = 30;
+    public static int monthsPerYear = 12;
 
-    public event Action<int> OnTickEvent;
+    public event Action OnMonthEvent;
     public event Action OnMinuteEvent;
+    public event Action OnDayEvent;
 
     public static List<TimeTrigger> triggers = new List<TimeTrigger>();
 
@@ -51,7 +54,7 @@ public class TimeManager : MonoBehaviour, IInitialized {
     }
 
     public string GetCurrentDateString() {
-        return "Tick:" + ticks.ToString() + ", " + tocks.ToString();
+        return "Day:" + days.ToString() + ", " + months.ToString();
     }
 
     private void Update() {
@@ -64,14 +67,18 @@ public class TimeManager : MonoBehaviour, IInitialized {
                     totalMinutes += minutesPerHour;
                     bigTimer -= warpSecondsPerHour;
                     DeltaMinute(minutesPerHour);
-                    if (hours >= hoursPerTick) {
-                        ticks += 1;
+                    if (hours >= hoursPerDay) {
+                        days += 1;
                         hours = 0;
-                        OnTickEvent?.Invoke(ticks);
-
-                        if (ticks >= ticksPerTock) {
-                            tocks += 1;
-                            ticks = 0;
+                        OnDayEvent?.Invoke();
+                        if (days >= daysPerMonth) {
+                            OnMonthEvent?.Invoke();
+                            months += 1;
+                            days = 0;
+                            if (months >= monthsPerYear) {
+                                years += 1;
+                                months = 0;
+                            }
                         }
                     }
                 }
@@ -85,15 +92,18 @@ public class TimeManager : MonoBehaviour, IInitialized {
                     if (minutes >= minutesPerHour) {
                         hours += 1;
                         minutes = 0;
-
-                        if (hours >= hoursPerTick) {
-                            ticks += 1;
+                        if (hours >= hoursPerDay) {
+                            days += 1;
                             hours = 0;
-                            OnTickEvent?.Invoke(ticks);
-
-                            if(ticks >= ticksPerTock) {
-                                tocks += 1;
-                                ticks = 0;
+                            OnDayEvent?.Invoke();
+                            if(days >= daysPerMonth) {
+                                OnMonthEvent?.Invoke();
+                                months += 1;
+                                days = 0;
+                                if (months >= monthsPerYear) {
+                                    years += 1;
+                                    months = 0;
+                                }
                             }
                         }
                     }
@@ -101,8 +111,8 @@ public class TimeManager : MonoBehaviour, IInitialized {
             }
             currentTime.Minute = minutes;
             currentTime.Hour = hours;
-            currentTime.Tick = ticks;
-            currentTime.Tock = tocks;
+            currentTime.Day = days;
+            currentTime.Month = months;
         }
     }
 
@@ -163,15 +173,15 @@ public class TimeManager : MonoBehaviour, IInitialized {
 
     public static string GetTimeString(int minutes) {
         TickDate date = new TickDate(minutes);
-        if(date.Tock == 0) {
-            if(date.Tick == 0) {
+        if(date.Month == 0) {
+            if(date.Day == 0) {
                 if(date.Hour == 0) {
                     return date.Minute.ToString() + " minutes";
                 }
                 return date.Hour.ToString() + " hours and " + date.Minute + " minutes";
             }
-            return date.Tick.ToString()+" ticks, "+ date.Hour.ToString() + " hours and " + date.Minute + " minutes";
+            return date.Day.ToString()+" ticks, "+ date.Hour.ToString() + " hours and " + date.Minute + " minutes";
         }
-        return date.Tock.ToString()+" tocks, "+date.Tick.ToString() + " ticks, " + date.Hour.ToString() + " hours and " + date.Minute + " minutes";
+        return date.Month.ToString()+" tocks, "+date.Day.ToString() + " ticks, " + date.Hour.ToString() + " hours and " + date.Minute + " minutes";
     }
 }

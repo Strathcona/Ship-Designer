@@ -9,7 +9,16 @@ public class LogoDisplay: MonoBehaviour {
     public Image layer3;
     public Logo logo;
 
+    public void Start() {
+        if(logo == null) {
+            SetTransparent();
+        }
+    }
+
     public void DisplayLogo(Logo displayedLogo) {
+        if (logo == null) {
+            SetTransparent();
+        }
         logo = displayedLogo;
         layer1.sprite = logo.Layer1;
         layer1.color = logo.Color1;
@@ -18,10 +27,12 @@ public class LogoDisplay: MonoBehaviour {
         layer3.sprite = logo.Layer3;
         layer3.color = logo.Color3;
         logo.OnLogoChangedEvent += RefreshDisplay;
-        Debug.Log("Display Logo");
     }
 
     public void RefreshDisplay(Logo displayedLogo) {
+        if (logo == null) {
+            SetTransparent();
+        }
         Debug.Log("Refresh Logo");
         layer1.sprite = logo.Layer1;
         layer1.color = logo.Color1;
@@ -29,5 +40,11 @@ public class LogoDisplay: MonoBehaviour {
         layer2.color = logo.Color2;
         layer3.sprite = logo.Layer3;
         layer3.color = logo.Color3;
+    }
+
+    public void SetTransparent() {
+        layer1.color = new Color(0, 0, 0, 0);
+        layer2.color = new Color(0, 0, 0, 0);
+        layer3.color = new Color(0, 0, 0, 0);
     }
 }

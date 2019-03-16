@@ -50,7 +50,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
             GameObject g = tweakableDisplayPool.GetGameObject();
             g.GetComponent<SmallTweakableDisplay>().DisplayTweakable(t);
         }
-        if (part.inDevelopment) {
+        if (!part.IsDesigned) {
             overlayPanel.SetActive(true);
             overlayText.text = "IN DEVELOPMENT";
         } else {

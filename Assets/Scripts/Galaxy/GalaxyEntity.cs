@@ -58,6 +58,7 @@ public class GalaxyEntity {
     }
 
     public void EvaluateGoals() {
+        RequestNewGoals();
         Debug.Log("Galaxy Entity " + entityName + " is evaluating goals");
         EntityGoal bestGoal = null;
         float bestUtility = 0.0f;
@@ -72,7 +73,6 @@ public class GalaxyEntity {
         if(bestGoal != null) {
             bestGoal.PerformAction(this);
         }
-        TimeManager.SetTimeTrigger(30000, EvaluateGoals);
     }
 
     public void ClearEntityTerritory() {
@@ -103,9 +103,7 @@ public class GalaxyEntity {
         g.governmentName = entityStrings[0];
         g.adjective = entityStrings[2];
         g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
-        TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
-        TimeManager.SetTimeTrigger(2, g.EvaluateGoals);
-
+        TimeManager.instance.OnMonthEvent += g.EvaluateGoals;
         return g;
     }
 }

@@ -15,7 +15,7 @@ public class PlayerFundsDisplay : MonoBehaviour {
             }
         }
         PlayerManager.instance.activePlayer.OnFundsChangeEvent += UpdatePlayerFunds;
-        UpdatePlayerFunds(PlayerManager.instance.activePlayer.GetFunds());
+        UpdatePlayerFunds(PlayerManager.instance.activePlayer.Funds);
     }
 
     public void UpdatePlayerFunds(int funds) {

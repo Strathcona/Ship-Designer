@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
-using Funds;
 
 public class Player: IHasFunds {
     private string title;
@@ -56,25 +55,20 @@ public class Player: IHasFunds {
     }
 
     private int funds;
-    private int Funds {
+    public int Funds {
         get { return funds; }
         set { funds = value;
             OnFundsChangeEvent?.Invoke(Funds);
         }
     }
-    public int GetFunds() {
-        return Funds;
-    }
+
     public bool TryToPurchase(IHasCost purchase) {
-        if (Funds > purchase.GetCost()) {
-            ChangeFunds(purchase.GetCost());
+        if (Funds > purchase.Cost) {
+            Funds -= purchase.Cost;
             return true;
         } else {
             return false;
         }
-    }
-    public void ChangeFunds(int amount) {
-        Funds += amount;
     }
 
 }
