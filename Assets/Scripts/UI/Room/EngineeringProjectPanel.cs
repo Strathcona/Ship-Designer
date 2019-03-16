@@ -14,11 +14,15 @@ public class EngineeringProjectPanel : MonoBehaviour {
     }
 
     public void DisplayEngineeringProject(IDesigned design) {
+        if(this.design != null) {
+            this.design.OnDesignProgressEvent -= UpdateProjectProgress;
+        }
         this.design = design;
         Part part = design as Part;
         if(part != null) {
             DisplayPart();
         }
+        this.design.OnDesignProgressEvent += UpdateProjectProgress;
     }
 
     public void DisplayPart() {
@@ -31,6 +35,6 @@ public class EngineeringProjectPanel : MonoBehaviour {
     }
 
     public void UpdateProjectProgress(IDesigned design) {
-        progressImage.fillAmount = 1/ (design.DesignProgress / design.DesignCost);
+        progressImage.fillAmount = 1 - (design.DesignProgress / design.DesignCost);
     }
 }

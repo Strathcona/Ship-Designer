@@ -5,7 +5,7 @@ using GameConstructs;
 using System;
 
 public class EngineeringDepartment : Department {
-    private int engineeringEffort = 0;
+    private int engineeringEffort = 10;
     private List<Part> partDesigns = new List<Part>();
     private Dictionary<IDesigned, int> partAndPriority = new Dictionary<IDesigned, int>();
     public event Action<IDesigned> OnNewIDesign;
@@ -23,6 +23,7 @@ public class EngineeringDepartment : Department {
         IDesigned design = part as IDesigned;
         partAndPriority.Add(design, 1);
         OnNewIDesign?.Invoke(design);
+        Debug.Log("New Part submitted to engineering. Cost: "+design.DesignCost);
     }
 
     public void SubmitShipDesign(Ship ship) {

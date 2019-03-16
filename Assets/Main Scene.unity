@@ -2270,7 +2270,7 @@ GameObject:
   - component: {fileID: 111723287}
   - component: {fileID: 111723286}
   m_Layer: 5
-  m_Name: Preview Panel
+  m_Name: Part Image Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2294,7 +2294,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 110, y: -150}
-  m_SizeDelta: {x: 180, y: 180}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &111723286
 MonoBehaviour:
@@ -9486,7 +9486,7 @@ GameObject:
   - component: {fileID: 642586209}
   - component: {fileID: 642586208}
   m_Layer: 5
-  m_Name: Manufacturer Background
+  m_Name: Part Manufacturer Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9760,8 +9760,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 30, y: -37}
-  m_SizeDelta: {x: 60, y: 25}
+  m_AnchoredPosition: {x: 50, y: -47}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &661302968
 MonoBehaviour:
@@ -17744,13 +17744,14 @@ GameObject:
   - component: {fileID: 1153058370}
   - component: {fileID: 1153058372}
   - component: {fileID: 1153058371}
+  - component: {fileID: 1153058373}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1153058370
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17807,6 +17808,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153058369}
   m_CullTransparentMesh: 0
+--- !u!114 &1153058373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153058369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411473b6640ac3745aa4f5473c36d3f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1153058371}
 --- !u!1 &1155569358
 GameObject:
   m_ObjectHideFlags: 0
@@ -30016,8 +30030,9 @@ MonoBehaviour:
   manufacturerDisplay: {fileID: 642586206}
   manufacturerEditor: {fileID: 1516575808}
   manufacturerButtonText: {fileID: 1277605716}
-  manufacturerLogoDisplay: {fileID: 0}
+  partManufacturerDisplay: {fileID: 2102367773}
   manufacturerEditButton: {fileID: 1632211942}
+  imageDisplay: {fileID: 1153058373}
 --- !u!222 &2129792037
 CanvasRenderer:
   m_ObjectHideFlags: 0

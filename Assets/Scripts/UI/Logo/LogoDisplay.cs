@@ -32,14 +32,14 @@ public class LogoDisplay: MonoBehaviour {
     public void RefreshDisplay(Logo displayedLogo) {
         if (logo == null) {
             SetTransparent();
+        } else {
+            layer1.sprite = logo.Layer1;
+            layer1.color = logo.Color1;
+            layer2.sprite = logo.Layer2;
+            layer2.color = logo.Color2;
+            layer3.sprite = logo.Layer3;
+            layer3.color = logo.Color3;
         }
-        Debug.Log("Refresh Logo");
-        layer1.sprite = logo.Layer1;
-        layer1.color = logo.Color1;
-        layer2.sprite = logo.Layer2;
-        layer2.color = logo.Color2;
-        layer3.sprite = logo.Layer3;
-        layer3.color = logo.Color3;
     }
 
     public void SetTransparent() {

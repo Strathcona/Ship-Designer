@@ -18,6 +18,7 @@ public class PartDesigner : MonoBehaviour {
     public PartManufacturerDisplay partManufacturerDisplay;
     public Button manufacturerEditButton;
     public event Action<Part> OnActivePartChangeEvent;
+    public PartImageDisplay imageDisplay; 
 
     public void Start() {
         createNewDropdown.ClearOptions();
@@ -105,21 +106,27 @@ public class PartDesigner : MonoBehaviour {
             //Weapon, FireControl, Sensor, Engine, Reactor, Shield 
             case 1:
                 activePart = new Weapon();
+                activePart.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
                 break;
             case 2:
                 activePart = new FireControl();
+                activePart.sprite = SpriteLoader.GetPartSprite("defaultFireControlS");
                 break;
             case 3:
                 activePart = new Sensor();
+                activePart.sprite = SpriteLoader.GetPartSprite("defaultSensorS");
                 break;
             case 4:
                 activePart = new Engine();
+                activePart.sprite = SpriteLoader.GetPartSprite("defaultEngineS");
                 break;
             case 5:
                 activePart = new Reactor();
+                activePart.sprite = SpriteLoader.GetPartSprite("defaultReactorS");
                 break;
             case 6:
                 activePart = new Shield();
+                activePart.sprite = SpriteLoader.GetPartSprite("defaultShieldS");
                 break;
 
         }
@@ -131,6 +138,7 @@ public class PartDesigner : MonoBehaviour {
     private void ActivePartChange() {
         tweakableEditor.DisplayTweakables(activePart);
         OnActivePartChangeEvent?.Invoke(activePart);
+        imageDisplay.DisplayPart(activePart);
         partManufacturerDisplay.DisplayPart(activePart);
     }
 

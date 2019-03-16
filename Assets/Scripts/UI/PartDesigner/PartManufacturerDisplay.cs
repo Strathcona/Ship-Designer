@@ -23,6 +23,7 @@ public class PartManufacturerDisplay : MonoBehaviour, IDisplaysPart
         this.part = part;
         if(part != null) {
             if(part.Manufacturer != null) {
+                Debug.Log(part.Manufacturer.logo);
                 logoDisplay.DisplayLogo(part.Manufacturer.logo);
             }
             part.OnManufactuerChange += UpdateDisplay;
