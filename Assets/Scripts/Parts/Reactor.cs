@@ -18,14 +18,12 @@ public class Reactor : Part{
         averagePower = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Output");
         tweakables.Add(averagePower);
 
         maxPower = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Maximum Output");
         maxPower.unit = "%";
         tweakables.Add(maxPower);
@@ -51,13 +49,13 @@ public class Reactor : Part{
             Tweakable newt = Tweakable.MakeTweakable(
                 part,
                 t.tweakableType,
-                part.TweakableUpdate,
                 t.tweakableName);
             newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             newTweakables.Add(newt);
         }
         part.tweakables = newTweakables;
+        part.UpdateProperties();
         return part;
     }
 }

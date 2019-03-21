@@ -14,6 +14,10 @@ public class EngineeringDepartment : Department {
         departmentType = DepartmentType.Engineering;
     }
 
+    public Part[] AllParts {
+        get { return partDesigns.ToArray(); }
+    }
+
     public override void MonthlyBudget(int funds) {
         base.MonthlyBudget(funds);
         engineeringEffort = lastMonthlyBudget;
@@ -21,6 +25,7 @@ public class EngineeringDepartment : Department {
 
     public void SubmitPartDesign(Part part) {
         IDesigned design = part as IDesigned;
+        partDesigns.Add(part);
         partAndPriority.Add(design, 1);
         OnNewIDesign?.Invoke(design);
         Debug.Log("New Part submitted to engineering. Cost: "+design.DesignCost);

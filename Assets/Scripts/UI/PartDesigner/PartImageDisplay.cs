@@ -7,7 +7,7 @@ public class PartImageDisplay : MonoBehaviour
 {
     public Image image;
     public Part part;
-    private void Start() {
+    private void Awake() {
         if (image == null) {
             image = GetComponent<Image>();
             if (image == null) {

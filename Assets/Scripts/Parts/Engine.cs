@@ -20,26 +20,22 @@ public class Engine : Part {
         agility = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Agility");
 
         averageThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Thrust");
 
         maxThrust = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Maximum Thrust");
         maxThrust.unit = "%";
 
         energyEfficiency = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Energy Efficiency");
         energyEfficiency.unit = "%";
 
@@ -56,7 +52,7 @@ public class Engine : Part {
         p.agility.Value = Random.Range(1, 20);
         p.Size = PartSize.S;
         p.averageThrust.Value = Random.Range(1, 20);
-        p.DescriptionName = Constants.TierEngineNames[p.Tier] + " Engine";
+        p.DescriptionName = Constants.GetPartDescriptionName(p);
         p.ModelName = Constants.GetRandomEngineModelName();
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
@@ -71,13 +67,13 @@ public class Engine : Part {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,
                 t.tweakableType,
-                part.TweakableUpdate,
                 t.tweakableName);
             newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             newTweakables.Add(newt);
         }
         part.tweakables = newTweakables;
+        part.UpdateProperties();
         return part;
     }
 }

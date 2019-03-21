@@ -17,27 +17,25 @@ public class Shield : Part {
         type = Tweakable.MakeTweakable(
             this,
             TweakableType.Dropdown,
-            TweakableUpdate,
             "Shield Type");
-        type.dropdownLabels.Add("Shield Generator");
-        type.dropdownLabels.Add("Deflector Shield");
 
         strength = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Shield Strength");
 
         rechargeTime = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Recharge Time");
         rechargeTime.unit = "s";
 
         tweakables.Add(type);
         tweakables.Add(strength);
         tweakables.Add(rechargeTime);
+
+        type.dropdownLabels.Add("Shield Generator");
+        type.dropdownLabels.Add("Deflector Shield");
     }
 
     protected override void UpdateProperties() {
@@ -67,13 +65,13 @@ public class Shield : Part {
             Tweakable newt = Tweakable.MakeTweakable(
                 part,
                 t.tweakableType,
-                part.TweakableUpdate,
                 t.tweakableName);
             newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             newTweakables.Add(newt);
         }
         part.tweakables = newTweakables;
+        part.UpdateProperties();
         return part;
     }
 }

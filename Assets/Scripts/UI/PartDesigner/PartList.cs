@@ -1,36 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PartList : MonoBehaviour {
-    public GameObject partListPanelPrefab;
-    private GameObjectPool partListPanelPool;
-    public PartDesigner partDesigner;
+    public GameObject partDisplayPanelPrefab;
+    private GameObjectPool partDisplayPanelPool;
+    public PartDisplay selectedDisplay;
+    public event Action<Part> OnPartSelectedEvent;
 
     private void Awake() {
-        partListPanelPool = new GameObjectPool(partListPanelPrefab, this.gameObject, SetupAction);
+        partDisplayPanelPool = new GameObjectPool(partDisplayPanelPrefab, gameObject, SubscribeToSelection);
     }
 
-    public void EditPart(Part p) {
-        partDesigner.LoadPart(p);
+    public void SubscribeToSelection(GameObject g) {
+        g.GetComponent<PartDisplay>().OnPartDisplaySelectedEvent += PartDisplaySelected;
     }
 
-    public void SetupAction(GameObject g) {
-        g.GetComponent<PartListPanel>().partList = this;
+    public void PartDisplaySelected(PartDisplay display) {
+        selectedDisplay?.DeselectPartDisplay();
+        selectedDisplay = display;
+        OnPartSelectedEvent?.Invoke(selectedDisplay.part);
     }
 
-    public void DisplayParts() {
+    public void DisplayParts(Part[] parts) {
         Clear();
-        Part[] parts = DesignManager.instance.GetAllParts();
-        int index = 0;
-        foreach (Part p in parts) {
-            GameObject g = partListPanelPool.GetGameObject();
-            g.GetComponent<PartListPanel>().DisplayPart(p);
-            index += 1;
+        foreach( Part p in parts) {
+            partDisplayPanelPool.GetGameObject().GetComponent<PartDisplay>().DisplayPart(p);
         }
     }
 
     public void Clear() {
-        partListPanelPool.ReleaseAll();
+        partDisplayPanelPool.ReleaseAll();
     }
 }

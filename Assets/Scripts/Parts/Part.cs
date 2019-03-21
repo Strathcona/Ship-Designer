@@ -48,6 +48,9 @@ public abstract class Part: IDesigned, IHasCost {
         set {
             size = value;
             OnPartChangeEvent?.Invoke(this);
+            foreach(Tweakable t in tweakables) {
+                t.ScaleFactor = Constants.sizeFactor[size];
+            }
             UpdateProperties();
         }
     }
@@ -110,21 +113,21 @@ public abstract class Part: IDesigned, IHasCost {
 
     public virtual string GetDescriptionString() {
         if(Manufacturer != null) {
-            return Manufacturer.name + " " + ModelName + " " + DescriptionName;
+            return Manufacturer.name + " " + ModelName + " " + Constants.GetPartDescriptionName(this);
         } else {
-            return ModelName + " " + DescriptionName;
+            return ModelName + " " + Constants.GetPartDescriptionName(this);
         }
     }
 
     protected virtual void UpdateProperties() {
         float weightedTweakableFactor = 0;
         foreach(Tweakable t in tweakables) {
-            weightedTweakableFactor += (float)t.Value / t.MaxValue;
+            weightedTweakableFactor += t.GetDesignCostFactor();
         }
         weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
-        weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)*Constants.hardpointSizeFactor[Size]));
-        designCost = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(200 * weightedTweakableFactor, 1.5f))); ;
-        cost = weight * Constants.hardpointSizeFactor[Size];
+        weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)*Constants.sizeFactor[Size]));
+        designCost = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(100 * weightedTweakableFactor, 1.5f))); ;
+        cost = Mathf.Max(100, weight * Constants.sizeFactor[Size]);
 
     }
 
@@ -135,9 +138,14 @@ public abstract class Part: IDesigned, IHasCost {
         }
         return statisticsString;
     }
-    public virtual void TweakableUpdate() {
-        OnPartChangeEvent?.Invoke(this);
+
+    public virtual string GetCostString() {
+        return "Design Effort:"+DesignCost.ToString()+" Cost:"+Cost.ToString()+" credits" ;
+    }
+
+    public virtual void TweakableUpdate(Tweakable t) {
         UpdateProperties();
+        OnPartChangeEvent?.Invoke(this);
     }
 
     protected abstract void InitializeTweakables();

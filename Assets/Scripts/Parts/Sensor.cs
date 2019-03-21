@@ -19,12 +19,10 @@ public class Sensor : Part{
         range = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Range");
         resolution = Tweakable.MakeTweakable(
             this,
             TweakableType.Slider,
-            TweakableUpdate,
             "Resolution");
 
         tweakables.Add(range);
@@ -53,13 +51,13 @@ public class Sensor : Part{
             Tweakable newt = Tweakable.MakeTweakable(
                 part,
                 t.tweakableType,
-                part.TweakableUpdate,
                 t.tweakableName);
             newt.Value = t.Value;
             newt.dropdownLabels = new List<string>(t.dropdownLabels);
             newTweakables.Add(newt);
         }
         part.tweakables = newTweakables;
+        part.UpdateProperties();
         return part;
     }
 }

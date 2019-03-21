@@ -43,7 +43,7 @@ namespace GameConstructs {
 
         public static int numberOfTiers = 8;
 
-        public static Dictionary<PartSize, int> hardpointSizeFactor = new Dictionary<PartSize, int>() {
+        public static Dictionary<PartSize, int> sizeFactor = new Dictionary<PartSize, int>() {
             { PartSize.XS, 1 },
             { PartSize.S, 2 },
             { PartSize.M, 4 },
@@ -59,6 +59,21 @@ namespace GameConstructs {
             {PartType.FireControl, "Fire Control"},
             {PartType.Shield, "Shield"},
         };
+
+        public static string GetPartDescriptionName(Part part) {
+            return PartTierDescriptionStrings[part.Tier]+" "+ PartTypeString[part.partType];
+        }
+        private static Dictionary<int, string> PartTierDescriptionStrings = new Dictionary<int, string>() {
+            {0, "Basic" },
+            {1, "Advanced" },
+            {2, "Turbo" },
+            {3, "Hyper" },
+            {4, "Ultra" },
+            {5, "Quantum" },
+            {6, "Meta" },
+            {7, "Infinite" },
+        };
+
 
         public static Dictionary<PartType, Color> PartColor = new Dictionary<PartType, Color>() {
             {PartType.Engine, new Color(1.0f, 0.69f, 0.35f)},
@@ -137,66 +152,6 @@ namespace GameConstructs {
                         {ShipType.Utility, 0.06f }
                     };
             }
-        }
-
-        public static Dictionary<int, string> TierEngineNames = new Dictionary<int, string>() {
-            {0, "Liquid Oxygen"},
-            {1, "Tripropellant" },
-            {2, "Ion"},
-            {3, "Plasma"},
-            {4, "Magnetoplasma"},
-            {5, "Radio Lensed" },
-            {6, "Antimatter"}
-        };
-
-        public static string DamageToLaserWattage(int damage) {
-            return (200 * damage).ToString() + "W";
-        }
-
-        public static string GetWeaponTypeName(int tier, int w) {
-            if (w == 0) {
-                switch (tier) {
-                    case 0:
-                        return "Solid State Laser";
-                    case 1:
-                        return "Metal Hallide Laser";
-                    case 2:
-                        return "Chemical Pumped Laser";
-                    case 3:
-                        return "Far UV Laser";
-                    case 4:
-                        return "X-Ray Laser";
-                    case 5:
-                        return "Far X-Ray Laser";
-                    case 6:
-                        return "Gamma Laser";
-                    default:
-                        Debug.LogWarning("Failed to find laser tier name");
-                        return "";
-                }
-            } else if(w == 1) {
-                switch (tier) {
-                    case 0:
-                        return "Tungsten Slug Railgun";
-                    case 1:
-                        return "Graphite Slug Railgun";
-                    case 2:
-                        return "Two Stage Railgun";
-                    case 3:
-                        return "Three Stage Railgun";
-                    case 4:
-                        return "Liquid Metal Railgun";
-                    case 5:
-                        return "Dual EMF Railgun";
-                    case 6:
-                        return "Relativistic Railgun";
-                    default:
-                        Debug.LogWarning("Failed to find railgun tier name");
-                        return "";
-                }
-            }
-            Debug.LogWarning("Failed to find weapontype for weaponType value" + w);
-            return "";
         }
 
         public static string GetRandomCompanyName() {

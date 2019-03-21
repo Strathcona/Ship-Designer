@@ -125,7 +125,7 @@ public class Ship {
             crew = 1;
         } else {
             foreach (Hardpoint h in hardpoints) {
-                crew += Constants.hardpointSizeFactor[h.allowableSize];
+                crew += Constants.sizeFactor[h.allowableSize];
             }
             crew = Mathf.CeilToInt(crew * 1.1f);
         }

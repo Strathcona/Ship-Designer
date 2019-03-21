@@ -1,21 +1,100 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PartDisplay : MonoBehaviour {
-    Part partToDisplay;
+    public Part part;
+    PartImageDisplay partImageDisplay;
     Text descriptionText;
     Text statisticsText;
+    Button selectionButton;
+    GameObject selectionBorder;
+    private bool selected;
+    public bool Selected {
+        get { return selected; }
+        set {
+            if(value == true && part != null) {
+                selected = value;
+                OnSelect();
+            } else {
+                selected = value;
+                DeselectPartDisplay();
+            }
+        }
+    }
+
+    public event Action<PartDisplay> OnPartDisplaySelectedEvent;
 
     private void Awake() {
-        descriptionText = this.transform.GetChild(0).GetComponentInChildren<Text>();
-        statisticsText = this.transform.GetChild(1).GetComponentInChildren<Text>();
+        for(int i = 0; i < transform.childCount; i++) {
+            GameObject g = transform.GetChild(i).gameObject;
+            switch (g.name) {
+                case "Part Image":
+                    partImageDisplay = g.GetComponent<PartImageDisplay>();
+                    break;
+                case "Description Text":
+                    descriptionText = g.GetComponent<Text>();
+                    break;
+                case "Statistics Text":
+                    statisticsText = g.GetComponent<Text>();
+                    break;
+                case "Selection Button":
+                    selectionButton = g.GetComponent<Button>();
+                    break;
+                case "Selection Border":
+                    selectionBorder = g;
+                    g.SetActive(false);
+                    break;
+            }
+        }
+        if (selectionButton != null) {
+            selectionButton.onClick.AddListener(OnSelect);
+        }
+    }
+    public void OnSelect() {
+        if(part != null) {
+            if (Selected) {
+                DeselectPartDisplay();
+            } else {
+                selected = true;
+                OnPartDisplaySelectedEvent?.Invoke(this);
+                selectionBorder?.SetActive(true);
+            }
+        }
+    }
+    public void DeselectPartDisplay() {
+        selected = false;
+        selectionBorder?.SetActive(false);
     }
 
     public void DisplayPart(Part p) {
-        partToDisplay = p;
-        descriptionText.text = p.GetDescriptionString();
-        statisticsText.text = p.GetStatisticsString();
+        if(part != null) {
+            part.OnPartChangeEvent -= UpdatePartDisplay;
+        }
+        part = p;
+        part.OnPartChangeEvent += UpdatePartDisplay;
+        if(partImageDisplay != null) {
+            partImageDisplay.DisplayPart(part);
+        }
+        if (descriptionText != null) {
+            descriptionText.text = part.GetDescriptionString();
+        }
+        if( statisticsText != null) {
+            statisticsText.text = p.GetStatisticsString();
+        }
+    }
+
+    public void UpdatePartDisplay(Part p) {
+        if (partImageDisplay != null) {
+            partImageDisplay.DisplayPart(part);
+        }
+        if (descriptionText != null) {
+            descriptionText.text = part.GetDescriptionString();
+        }
+        if (statisticsText != null) {
+            statisticsText.text = p.GetStatisticsString();
+        }
     }
 }

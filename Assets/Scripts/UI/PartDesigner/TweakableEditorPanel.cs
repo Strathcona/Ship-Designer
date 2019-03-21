@@ -18,45 +18,57 @@ public class TweakableEditorPanel : MonoBehaviour {
     public Text sliderMaxText;
     public GameObject sliderRuler;
 
+    private bool updating =false;
+
     public void DisplayTweakable(Tweakable t) {
         tweakable = t;
+        tweakable.OnTweakableChangedEvent += UpdateFromTweakable;
         Clear();
-        if(t.tweakableType == TweakableType.Dropdown) {
-            SetDropdownElements(true);
-            dropdownText.text = tweakable.tweakableName;
-            dropdown.ClearOptions();
-            foreach(string s in tweakable.dropdownLabels) {
-                Dropdown.OptionData option = new Dropdown.OptionData();
-                option.text = s;
-                dropdown.options.Add(option);
-            }
-            dropdown.value = tweakable.Value;
-            dropdown.RefreshShownValue();
-            dropdown.onValueChanged.AddListener(delegate { UpdateFromDropdown(); });
-
-        } else if (t.tweakableType == TweakableType.Slider) {
-            SetSliderElements(true);
-            sliderText.text = tweakable.tweakableName;
-
-            slider.minValue = tweakable.MinValue;
-            slider.maxValue = tweakable.MaxValue;
-            slider.value = tweakable.Value;
-            sliderMinText.text = slider.minValue.ToString() + tweakable.unit;
-            sliderMaxText.text = slider.maxValue.ToString() + tweakable.unit;
-
-            sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString()+tweakable.unit;
-            slider.onValueChanged.AddListener(delegate { UpdateFromSlider(); });
-        }
+        UpdateFromTweakable(t);
     }
     public void UpdateFromDropdown() {
+        updating = true;
         tweakable.Value = dropdown.value;
+        updating = false;
     }
 
     public void UpdateFromSlider() {
+        updating = true;
         tweakable.Value = Mathf.FloorToInt(slider.value);
         sliderDisplay.text = tweakable.ValueString();
+        updating = false;
     }
 
+    public void UpdateFromTweakable(Tweakable t) {
+        if (!updating) {
+            if (t.tweakableType == TweakableType.Dropdown) {
+                SetDropdownElements(true);
+                dropdownText.text = tweakable.tweakableName;
+                dropdown.ClearOptions();
+                foreach (string s in tweakable.dropdownLabels) {
+                    Dropdown.OptionData option = new Dropdown.OptionData();
+                    option.text = s;
+                    dropdown.options.Add(option);
+                }
+                dropdown.value = tweakable.Value;
+                dropdown.RefreshShownValue();
+                dropdown.onValueChanged.AddListener(delegate { UpdateFromDropdown(); });
+
+            } else if (t.tweakableType == TweakableType.Slider) {
+                SetSliderElements(true);
+                sliderText.text = tweakable.tweakableName;
+
+                slider.minValue = tweakable.MinValue;
+                slider.maxValue = tweakable.MaxValue;
+                slider.value = tweakable.Value;
+                sliderMinText.text = slider.minValue.ToString() + tweakable.unit;
+                sliderMaxText.text = slider.maxValue.ToString() + tweakable.unit;
+
+                sliderDisplay.text = Mathf.FloorToInt(slider.value).ToString() + tweakable.unit;
+                slider.onValueChanged.AddListener(delegate { UpdateFromSlider(); });
+            }
+        }
+    }
 
     public void Clear() {
         SetSliderElements(false);

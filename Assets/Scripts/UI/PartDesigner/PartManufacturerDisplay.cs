@@ -21,19 +21,19 @@ public class PartManufacturerDisplay : MonoBehaviour, IDisplaysPart
             part.OnManufactuerChange -= UpdateDisplay;
         }
         this.part = part;
-        if(part != null) {
-            if(part.Manufacturer != null) {
+        if(this.part != null) {
+            if(this.part.Manufacturer != null) {
                 Debug.Log(part.Manufacturer.logo);
                 logoDisplay.DisplayLogo(part.Manufacturer.logo);
             }
-            part.OnManufactuerChange += UpdateDisplay;
+            this.part.OnManufactuerChange += UpdateDisplay;
         }
     }
 
     public void UpdateDisplay() {
         if (part != null) {
             if (part.Manufacturer != null) {
-                logoDisplay.RefreshDisplay(part.Manufacturer.logo);
+                logoDisplay.DisplayLogo(part.Manufacturer.logo);
             }
         }
     }

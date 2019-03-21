@@ -7,13 +7,9 @@ using UnityEngine.UI;
 public class PartLoader : MonoBehaviour {
     public static PartLoader instance;
     public GameObject partLoadPopup;
-    public GameObject selectableFullPartDisplayPrefab;
-    public GameObject partDisplayRoot;
-    public Text partLoadLabel;
-    private GameObjectPool pool;
     private Action<Part> onPartLoaded;
     private Action noSelection;
-    public SelectableFullPartDisplay selectedDisplay;
+    public PartList partList;
 
     private void Awake() {
         if (instance == null) {
@@ -21,24 +17,12 @@ public class PartLoader : MonoBehaviour {
         } else {
             Debug.LogError("You've put another part loader somewhere...");
         }
-
-        selectableFullPartDisplayPrefab = Resources.Load("Prefabs/Full Part Display", typeof(GameObject)) as GameObject;
-        pool = new GameObjectPool(selectableFullPartDisplayPrefab, partDisplayRoot);
-    }
-
-
-    public void SelectDisplay(SelectableFullPartDisplay display) {
-        if(selectedDisplay != null) {
-            selectedDisplay.Deselect();  
-        }
-        selectedDisplay = display;
-        display.Select();
+        partLoadPopup.SetActive(false);
     }
 
     public void LoadPart() {
-        if(selectedDisplay != null) {
-            onPartLoaded(selectedDisplay.part);
-            Clear();
+        if(partList.selectedDisplay != null) {
+            onPartLoaded.Invoke(partList.selectedDisplay.part);
             partLoadPopup.SetActive(false);
         }
     }
@@ -46,27 +30,13 @@ public class PartLoader : MonoBehaviour {
     public void Cancel() {
         noSelection?.Invoke();
         partLoadPopup.SetActive(false);
-        Clear();
     }
 
-    public void LoadPartPopup(Action<Part> _onPartLoaded, Action _noSelection=null, string label="", bool displayNonDeveloped=false) {
-        onPartLoaded = _onPartLoaded;
-        noSelection = _noSelection;
-        if(label != "") {
-            partLoadLabel.text = label;
-        }
+    public void LoadPartPopup(Action<Part> onPartLoaded, Action noSelection=null) {
+        this.onPartLoaded = onPartLoaded;
+        this.noSelection = noSelection;
         partLoadPopup.SetActive(true);
-        Part[] parts = DesignManager.instance.GetAllParts();
-        foreach (Part p in parts) {
-            GameObject g = pool.GetGameObject();
-            SelectableFullPartDisplay s = g.GetComponent<SelectableFullPartDisplay>();
-            s.DisplayPart(p);
-            var val = s;
-            s.button.onClick.AddListener(delegate { SelectDisplay(val); });
-        }
-    }
-
-    public void Clear() {
-        pool.ReleaseAll();
+        Part[] parts = PlayerManager.instance.activePlayer?.ActiveCompany?.engineeringDepartment.AllParts;
+        partList.DisplayParts(parts);
     }
 }
