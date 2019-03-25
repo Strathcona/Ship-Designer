@@ -9,6 +9,7 @@ public class EngineeringDepartment : Department {
     private List<Part> partDesigns = new List<Part>();
     private Dictionary<IDesigned, int> partAndPriority = new Dictionary<IDesigned, int>();
     public event Action<IDesigned> OnNewIDesign;
+    public event Action<IDesigned> OnAnyIDesignComplete;
 
     public EngineeringDepartment() {
         departmentType = DepartmentType.Engineering;
@@ -25,6 +26,7 @@ public class EngineeringDepartment : Department {
 
     public void SubmitPartDesign(Part part) {
         IDesigned design = part as IDesigned;
+        design.OnDesignChangeEvent += DesignComplete;
         partDesigns.Add(part);
         partAndPriority.Add(design, 1);
         OnNewIDesign?.Invoke(design);
@@ -33,6 +35,12 @@ public class EngineeringDepartment : Department {
 
     public void SubmitShipDesign(Ship ship) {
 
+    }
+
+    public void DesignComplete(IDesigned design) {
+        if (design.IsDesigned) {
+            OnAnyIDesignComplete?.Invoke(design);
+        }
     }
 
     public override void DailyWork() {

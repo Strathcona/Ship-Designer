@@ -40,7 +40,7 @@ public class Shield : Part {
 
     protected override void UpdateProperties() {
         base.UpdateProperties();
-        weight = Mathf.Max(1, Mathf.FloorToInt(strength.Value / rechargeTime.Value));
+        Weight = Mathf.Max(1, Mathf.FloorToInt(strength.Value / rechargeTime.Value));
     }
 
     public static Shield GetRandomShield() {

@@ -14,9 +14,11 @@ public class Weapon : Part {
         get { return caliber.Value * Mathf.Max(1, turrets.Value); }
     }
     public int DamagePerSecond {
-        get { return caliber.Value * Mathf.Max(1, turrets.Value); }
+        get { return caliber.Value / reload.Value * Mathf.Max(1, turrets.Value); }
     }
-
+    public int MaxDamagePerSecond {
+        get { return caliber.MaxValue / reload.MinValue * Mathf.Max(1, turrets.Value); }
+    }
     public Weapon() {
         partType = PartType.Weapon;
         InitializeTweakables();
@@ -50,7 +52,10 @@ public class Weapon : Part {
         tweakables.Add(caliber);
         tweakables.Add(reload);
 
+        caliber.maxCost = 25;
         reload.ReverseScaling = true; //because reloading faster is worth more;
+        reload.maxNetPower = 25;
+        turrets.automaticCalculation = false;
         turrets.dropdownLabels.Add("Centerline Mounted");
         turrets.dropdownLabels.Add("Single Turret");
         turrets.dropdownLabels.Add("Dual Turret");
@@ -58,6 +63,7 @@ public class Weapon : Part {
         turrets.dropdownLabels.Add("Quadruple Turret");
         weaponType.dropdownLabels.Add("Laser");
         weaponType.dropdownLabels.Add("Railgun");
+        weaponType.automaticCalculation = false;
     }
 
     public override string GetDescriptionString() {
@@ -94,28 +100,35 @@ public class Weapon : Part {
     }
 
     public override string GetStatisticsString() {
-        return "Weight: " + weight.ToString() + " Damage: " + Damage + " Recharge Time: " + reload.ValueString();
+        return "Weight: " + Weight.ToString() + " Damage: " + Damage + " Recharge Time: " + reload.ValueString();
     }
 
     protected override void UpdateProperties() {
         base.UpdateProperties();
         int turretfactor = Mathf.Max(1, turrets.Value);
-        weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value)*turretfactor);
+        Weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value)*turretfactor);
+    }
+
+    public override Dictionary<string, float> GetNormalizedPerformanceValues() {
+        Dictionary<string, float> dict = base.GetNormalizedPerformanceValues();
+        dict.Add("DPS", (float) DamagePerSecond/MaxDamagePerSecond);
+
+       return dict;
     }
 
     public static Weapon GetRandomLaser() {
-        Weapon p = new Weapon();
-        p.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
-        p.Tier = (Random.Range(1, 6));
-        p.weaponType.Value = 0;
-        p.Size = PartSize.S;
-        p.caliber.Value = Random.Range(2, 20);
-        p.turrets.Value = Random.Range(0, 5);
-        p.reload.Value = Random.Range(2, 20);
-        p.ModelName = Constants.GetRandomWeaponModelName();
-        Debug.Log(p.GetDescriptionString());
-        Debug.Log(p.GetStatisticsString());
-        return p;
+    Weapon p = new Weapon();
+    p.sprite = SpriteLoader.GetPartSprite("defaultWeaponS");
+    p.Tier = (Random.Range(1, 6));
+    p.weaponType.Value = 0;
+    p.Size = PartSize.S;
+    p.caliber.Value = Random.Range(2, 20);
+    p.turrets.Value = Random.Range(0, 5);
+    p.reload.Value = Random.Range(2, 20);
+    p.ModelName = Constants.GetRandomWeaponModelName();
+    Debug.Log(p.GetDescriptionString());
+    Debug.Log(p.GetStatisticsString());
+    return p;
     }
 
     public override Part Clone() {

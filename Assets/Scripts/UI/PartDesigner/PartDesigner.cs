@@ -18,9 +18,9 @@ public class PartDesigner : MonoBehaviour {
     public PartManufacturerDisplay partManufacturerDisplay;
     public Button manufacturerEditButton;
     public event Action<Part> OnActivePartChangeEvent;
-    public PartImageDisplay imageDisplay; 
+    public PartImageDisplay imageDisplay;
 
-    public void Start() {
+    public void Awake() {
         createNewDropdown.ClearOptions();
         createNewDropdown.options.Add(new Dropdown.OptionData("Create New"));
         foreach (PartType t in Enum.GetValues(typeof(PartType))) {
@@ -28,13 +28,17 @@ public class PartDesigner : MonoBehaviour {
         }
         createNewDropdown.value = 0;
         createNewDropdown.RefreshShownValue();
-        ToggleVisible(false);
-        manufacturerDisplay.SetActive(false);
         Component[] components = GetComponentsInChildren(typeof(IDisplaysPart));
-        for(int i = 0; i < components.Length; i++) {
+        for (int i = 0; i < components.Length; i++) {
             IDisplaysPart displaysPart = components[i] as IDisplaysPart;
             OnActivePartChangeEvent += displaysPart.DisplayPart;
         }
+    }
+
+    public void Start() {
+        ToggleVisible(false);
+        manufacturerDisplay.SetActive(false);
+
     }
 
     public void UpdatePartModel() {

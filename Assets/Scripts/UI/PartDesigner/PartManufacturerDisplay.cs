@@ -7,7 +7,7 @@ public class PartManufacturerDisplay : MonoBehaviour, IDisplaysPart
 {
     public LogoDisplay logoDisplay;
     public Part part;
-    private void Start() {
+    private void Awake() {
         if (logoDisplay == null) {
             logoDisplay = GetComponent<LogoDisplay>();
             if (logoDisplay == null) {

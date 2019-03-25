@@ -39,7 +39,10 @@ public abstract class Part: IDesigned, IHasCost {
     public PartType partType;
     public List<Tweakable> tweakables = new List<Tweakable>();
     public Sprite sprite;
-    public int weight = 1;
+
+    protected int maxWeight = 1;
+    public int Weight = 1;
+
     public event Action<Part> OnPartChangeEvent;
 
     private PartSize size;
@@ -63,6 +66,8 @@ public abstract class Part: IDesigned, IHasCost {
             UpdateProperties();
         }
     }
+
+    protected int maxNetPower = 1;
     protected int netPower = 0;
     public int NetPower {
         get { return netPower; }
@@ -73,6 +78,7 @@ public abstract class Part: IDesigned, IHasCost {
         }
     }
 
+    protected int maxCost = 1;
     protected int cost = 0;
     public int Cost{
         get{ return cost; }
@@ -85,6 +91,7 @@ public abstract class Part: IDesigned, IHasCost {
         set { isDesigned = value; }
     }
 
+    protected int maxDesignCost = 1;
     protected int designCost = 0;
     public int DesignCost {
         get { return designCost; }
@@ -120,19 +127,34 @@ public abstract class Part: IDesigned, IHasCost {
     }
 
     protected virtual void UpdateProperties() {
-        float weightedTweakableFactor = 0;
-        foreach(Tweakable t in tweakables) {
-            weightedTweakableFactor += t.GetDesignCostFactor();
-        }
-        weightedTweakableFactor = weightedTweakableFactor / tweakables.Count;
-        weight = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(3 * weightedTweakableFactor, 2)*Constants.sizeFactor[Size]));
-        designCost = Mathf.Max(1, Mathf.FloorToInt(Mathf.Pow(100 * weightedTweakableFactor, 1.5f))); ;
-        cost = Mathf.Max(100, weight * Constants.sizeFactor[Size]);
+        Weight = 0;
+        maxWeight = 0;
+        cost = 0;
+        maxCost = 0;
+        designCost = 0;
+        maxDesignCost = 0;
+        netPower = 0;
+        maxNetPower = 0;
 
+        foreach(Tweakable t in tweakables) {
+            if (t.automaticCalculation) {
+                Weight += t.weight;
+                maxWeight += t.maxWeight;
+
+                cost += t.cost;
+                maxCost += t.maxCost;
+
+                designCost += t.designCost;
+                maxDesignCost += t.maxDesignCost;
+
+                netPower += t.netPower;
+                maxNetPower += t.maxNetPower;
+            }
+        }
     }
 
     public virtual string GetStatisticsString() {
-        string statisticsString = "Weight:"+weight.ToString();
+        string statisticsString = "Weight:"+Weight.ToString();
         foreach(Tweakable t in tweakables) {
             statisticsString += " "+t.tweakableName + ":" + t.ValueString();
         }
@@ -141,6 +163,17 @@ public abstract class Part: IDesigned, IHasCost {
 
     public virtual string GetCostString() {
         return "Design Effort:"+DesignCost.ToString()+" Cost:"+Cost.ToString()+" credits" ;
+    }
+
+    public virtual Dictionary<string, float> GetNormalizedPerformanceValues() {
+        Dictionary<string, float> dict = new Dictionary<string, float>();
+        dict.Add("Weight", (float)Weight/maxWeight);
+        dict.Add("Cost", (float) Cost/maxCost);
+        dict.Add("Design Cost", (float)DesignCost / maxDesignCost);
+        dict.Add("Net Power", (float)NetPower / maxNetPower);
+
+
+        return dict;
     }
 
     public virtual void TweakableUpdate(Tweakable t) {

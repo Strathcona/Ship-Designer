@@ -43,7 +43,7 @@ public class SelectableFullPartDisplay : MonoBehaviour
         part = p;
         bgImage.color = Constants.PartColor[part.partType];
         nameText.text = part.GetDescriptionString();
-        weight.text = "Weight:" + part.weight.ToString();
+        weight.text = "Weight:" + part.Weight.ToString();
         tier.text = "T" + part.Tier.ToString();
         power.text = "Power" + part.NetPower.ToString();
         foreach(Tweakable t in part.tweakables) {

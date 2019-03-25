@@ -8,6 +8,7 @@ public class ScreenManager : MonoBehaviour, IInitialized {
     public static ScreenManager instance;
     public List<GameObject> canvases = new List<GameObject>();
     public GameObject currentCanvas;
+    public GameObject previousCanvas;
     public event Action OnScreenChangeEvent;
 
     public void Initialize() {
@@ -29,6 +30,7 @@ public class ScreenManager : MonoBehaviour, IInitialized {
     }
 
     public void DisplayCanvas(string canvasName) {
+        previousCanvas = currentCanvas;
         DisableAllCanvases();
         GameObject target = canvases.Find(i => i.name == canvasName);
         if (target != null) {
@@ -37,6 +39,15 @@ public class ScreenManager : MonoBehaviour, IInitialized {
             OnScreenChangeEvent?.Invoke();
         } else {
             Debug.LogError("Couldn't Find Canvas " + canvasName);
+        }
+    }
+
+    public void DisplayPreviousCanvas() {
+        if(previousCanvas != null && previousCanvas != currentCanvas) {
+            DisableAllCanvases();
+            previousCanvas.SetActive(true);
+            currentCanvas = previousCanvas;
+            OnScreenChangeEvent?.Invoke();
         }
     }
 

@@ -14,7 +14,6 @@ public class ChatWindow : MonoBehaviour, IConversationReader
     public List<GameObject> choiceButtons = new List<GameObject>();
     public float timer = 0.0f;
     public float timeTillResponse = 1.0f;
-    private static Dictionary<string, string> keywordReplacements;
     public Action OnConversationFinish;
 
     public void PlayConversationTree(ConversationTree tree, Action onConversationFinish) {
@@ -75,9 +74,6 @@ public class ChatWindow : MonoBehaviour, IConversationReader
     }
     
     public string KeywordReplace(string text) {
-        foreach(string key in keywordReplacements.Keys) {
-            text = text.Replace(key, keywordReplacements[key]);
-        }
         return text;
     }
     public void Clear() {

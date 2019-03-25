@@ -69,7 +69,7 @@ public class Ship {
     private void RecalculateTonnage() {
         tonnage = 0;
         foreach(Part p in parts) {
-            tonnage += p.weight;
+            tonnage += p.Weight;
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PartStatisticsDisplay : MonoBehaviour, IDisplaysPart {
     public Text text;
     public Part part;
-    private void Start() {
+    private void Awake() {
         if (text == null) {
             text = GetComponent<Text>();
             if (text == null) {

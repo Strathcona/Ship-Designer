@@ -10,6 +10,7 @@ public class Tweakable {
     public TweakableType tweakableType;
     public event Action<Tweakable> OnTweakableChangedEvent; //update the part when this tweakable changes
     public string unit = "";
+    public string tweakableName;
 
     private int value;
     public int Value {
@@ -19,33 +20,58 @@ public class Tweakable {
             OnValueChanged();
         }
     }
+    public float NormalizedValue {
+        get {
+            if (!ReverseScaling) {
+                if(MaxValue == 0) {
+                    return 0.0f;
+                }
+                return (float) value / MaxValue;
+            } else {
+                return  1 - ((float) value / MaxValue);
+            }
+        }
+    }
+
+    public bool automaticCalculation = true;
+
+    public int maxWeight = 10;
+    public int maxCost = 10;
+    public int maxDesignCost = 10;
+    public int maxNetPower = 10;
+
+    public int weight { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * maxWeight)); } }
+    public int cost { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * maxCost)); } }
+    public int designCost { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * maxDesignCost)); } }
+    public int netPower { get { return Mathf.RoundToInt(NormalizedValue * maxNetPower); } }
+
+
     private int scaleFactor = 1;
     public int ScaleFactor {
         get { return scaleFactor; }
         set {
             scaleFactor = value;
-            Debug.Log(tweakableName + " scale factor changed to " + scaleFactor);
             OnValueChanged();
         }
     }
+    public bool scaleMin = true; //do we scale the min based on the scale factor?
+    public bool scaleMax = true; //do we scale the max based on the scale factor?
+
     private int baseMinValue { get { return ResearchManager.instance.GetResearchValue(GetResearchManagerKey("MinValue")); } }
     private int baseMaxValue { get { return ResearchManager.instance.GetResearchValue(GetResearchManagerKey("MaxValue")); } }
-    public int MinValue { get { return baseMinValue * scaleFactor; } }
-    public int MaxValue { get { return baseMaxValue * scaleFactor; } }
-    
+    public int MinValue { get { if (scaleMin) { return baseMinValue * scaleFactor; } else { return baseMinValue; } } }
+    public int MaxValue { get { if (scaleMax) { return baseMaxValue * scaleFactor; } else { return baseMaxValue; } } }
+
     public List<string> dropdownLabels = new List<string>();
-    public string tweakableName;
-    private bool reverseScaling;
+    private bool reverseScaling = false;
     public bool ReverseScaling {
         get { return reverseScaling; }
         set { if(value == true) {
                 reverseScaling = true;
                 Value = MaxValue;
-                OnValueChanged();
             } else {
                 reverseScaling = false;
                 Value = MinValue;
-                OnValueChanged();
             }
         }
     }
@@ -76,14 +102,6 @@ public class Tweakable {
         t.value = t.MinValue;
         t.OnTweakableChangedEvent += t.part.TweakableUpdate;
         return t;
-    }
-
-    public float GetDesignCostFactor() {
-        if (ReverseScaling) {
-            return (float)MinValue / Value;
-        } else {
-            return (float)Value / MaxValue;
-        }
     }
 
     private string GetResearchManagerKey(string fieldName) {

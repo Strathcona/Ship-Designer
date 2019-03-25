@@ -19,30 +19,32 @@ public class TimeWarpControls : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKey(KeyCode.Alpha1)) {
-            TimeManager.instance.SetWarp(1);
-            timeWarpText.text = "▶";
-            pauseImage.SetActive(false);
-        }
-        if (Input.GetKey(KeyCode.Alpha2)) {
-            TimeManager.instance.SetWarp(2);
-            timeWarpText.text = "▶▶";
-            pauseImage.SetActive(false);
-        }
-        if (Input.GetKey(KeyCode.Alpha3)) {
-            TimeManager.instance.SetWarp(3);
-            timeWarpText.text = "▶▶▶";
-            pauseImage.SetActive(false);
-        }
-        if (Input.GetKey(KeyCode.Alpha4)) {
-            TimeManager.instance.SetWarp(4);
-            timeWarpText.text = "▶▶▶▶";
-            pauseImage.SetActive(false);
-        }
-        if (Input.GetKey(KeyCode.BackQuote)) {
-            TimeManager.instance.SetWarp(0);
-            timeWarpText.text = "❚ ❚";
-            pauseImage.SetActive(true);
+        if(GlobalFlags.fieldFocused != true) {
+            if (Input.GetKey(KeyCode.Alpha1)) {
+                TimeManager.instance.SetWarp(1);
+                timeWarpText.text = "▶";
+                pauseImage.SetActive(false);
+            }
+            if (Input.GetKey(KeyCode.Alpha2)) {
+                TimeManager.instance.SetWarp(2);
+                timeWarpText.text = "▶▶";
+                pauseImage.SetActive(false);
+            }
+            if (Input.GetKey(KeyCode.Alpha3)) {
+                TimeManager.instance.SetWarp(3);
+                timeWarpText.text = "▶▶▶";
+                pauseImage.SetActive(false);
+            }
+            if (Input.GetKey(KeyCode.Alpha4)) {
+                TimeManager.instance.SetWarp(4);
+                timeWarpText.text = "▶▶▶▶";
+                pauseImage.SetActive(false);
+            }
+            if (Input.GetKey(KeyCode.BackQuote)) {
+                TimeManager.instance.SetWarp(0);
+                timeWarpText.text = "❚ ❚";
+                pauseImage.SetActive(true);
+            }
         }
     }
 

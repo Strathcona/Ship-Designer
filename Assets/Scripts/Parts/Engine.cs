@@ -39,6 +39,8 @@ public class Engine : Part {
             "Energy Efficiency");
         energyEfficiency.unit = "%";
 
+        maxThrust.scaleMin = false;
+        energyEfficiency.scaleMin = false;
         tweakables.Add(agility);
         tweakables.Add(averageThrust);
         tweakables.Add(maxThrust);
