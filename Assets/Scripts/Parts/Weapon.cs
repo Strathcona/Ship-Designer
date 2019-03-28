@@ -10,15 +10,11 @@ public class Weapon : Part {
     public Tweakable turrets;
     public Tweakable weaponType;
 
-    public int Damage {
-        get { return caliber.Value * Mathf.Max(1, turrets.Value); }
-    }
-    public int DamagePerSecond {
-        get { return caliber.Value / reload.Value * Mathf.Max(1, turrets.Value); }
-    }
-    public int MaxDamagePerSecond {
-        get { return caliber.MaxValue / reload.MinValue * Mathf.Max(1, turrets.Value); }
-    }
+    public int Damage { get { return caliber.Value * turretfactor; } }
+    public int MaxDamage { get { return caliber.MaxValue * turretfactor; } }
+    public int DamagePerSecond { get { return caliber.Value / reload.Value * turretfactor; } }
+    public int MaxDamagePerSecond { get { return caliber.MaxValue / reload.MinValue * turretfactor; } }
+    private int turretfactor = 1;
     public Weapon() {
         partType = PartType.Weapon;
         InitializeTweakables();
@@ -52,9 +48,10 @@ public class Weapon : Part {
         tweakables.Add(caliber);
         tweakables.Add(reload);
 
-        caliber.maxCost = 25;
+        caliber.MaxCost = 25;
+        caliber.MaxWeight = 30;
         reload.ReverseScaling = true; //because reloading faster is worth more;
-        reload.maxNetPower = 25;
+        reload.MaxNetPower = 25;
         turrets.automaticCalculation = false;
         turrets.dropdownLabels.Add("Centerline Mounted");
         turrets.dropdownLabels.Add("Single Turret");
@@ -105,14 +102,20 @@ public class Weapon : Part {
 
     protected override void UpdateProperties() {
         base.UpdateProperties();
-        int turretfactor = Mathf.Max(1, turrets.Value);
-        Weight = Mathf.Max(1, Mathf.FloorToInt(caliber.Value / reload.Value)*turretfactor);
+        turretfactor = Mathf.Max(1, turrets.Value);
+        cost = cost * turretfactor;
+        maxCost = maxCost * turretfactor;
+        designCost = designCost * turretfactor;
+        maxDesignCost = maxDesignCost * turretfactor;
+        Weight = Weight * turretfactor;
+        maxWeight = maxWeight * turretfactor;
     }
 
     public override Dictionary<string, float> GetNormalizedPerformanceValues() {
         Dictionary<string, float> dict = base.GetNormalizedPerformanceValues();
+        dict.Add("Damage", (float) Damage/MaxDamage);
         dict.Add("DPS", (float) DamagePerSecond/MaxDamagePerSecond);
-
+        
        return dict;
     }
 

@@ -26,24 +26,39 @@ public class Tweakable {
                 if(MaxValue == 0) {
                     return 0.0f;
                 }
-                return (float) value / MaxValue;
+                return (float) (value - MinValue) / (MaxValue - MinValue);
             } else {
-                return  1 - ((float) value / MaxValue);
+                return  1 - ((float) (value - MinValue) / (MaxValue - MinValue));
             }
         }
     }
 
-    public bool automaticCalculation = true;
+    public bool automaticCalculation = true; //if this tweakable's values should be used in Part's calculation of basic performance values
 
-    public int maxWeight = 10;
-    public int maxCost = 10;
-    public int maxDesignCost = 10;
-    public int maxNetPower = 10;
-
-    public int weight { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * maxWeight)); } }
-    public int cost { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * maxCost)); } }
-    public int designCost { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * maxDesignCost)); } }
-    public int netPower { get { return Mathf.RoundToInt(NormalizedValue * maxNetPower); } }
+    private int maxWeight = 10;
+    public int MaxWeight {
+        get { return maxWeight * scaleFactor; }
+        set { maxWeight = value; }
+    }
+    private int maxCost = 10;
+    public int MaxCost {
+        get { return maxCost * scaleFactor; }
+        set { maxCost = value; }
+    }
+    private int maxDesignCost = 10;
+    public int MaxDesignCost {
+        get { return maxDesignCost * scaleFactor; }
+        set { maxDesignCost = value; }
+    }
+    private int maxNetPower = 10;
+    public int MaxNetPower {
+        get { return maxNetPower * scaleFactor; }
+        set { maxNetPower = value; }
+    }
+    public int weight { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * MaxWeight * scaleFactor)); } }
+    public int cost { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * MaxCost * scaleFactor)); } }
+    public int designCost { get { return Mathf.Max(1, Mathf.RoundToInt(NormalizedValue * MaxDesignCost * scaleFactor)); } }
+    public int netPower { get { return Mathf.RoundToInt(NormalizedValue * MaxNetPower * scaleFactor); } }
 
 
     private int scaleFactor = 1;

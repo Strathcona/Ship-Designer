@@ -1,0 +1,3 @@
+lightweight,lightweight
+middleweight,intermediate
+heavyweight,heavyweight

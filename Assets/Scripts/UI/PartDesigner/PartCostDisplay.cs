@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartCostDisplay : MonoBehaviour
+public class PartCostDisplay : MonoBehaviour, IDisplaysPart
 {
     public Text text;
     public Part part;

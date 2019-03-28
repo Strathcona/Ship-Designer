@@ -71,7 +71,7 @@ public static class SpriteLoader {
         }
     }
 
-        public static Sprite GetNPCSprite(string name) {
+    public static Sprite GetNPCSprite(string name) {
         if (npcSprites.ContainsKey(name)) {
             List<Sprite> sprites = npcSprites[name];
             Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];
@@ -81,6 +81,15 @@ public static class SpriteLoader {
             return null;
         }
 
+    }
+
+    public static List<Sprite> GetAllNPCSprites(string name) {
+        if (symbolParts.ContainsKey(name)) {
+            return symbolParts[name];
+        } else {
+            Debug.LogError("Couldn't find Symbol sprite " + name);
+            return null;
+        }
     }
 
     public static Sprite GetPartSprite(string name) {

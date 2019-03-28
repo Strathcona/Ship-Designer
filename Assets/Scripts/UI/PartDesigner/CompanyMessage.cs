@@ -9,7 +9,7 @@ public class CompanyMessage : MonoBehaviour {
     public Text companyName;
     public Text companyType;
     public Text companyMessage;
-    public LogoDisplay logoDisplay;
+    public LayeredColoredSpriteDisplay logoDisplay;
     public Button button;
     public Button bottomButton;
     public Text bottomButtonText;

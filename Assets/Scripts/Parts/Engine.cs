@@ -10,6 +10,14 @@ public class Engine : Part {
     public Tweakable maxThrust;
     public Tweakable energyEfficiency;
 
+    public override int NetPower {
+        get { return Mathf.CeilToInt(netPower / ((float)energyEfficiency.Value / 100)); }
+        set {
+            netPower = value;
+            base.OnPartChanged();
+        }
+    }
+
 
     public Engine() {
         partType = PartType.Engine;
@@ -40,6 +48,10 @@ public class Engine : Part {
         energyEfficiency.unit = "%";
 
         maxThrust.scaleMin = false;
+        maxThrust.MaxCost = 20;
+        energyEfficiency.MaxDesignCost = 15;
+        energyEfficiency.MaxCost = 15;
+        energyEfficiency.MaxNetPower = 1;
         energyEfficiency.scaleMin = false;
         tweakables.Add(agility);
         tweakables.Add(averageThrust);

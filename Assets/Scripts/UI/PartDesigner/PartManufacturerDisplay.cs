@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class PartManufacturerDisplay : MonoBehaviour, IDisplaysPart
 {
-    public LogoDisplay logoDisplay;
+    public LayeredColoredSpriteDisplay logoDisplay;
     public Part part;
     private void Awake() {
         if (logoDisplay == null) {
-            logoDisplay = GetComponent<LogoDisplay>();
+            logoDisplay = GetComponent<LayeredColoredSpriteDisplay>();
             if (logoDisplay == null) {
                 Debug.LogError("Part Manufacturer Display couldn't find LogoDisplay on " + gameObject.name);
             }

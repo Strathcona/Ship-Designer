@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class LogoGenerator: MonoBehaviour {
-    private Logo logo;
-    public Logo Logo {
+    private LayeredColoredSprite logo;
+    public LayeredColoredSprite Logo {
         get { return logo; }
     }
     public Button cycleLayer1;
@@ -23,7 +23,7 @@ public class LogoGenerator: MonoBehaviour {
     private int layer3Index = 0;
     private List<Sprite> layer3Sprites = new List<Sprite>();
 
-    public LogoDisplay logoDisplay;
+    public LayeredColoredSpriteDisplay logoDisplay;
 
     private int color1Index = 0;
     private int color2Index = 0;
@@ -40,7 +40,7 @@ public class LogoGenerator: MonoBehaviour {
     };
 
     private void Start() {
-        logo = new Logo();
+        logo = new LayeredColoredSprite(3);
         logoDisplay.DisplayLogo(logo);
         layer1Sprites = SpriteLoader.GetAllSymbolParts("Back");
         layer2Sprites = SpriteLoader.GetAllSymbolParts("Mid");
@@ -68,7 +68,7 @@ public class LogoGenerator: MonoBehaviour {
             } else {
                 layer1Index += 1;
             }
-            logo.Layer1 = layer1Sprites[layer1Index];
+            logo.SetSprite(0, layer1Sprites[layer1Index]);
             cycleLayer1.GetComponentInChildren<Text>().text = layer1Index.ToString();
         } else if (layer == 2) {
             if (layer2Index >= layer2Sprites.Count-1) {
@@ -76,7 +76,7 @@ public class LogoGenerator: MonoBehaviour {
             } else {
                 layer2Index += 1;
             }
-            logo.Layer2 = layer2Sprites[layer2Index];
+            logo.SetSprite(1, layer2Sprites[layer2Index]);
             cycleLayer2.GetComponentInChildren<Text>().text = layer2Index.ToString();
         }
         if (layer == 3) {
@@ -85,7 +85,7 @@ public class LogoGenerator: MonoBehaviour {
             } else {
                 layer3Index += 1;
             }
-            logo.Layer3 = layer3Sprites[layer3Index];
+            logo.SetSprite(2, layer3Sprites[layer3Index]);
             cycleLayer3.GetComponentInChildren<Text>().text = layer3Index.ToString();
         }
     }
@@ -97,24 +97,24 @@ public class LogoGenerator: MonoBehaviour {
             } else {
                 color1Index += 1;
             }
-            logo.Color1 = layerColors[color1Index];
-            cycleColor1.GetComponent<Image>().color = logo.Color1;
+            logo.SetColor(0, layerColors[color1Index]);
+            cycleColor1.GetComponent<Image>().color = logo.Colors[0];
         } else if (layer == 2) {
             if (color2Index >= layerColors.Count-1) {
                 color2Index = 0;
             } else {
                 color2Index += 1;
             }
-            logo.Color2 = layerColors[color2Index];
-            cycleColor2.GetComponent<Image>().color = logo.Color2;
+            logo.SetColor(0, layerColors[color2Index]);
+            cycleColor2.GetComponent<Image>().color = logo.Colors[1];
         } else if (layer == 3) {
             if (color3Index >= layerColors.Count-1) {
                 color3Index = 0;
             } else {
                 color3Index += 1;
             }
-            logo.Color3 = layerColors[color3Index];
-            cycleColor3.GetComponent<Image>().color = logo.Color3;
+            logo.SetColor(0, layerColors[color3Index]);
+            cycleColor3.GetComponent<Image>().color = logo.Colors[2];
         }
     }
 }

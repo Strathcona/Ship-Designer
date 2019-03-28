@@ -9,6 +9,12 @@ public class Reactor : Part{
     public Tweakable averagePower;
     public Tweakable maxPower;
 
+    public override int NetPower {
+        get { return averagePower.Value; }
+        set => base.NetPower = value;
+    }
+    protected override int MaxNetPower { get { return averagePower.MaxValue; } }
+
     public Reactor() {
         partType = PartType.Reactor;
         InitializeTweakables();

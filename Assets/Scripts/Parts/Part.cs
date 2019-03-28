@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using GameConstructs;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using GameConstructs;
-using System;
 
 [System.Serializable]
 public abstract class Part: IDesigned, IHasCost {
@@ -11,14 +10,14 @@ public abstract class Part: IDesigned, IHasCost {
         get { return descriptionName; }
         set {
             descriptionName = value;
-            OnPartChangeEvent?.Invoke(this);
+            OnPartChanged();
         }
     }
     private string modelName = ""; //Name of the make of the part like 'Devastator MkII'
     public string ModelName {
         get { return modelName; }
         set { modelName = value;
-            OnPartChangeEvent?.Invoke(this);
+            OnPartChanged();
         }
     }
 
@@ -28,7 +27,7 @@ public abstract class Part: IDesigned, IHasCost {
         set {
             manufacturer = value;
             OnManufactuerChange?.Invoke();
-            OnPartChangeEvent?.Invoke(this);
+            OnPartChanged();
         }
     }
 
@@ -50,11 +49,10 @@ public abstract class Part: IDesigned, IHasCost {
         get { return size; }
         set {
             size = value;
-            OnPartChangeEvent?.Invoke(this);
             foreach(Tweakable t in tweakables) {
                 t.ScaleFactor = Constants.sizeFactor[size];
             }
-            UpdateProperties();
+            OnPartChanged();
         }
     }
     protected int tier = 0;
@@ -62,19 +60,22 @@ public abstract class Part: IDesigned, IHasCost {
         get { return tier; }
         set {
             tier = value;
-            OnPartChangeEvent?.Invoke(this);
-            UpdateProperties();
+            OnPartChanged();
         }
     }
 
-    protected int maxNetPower = 1;
+    protected int maxNetPower;
+
+    protected virtual int MaxNetPower {
+        get { return maxNetPower; }
+    }
+    
     protected int netPower = 0;
-    public int NetPower {
+    public virtual int NetPower {
         get { return netPower; }
         set {
             netPower = value;
-            OnPartChangeEvent?.Invoke(this);
-            UpdateProperties();
+            OnPartChanged();
         }
     }
 
@@ -97,7 +98,6 @@ public abstract class Part: IDesigned, IHasCost {
         get { return designCost; }
         set { designCost = value; }
     }
-
 
     protected float designProgress = 0;
     public float DesignProgress {
@@ -126,6 +126,11 @@ public abstract class Part: IDesigned, IHasCost {
         }
     }
 
+    protected virtual void OnPartChanged() {
+        UpdateProperties();
+        OnPartChangeEvent?.Invoke(this);
+    }
+
     protected virtual void UpdateProperties() {
         Weight = 0;
         maxWeight = 0;
@@ -135,22 +140,31 @@ public abstract class Part: IDesigned, IHasCost {
         maxDesignCost = 0;
         netPower = 0;
         maxNetPower = 0;
-
+        float tweakableFactor = 0;
         foreach(Tweakable t in tweakables) {
             if (t.automaticCalculation) {
                 Weight += t.weight;
-                maxWeight += t.maxWeight;
+                maxWeight += t.MaxWeight;
 
                 cost += t.cost;
-                maxCost += t.maxCost;
+                maxCost += t.MaxCost;
 
                 designCost += t.designCost;
-                maxDesignCost += t.maxDesignCost;
+                maxDesignCost += t.MaxDesignCost;
 
                 netPower += t.netPower;
-                maxNetPower += t.maxNetPower;
+                maxNetPower += t.MaxNetPower;
+                tweakableFactor += t.NormalizedValue;
             }
         }
+        tweakableFactor = tweakableFactor / tweakables.Count;
+        
+        Weight = Mathf.CeilToInt(Mathf.Pow(Weight, 1 + tweakableFactor));
+        maxWeight = Mathf.CeilToInt(Mathf.Pow(maxWeight, 1.5f));
+        designCost = Mathf.CeilToInt(Mathf.Pow(designCost, 1 + tweakableFactor));
+        maxDesignCost = Mathf.CeilToInt(Mathf.Pow(maxDesignCost, 1.5f));
+        cost = Mathf.CeilToInt(Mathf.Pow(cost, 1 + tweakableFactor));
+        maxCost = Mathf.CeilToInt(Mathf.Pow(maxCost, 1.5f));
     }
 
     public virtual string GetStatisticsString() {
@@ -162,7 +176,12 @@ public abstract class Part: IDesigned, IHasCost {
     }
 
     public virtual string GetCostString() {
-        return "Design Effort:"+DesignCost.ToString()+" Cost:"+Cost.ToString()+" credits" ;
+        return "Design Effort:<color=#33EE33>"+DesignCost.ToString()+"</color> Cost:<color=#EE3333>"+Cost.ToString()+"</color> credits" ;
+    }
+
+    public virtual string GetFullPartSummary() {
+        string s = "";
+        return s;
     }
 
     public virtual Dictionary<string, float> GetNormalizedPerformanceValues() {

@@ -7,7 +7,7 @@ using GameConstructs;
 public class Company : IHasFunds, IHasOwner{
     public string name;
     public string companyType;
-    public Logo logo;
+    public LayeredColoredSprite logo;
     private Player owner;
     public Player Owner {
         get { return owner; }

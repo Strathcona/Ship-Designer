@@ -31,6 +31,9 @@ public class FireControl : Part{
         tweakables.Add(tracking);
         tweakables.Add(accuracy);
         tweakables.Add(range);
+        tracking.MaxCost = 20;
+        accuracy.MaxDesignCost = 20;
+        range.MaxWeight = 30;
     }
 
     public static FireControl GetRandomFireControl() {

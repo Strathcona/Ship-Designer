@@ -26,8 +26,8 @@ public class Player: IHasFunds {
             OnPlayerDetailsChangeEvent?.Invoke(this);
         }
     }
-    private Portrait portrait;
-    public Portrait Portrait {
+    private LayeredColoredSprite portrait;
+    public LayeredColoredSprite Portrait {
         get { return portrait; }
         set {
             portrait = value;

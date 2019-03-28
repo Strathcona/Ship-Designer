@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CompanyListPanel : MonoBehaviour
 {
-    public LogoDisplay logoDisplay;
+    public LayeredColoredSpriteDisplay logoDisplay;
     public Text companyName;
     public Button button;
     public Company company;

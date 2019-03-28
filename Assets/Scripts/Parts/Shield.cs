@@ -34,6 +34,9 @@ public class Shield : Part {
         tweakables.Add(strength);
         tweakables.Add(rechargeTime);
 
+        strength.MaxNetPower = 35;
+        rechargeTime.MaxNetPower = 25;
+        type.automaticCalculation = false;
         type.dropdownLabels.Add("Shield Generator");
         type.dropdownLabels.Add("Deflector Shield");
     }
