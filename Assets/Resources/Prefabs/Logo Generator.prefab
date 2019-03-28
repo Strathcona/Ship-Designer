@@ -1365,7 +1365,7 @@ PrefabInstance:
     - target: {fileID: 3402985239412777020, guid: 269edb88f922f0a46a04ea8d6d5d9f4e,
         type: 3}
       propertyPath: m_Name
-      value: Layer1
+      value: Layered Colored Sprite Display
       objectReference: {fileID: 0}
     - target: {fileID: 3402985239412777011, guid: 269edb88f922f0a46a04ea8d6d5d9f4e,
         type: 3}

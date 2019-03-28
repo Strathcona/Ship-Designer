@@ -24,7 +24,7 @@ public class CompanyMessage : MonoBehaviour {
         company = c;
         companyName.text = company.name;
         companyType.text = company.companyType;
-        logoDisplay.DisplayLogo(company.logo);
+        logoDisplay.DisplayLayeredColoredSprite(company.logo);
     }
 
     public void SetSelected(bool selected) {

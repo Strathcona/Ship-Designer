@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerSetup : MonoBehaviour{
     public InputField playerNameInput;
+    public PortraitGenerator portraitGenerator;
     public Button nextButton;
     public HumanPlayer player;
 
@@ -17,6 +18,7 @@ public class PlayerSetup : MonoBehaviour{
 
     public void SetPlayerName(string input) {
         player.FirstName = input;
+        player.Portrait = portraitGenerator.Portrait;
         if (input != "") {
             nextButton.interactable = true;
         } else {

@@ -12,7 +12,7 @@ public class CompanyListPanel : MonoBehaviour
 
     public void DisplayCompany(Company c) {
         company = c;
-        logoDisplay.DisplayLogo(company.logo);
+        logoDisplay.DisplayLayeredColoredSprite(company.logo);
         companyName.text = company.name;
     }
 }

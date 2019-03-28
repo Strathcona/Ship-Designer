@@ -14,6 +14,7 @@ public class PortraitGenerator: MonoBehaviour {
     private int layer1Index = 0;
     private int color1Index = 0;
     public List<Sprite> layer1Sprites = new List<Sprite>();
+
     public List<Color> layerColors = new List<Color>() {
         Color.red,
         Color.magenta,
@@ -22,12 +23,15 @@ public class PortraitGenerator: MonoBehaviour {
         Color.cyan,
         Color.blue,
         Color.white,
-        Color.black
+        Color.grey
     };
 
     private void Start() {
         portrait = new LayeredColoredSprite(1);
+        portraitDisplay.DisplayLayeredColoredSprite(portrait);
+        Debug.Log(layer1Sprites.Count);
         layer1Sprites = SpriteLoader.GetAllNPCSprites("Generic");
+        Debug.Log(layer1Sprites.Count);
         layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
         color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
         CycleLayer();

@@ -14,10 +14,12 @@ public class LayeredColoredSpriteDisplay: MonoBehaviour {
         imagePool = new GameObjectPool(imagePrefab, root);
     }
 
-    public void DisplayLogo(LayeredColoredSprite layeredColoredSprite) {
+    public void DisplayLayeredColoredSprite(LayeredColoredSprite layeredColoredSprite) {
         imagePool.ReleaseAll();
         if (layeredColoredSprite != null) {
-            this.layeredColoredSprite.OnIHasLayeredSpriteChangeEvent -= RefreshDisplay;
+            if(this.layeredColoredSprite != null) {
+                this.layeredColoredSprite.OnIHasLayeredSpriteChangeEvent -= RefreshDisplay;
+            }
             this.layeredColoredSprite = layeredColoredSprite;
             RefreshDisplay(this.layeredColoredSprite);
             this.layeredColoredSprite.OnIHasLayeredSpriteChangeEvent += RefreshDisplay;
@@ -25,6 +27,7 @@ public class LayeredColoredSpriteDisplay: MonoBehaviour {
     }
 
     public void RefreshDisplay(IHasLayeredSprites layeredColoredSprite) {
+        imagePool.ReleaseAll();
         for (int i = 0; i < layeredColoredSprite.Sprites.Length; i++) {
             Image image = imagePool.GetGameObject().GetComponent<Image>();
             image.sprite = layeredColoredSprite.Sprites[i];

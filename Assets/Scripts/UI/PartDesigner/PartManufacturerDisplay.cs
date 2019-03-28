@@ -24,7 +24,7 @@ public class PartManufacturerDisplay : MonoBehaviour, IDisplaysPart
         if(this.part != null) {
             if(this.part.Manufacturer != null) {
                 Debug.Log(part.Manufacturer.logo);
-                logoDisplay.DisplayLogo(part.Manufacturer.logo);
+                logoDisplay.DisplayLayeredColoredSprite(part.Manufacturer.logo);
             }
             this.part.OnManufactuerChange += UpdateDisplay;
         }
@@ -33,7 +33,7 @@ public class PartManufacturerDisplay : MonoBehaviour, IDisplaysPart
     public void UpdateDisplay() {
         if (part != null) {
             if (part.Manufacturer != null) {
-                logoDisplay.DisplayLogo(part.Manufacturer.logo);
+                logoDisplay.DisplayLayeredColoredSprite(part.Manufacturer.logo);
             }
         }
     }

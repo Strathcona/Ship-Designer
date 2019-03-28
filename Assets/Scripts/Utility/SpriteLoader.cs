@@ -84,10 +84,10 @@ public static class SpriteLoader {
     }
 
     public static List<Sprite> GetAllNPCSprites(string name) {
-        if (symbolParts.ContainsKey(name)) {
-            return symbolParts[name];
+        if (npcSprites.ContainsKey(name)) {
+            return npcSprites[name];
         } else {
-            Debug.LogError("Couldn't find Symbol sprite " + name);
+            Debug.LogError("Couldn't find NPC sprites " + name);
             return null;
         }
     }

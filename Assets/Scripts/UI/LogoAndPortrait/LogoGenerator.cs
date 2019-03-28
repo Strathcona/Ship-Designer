@@ -41,7 +41,7 @@ public class LogoGenerator: MonoBehaviour {
 
     private void Start() {
         logo = new LayeredColoredSprite(3);
-        logoDisplay.DisplayLogo(logo);
+        logoDisplay.DisplayLayeredColoredSprite(logo);
         layer1Sprites = SpriteLoader.GetAllSymbolParts("Back");
         layer2Sprites = SpriteLoader.GetAllSymbolParts("Mid");
         layer3Sprites = SpriteLoader.GetAllSymbolParts("Front");
@@ -105,7 +105,7 @@ public class LogoGenerator: MonoBehaviour {
             } else {
                 color2Index += 1;
             }
-            logo.SetColor(0, layerColors[color2Index]);
+            logo.SetColor(1, layerColors[color2Index]);
             cycleColor2.GetComponent<Image>().color = logo.Colors[1];
         } else if (layer == 3) {
             if (color3Index >= layerColors.Count-1) {
@@ -113,7 +113,7 @@ public class LogoGenerator: MonoBehaviour {
             } else {
                 color3Index += 1;
             }
-            logo.SetColor(0, layerColors[color3Index]);
+            logo.SetColor(2, layerColors[color3Index]);
             cycleColor3.GetComponent<Image>().color = logo.Colors[2];
         }
     }
