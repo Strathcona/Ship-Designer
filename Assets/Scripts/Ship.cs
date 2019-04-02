@@ -133,8 +133,6 @@ public class Ship {
 
     public static Ship MakeUpARandomShip(){
         Ship s = new Ship();
-        s.shipName = Constants.GetRandomShipName();
-        s.className = Constants.GetRandomShipName();
         return s;
     }
 }

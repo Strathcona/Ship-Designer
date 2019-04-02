@@ -2,23 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameConstructs;
+using System;
 
 public class PlayerSetup : MonoBehaviour{
-    public InputField playerNameInput;
+    public InputField firstName;
+    public InputField lastName;
+    public Dropdown title;
     public PortraitGenerator portraitGenerator;
     public Button nextButton;
     public HumanPlayer player;
 
-    private void Start() {
+    private void Awake() {
         player = PlayerManager.instance.activePlayer;
         player.Funds += 2000;
-        playerNameInput.onValueChanged.AddListener(SetPlayerName);
+        title.ClearOptions();
+        title.options.Add(new Dropdown.OptionData("<i>None</i>"));
+        foreach (string s in StringLoader.GetAllStrings("titles")) {
+            title.options.Add(new Dropdown.OptionData(s));
+        }
+        title.value = 0;
+        title.RefreshShownValue();
+    }
+
+    private void Start() {
+        firstName.onValueChanged.AddListener(SetPlayerFirstName);
+        lastName.onValueChanged.AddListener(SetPlayerLastName);
+        firstName.text = StringLoader.GetAString("firstNamesMasculine");
+        lastName.text = StringLoader.GetAString("lastNames");
+        player.Portrait = portraitGenerator.Portrait;
         nextButton.interactable = false;
     }
 
-    public void SetPlayerName(string input) {
+    public void SetPlayerFirstName(string input) {
         player.FirstName = input;
-        player.Portrait = portraitGenerator.Portrait;
+        if (input != "") {
+            nextButton.interactable = true;
+        } else {
+            nextButton.interactable = false;
+        }
+    }
+
+    public void SetPlayerLastName(string input) {
+        player.LastName = input;
         if (input != "") {
             nextButton.interactable = true;
         } else {

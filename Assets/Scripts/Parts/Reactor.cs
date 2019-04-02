@@ -41,7 +41,7 @@ public class Reactor : Part{
         p.tier = 1;
         p.Size = PartSize.S;
         p.DescriptionName = "Reactor";
-        p.ModelName = Constants.GetRandomReactorName();
+        p.ModelName = StringLoader.GetAString("reactorNames");
         p.averagePower.Value = Random.Range(20, 100);
         p.maxPower.Value = Random.Range(100, 120);
         return p;

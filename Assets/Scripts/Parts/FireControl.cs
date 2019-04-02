@@ -45,7 +45,7 @@ public class FireControl : Part{
         p.Size = PartSize.S;
         p.range.Value = Random.Range(1, 20);
         p.DescriptionName = "Fire Control System";
-        p.ModelName = Constants.GetRandomFireControlModelName();
+        p.ModelName = StringLoader.GetAString("fireControlNames");
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;

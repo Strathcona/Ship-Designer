@@ -128,7 +128,7 @@ public class Weapon : Part {
     p.caliber.Value = Random.Range(2, 20);
     p.turrets.Value = Random.Range(0, 5);
     p.reload.Value = Random.Range(2, 20);
-    p.ModelName = Constants.GetRandomWeaponModelName();
+    p.ModelName = StringLoader.GetAString("weaponNames");
     Debug.Log(p.GetDescriptionString());
     Debug.Log(p.GetStatisticsString());
     return p;

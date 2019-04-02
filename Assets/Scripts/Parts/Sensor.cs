@@ -36,7 +36,7 @@ public class Sensor : Part{
         p.Size = PartSize.S;
         p.sensorType = SensorType.LowEnergy;
         p.DescriptionName = "Low Energy Sensor";
-        p.ModelName = Constants.GetRandomSensorModelName();
+        p.ModelName = StringLoader.GetAString("sensorNames");
         p.range.Value = UnityEngine.Random.Range(2, 20);
         p.resolution.Value = UnityEngine.Random.Range(2, 20);
         return p;

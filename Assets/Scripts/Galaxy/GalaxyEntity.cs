@@ -93,7 +93,7 @@ public class GalaxyEntity {
     }
 
     public static GalaxyEntity GetRandomGalaxyEntity(SectorData _capitalSector) {
-        string[] entityStrings = Constants.GetRandomEntityStrings();
+        string[] entityStrings = StringLoader.GetAllStrings("entityStrings");
         GalaxyEntity g = new GalaxyEntity();
         g.fleetDoctrine = (EntityFleetDoctrine) UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
         g.capitalSector = _capitalSector;

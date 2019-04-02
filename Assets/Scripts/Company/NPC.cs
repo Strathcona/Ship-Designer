@@ -18,8 +18,12 @@ public class NPC {
         } else {
             feminine = false;
         }
-        firstName = Constants.GetRandomFirstName(feminine);
-        lastName = Constants.GetRandomLastName();
+        if(Random.Range(0,2) >= 1) {
+            firstName = StringLoader.GetAString("firstNamesMasculine");
+        } else {
+            firstName = StringLoader.GetAString("firstNamesFeminine");
+        }
+        lastName = StringLoader.GetAString("lastNames");
         sprite = SpriteLoader.GetNPCSprite("Generic");
         spriteColor = Constants.GetRandomPastelColor();
     }

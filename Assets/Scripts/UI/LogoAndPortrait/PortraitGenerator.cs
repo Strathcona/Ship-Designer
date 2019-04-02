@@ -26,12 +26,10 @@ public class PortraitGenerator: MonoBehaviour {
         Color.grey
     };
 
-    private void Start() {
+    private void Awake() {
         portrait = new LayeredColoredSprite(1);
         portraitDisplay.DisplayLayeredColoredSprite(portrait);
-        Debug.Log(layer1Sprites.Count);
         layer1Sprites = SpriteLoader.GetAllNPCSprites("Generic");
-        Debug.Log(layer1Sprites.Count);
         layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
         color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
         CycleLayer();

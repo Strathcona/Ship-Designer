@@ -67,7 +67,7 @@ public class Engine : Part {
         p.Size = PartSize.S;
         p.averageThrust.Value = Random.Range(1, 20);
         p.DescriptionName = Constants.GetPartDescriptionName(p);
-        p.ModelName = Constants.GetRandomEngineModelName();
+        p.ModelName = StringLoader.GetAString("engineNames");
         Debug.Log(p.GetDescriptionString());
         Debug.Log(p.GetStatisticsString());
         return p;

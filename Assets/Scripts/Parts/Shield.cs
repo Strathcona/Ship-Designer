@@ -53,7 +53,7 @@ public class Shield : Part {
         p.Size = PartSize.S;
         p.shieldType = ShieldType.Generator;
         p.DescriptionName = "Shield Generator";
-        p.ModelName = Constants.GetRandomSensorModelName();
+        p.ModelName = StringLoader.GetAString("sensorNames");
         p.strength.Value = UnityEngine.Random.Range(2, 20);
         p.rechargeTime.Value = UnityEngine.Random.Range(20, 100);
         return p;

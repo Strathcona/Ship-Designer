@@ -42,6 +42,8 @@ public class Player: IHasFunds {
         }
     }
     public List<IHasOwner> ownedEntities = new List<IHasOwner>();
+    public Species species;
+
     public event Action<Player> OnPlayerDetailsChangeEvent;
     public event Action<int> OnFundsChangeEvent;
     public event Action<Company> OnActiveCompanyChangeEvent;

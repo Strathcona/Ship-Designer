@@ -8,6 +8,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 {
     public int numberOfMajorPowers = 5;
     public int numberOfMinorPowers = 15;
+    public int numberOfSpecies = 10;
 
     public GalaxyData data;
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
@@ -15,6 +16,12 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
+        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("Species"), 2, numberOfSpecies);
+        foreach(string name in names) {
+            Debug.Log(name);
+            GameDataManager.instance.AddNewSpecies(GenerateSpecies(name));
+        }
+
         GameDataManager.instance.ClearAllEntities();
         for(int i =0; i < data.sectors.Length; i++) {
             for(int j=0; j< data.sectors[0].Length; j++) {
@@ -32,9 +39,36 @@ public class GalaxyEntityGenerator : MonoBehaviour
         previewDisplay.ShowTerritory();
     }
 
+    private Species GenerateSpecies(string name) {
+        Color[] colors = new Color[7] {
+            Color.red,
+            Color.magenta,
+            Color.yellow,
+            Color.green,
+            Color.blue,
+            Color.cyan,
+            Color.grey
+        };
+        GradientColorKey[] colorKeys = new GradientColorKey[3];
+        float position = 0.0f;
+        for(int i =0; i < 3; i++) {
+            colorKeys[i] = new GradientColorKey(colors[UnityEngine.Random.Range(0, 7)], position);
+            position += 0.50f;
+        }
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[2] {
+            new GradientAlphaKey(1, 0),
+            new GradientAlphaKey(1, 1)
+        };
+        Gradient g = new Gradient();
+        g.alphaKeys = alphaKeys;
+        g.colorKeys = colorKeys;
+
+        return new Species(name, new Sprite[0], g);
+    }
+
     public GalaxyEntity GetEntity(int size) {
         if(unoccupiedSectors.Count > 0) {
-            string[] entityStrings = Constants.GetRandomEntityStrings();
+            string[] entityStrings = StringLoader.GetAllStrings("entityStrings");
             GalaxyEntity g = new GalaxyEntity();
             SectorData capital = unoccupiedSectors[UnityEngine.Random.Range(0, unoccupiedSectors.Count)];
             unoccupiedSectors.Remove(capital);

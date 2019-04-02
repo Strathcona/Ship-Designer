@@ -5,11 +5,18 @@ using System;
 
 public class GameDataManager : MonoBehaviour, IInitialized {
     public static GameDataManager instance;
+
     private List<GalaxyEntity> entities = new List<GalaxyEntity>();
     public GalaxyEntity[] Entitites { get { return entities.ToArray(); } }
+
     private List<Company> companies = new List<Company>();
     public Company[] Companies { get { return companies.ToArray(); } }
+
+    private List<Species> species = new List<Species>();
+    public Species[] Species { get { return species.ToArray(); } }
+
     public GalaxyData masterGalaxyData;
+
     public event Action<Company[]> OnCompaniesChangeEvent;
     public event Action<GalaxyEntity[]> OnEntitiesChangeEvent;
 
@@ -39,6 +46,9 @@ public class GameDataManager : MonoBehaviour, IInitialized {
     public void AddNewCompany(Company company) {
         companies.Add(company);
         OnCompaniesChangeEvent?.Invoke(Companies);
+    }
 
+    public void AddNewSpecies(Species species) {
+        this.species.Add(species);
     }
 }

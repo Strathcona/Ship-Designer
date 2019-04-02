@@ -28,19 +28,6 @@ namespace GameConstructs {
     public enum GalaxyFeatureType { None, EntityCapital };
 
     public static class Constants {
-        private static string[] companyNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/CompanyNames.txt");
-        private static string[] weaponNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/WeaponNames.txt");
-        private static string[] shipNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/ShipNames.txt");
-        private static string[] fcNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/FCNames.txt");
-        private static string[] engineNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/EngineNames.txt");
-        private static string[] sensorNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/SensorNames.txt");
-        private static string[] powerNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/PowerPlantNames.txt");
-        private static string[] firstNamesMasculine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesMasculine.txt");
-        private static string[] firstNamesFeminine = File.ReadAllLines(Application.dataPath + "/Resources/Text/FirstNamesFeminine.txt");
-        private static string[] lastNames = File.ReadAllLines(Application.dataPath + "/Resources/Text/LastNames.txt");
-        private static string[] entityStrings = File.ReadAllLines(Application.dataPath + "/Resources/Text/EntityStrings.txt");
-
-
         public static int numberOfTiers = 8;
 
         public static Dictionary<PartSize, int> sizeFactor = new Dictionary<PartSize, int>() {
@@ -152,54 +139,6 @@ namespace GameConstructs {
                         {ShipType.Utility, 0.06f }
                     };
             }
-        }
-
-        public static string GetRandomCompanyName() {
-            return companyNames[UnityEngine.Random.Range(0, companyNames.Length)];
-        }
-
-        public static string GetRandomShipName() {
-            return shipNames[UnityEngine.Random.Range(0, shipNames.Length)];
-        }
-
-        public static string GetRandomWeaponModelName() {
-            return weaponNames[UnityEngine.Random.Range(0, weaponNames.Length)];
-        }
-
-        public static string GetRandomFireControlModelName() {
-            return fcNames[UnityEngine.Random.Range(0, fcNames.Length)];
-        }
-
-        public static string GetRandomEngineModelName() {
-            return engineNames[UnityEngine.Random.Range(0, engineNames.Length)];
-        }
-
-        public static string GetRandomSensorModelName() {
-            return sensorNames[UnityEngine.Random.Range(0, sensorNames.Length)];
-        }
-
-        public static string GetRandomReactorName() {
-            return powerNames[UnityEngine.Random.Range(0, powerNames.Length)];
-        }
-
-        public static string[] GetRandomEntityStrings() {
-            List<string[]> strings = new List<string[]>();
-            foreach(string line in entityStrings) {
-                strings.Add(line.Split(','));
-            }
-            return strings[UnityEngine.Random.Range(0, strings.Count)];
-        }
-
-        public static string GetRandomFirstName(bool feminine) {
-            if (feminine) {
-                return firstNamesFeminine[UnityEngine.Random.Range(0, firstNamesFeminine.Length)];
-            } else {
-                return firstNamesMasculine[UnityEngine.Random.Range(0, firstNamesMasculine.Length)];
-            }
-        }
-
-        public static string GetRandomLastName() {
-            return lastNames[UnityEngine.Random.Range(0, lastNames.Length)];
         }
 
         public static string GetCompanyType(HashSet<CompanyQuality> qualities) {
