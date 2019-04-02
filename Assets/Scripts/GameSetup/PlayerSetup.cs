@@ -18,7 +18,7 @@ public class PlayerSetup : MonoBehaviour{
         player.Funds += 2000;
         title.ClearOptions();
         title.options.Add(new Dropdown.OptionData("<i>None</i>"));
-        foreach (string s in StringLoader.GetAllStrings("titles")) {
+        foreach (string s in StringLoader.GetAllStrings("Titles")) {
             title.options.Add(new Dropdown.OptionData(s));
         }
         title.value = 0;
@@ -28,8 +28,8 @@ public class PlayerSetup : MonoBehaviour{
     private void Start() {
         firstName.onValueChanged.AddListener(SetPlayerFirstName);
         lastName.onValueChanged.AddListener(SetPlayerLastName);
-        firstName.text = StringLoader.GetAString("firstNamesMasculine");
-        lastName.text = StringLoader.GetAString("lastNames");
+        firstName.text = StringLoader.GetAString("FirstNamesMasculine");
+        lastName.text = StringLoader.GetAString("LastNames");
         player.Portrait = portraitGenerator.Portrait;
         nextButton.interactable = false;
     }

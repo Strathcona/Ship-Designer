@@ -93,7 +93,7 @@ public static class MarkovGenerator {
                 lastSyllable = nextSyllable;
                 
             }
-            if (awkwardWhitespace.IsMatch(word) || vowellessWords.IsMatch(word) || manyConsonants.IsMatch(word) || awkwardConsonants.IsMatch(word) || tripledConsonants.IsMatch(word)) {
+            if (word.Length <= 2 || awkwardWhitespace.IsMatch(word) || vowellessWords.IsMatch(word) || manyConsonants.IsMatch(word) || awkwardConsonants.IsMatch(word) || tripledConsonants.IsMatch(word)) {
                 failCount += 1;
                 Debug.Log(word + " failed regex");
                 goto Restart;

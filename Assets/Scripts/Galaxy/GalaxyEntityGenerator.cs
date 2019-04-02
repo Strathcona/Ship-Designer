@@ -16,7 +16,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
-        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("Species"), 400, numberOfSpecies);
+        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("SpeciesButterfly"), 400, numberOfSpecies);
         foreach(string name in names) {
             GameDataManager.instance.AddNewSpecies(GenerateSpecies(name));
         }
@@ -67,7 +67,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public GalaxyEntity GetEntity(int size) {
         if(unoccupiedSectors.Count > 0) {
-            string[] entityStrings = StringLoader.GetAllStrings("entityStrings");
+            string[] entityStrings = StringLoader.GetAllStrings("EntityStrings");
             GalaxyEntity g = new GalaxyEntity();
             SectorData capital = unoccupiedSectors[UnityEngine.Random.Range(0, unoccupiedSectors.Count)];
             unoccupiedSectors.Remove(capital);
