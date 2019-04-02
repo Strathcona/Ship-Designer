@@ -59,12 +59,10 @@ public class GalaxyEntity {
 
     public void EvaluateGoals() {
         RequestNewGoals();
-        Debug.Log("Galaxy Entity " + entityName + " is evaluating goals");
         EntityGoal bestGoal = null;
         float bestUtility = 0.0f;
         foreach(EntityGoal g in hashtagEntityGoals) {
             float util = g.CalculateUtility(this);
-            Debug.Log("Goal " + g.goalName + " has a utility of " + util);
             if(util > bestUtility) {
                 bestGoal = g;
                 bestUtility = util;

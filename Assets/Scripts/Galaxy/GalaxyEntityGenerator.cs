@@ -8,7 +8,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 {
     public int numberOfMajorPowers = 5;
     public int numberOfMinorPowers = 15;
-    public int numberOfSpecies = 10;
+    public int numberOfSpecies = 1;
 
     public GalaxyData data;
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
@@ -16,7 +16,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
-        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("Species"), 2, numberOfSpecies);
+        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("Species"), 1, numberOfSpecies);
         foreach(string name in names) {
             Debug.Log(name);
             GameDataManager.instance.AddNewSpecies(GenerateSpecies(name));

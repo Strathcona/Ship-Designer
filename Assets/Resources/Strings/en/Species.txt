@@ -85,7 +85,7 @@ Burkinabé
 Burmese
 Burmese
 Burundian
-Cabo Verdean
+Cabo-Verdean
 Cambodian
 Cameroonian
 Canadian
@@ -166,8 +166,10 @@ Kyrgyzstani
 Kyrgyz
 Kirgiz
 Kirghiz
-Lao, Laotian
-Latvian, Lettish
+Lao
+Laotian
+Latvian
+Lettish
 Lebanese
 Liberian
 Libyan
@@ -198,7 +200,7 @@ Moldovan
 Mongolian
 Montenegrin
 Montserratian
-Monégasque
+Monegasque
 Monacan
 Moroccan
 Motswana
@@ -206,7 +208,8 @@ Botswanan
 Mozambican
 Namibian
 Nauruan
-Nepali, Nepalese
+Nepali
+Nepalese
 New Caledonian
 New Zealand
 Vanuatuan
@@ -214,7 +217,7 @@ Nicaraguan
 Nigerian
 Nigerien
 Niuean
-North Korean
+North-Korean
 Norwegian
 Omani
 Pakistani
@@ -232,7 +235,7 @@ Qatari
 Romanian
 Russian
 Rwandan
-Réunionese
+Reunionese
 Réunionnais
 Saba
 Sahrawi
@@ -286,4 +289,3 @@ Vietnamese
 Yemeni
 Zambian
 Zimbabwean
-Åland Island
