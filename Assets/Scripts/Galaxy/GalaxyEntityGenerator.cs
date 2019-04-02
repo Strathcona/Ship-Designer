@@ -16,9 +16,8 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
-        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("Species"), 1, numberOfSpecies);
+        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("Species"), 400, numberOfSpecies);
         foreach(string name in names) {
-            Debug.Log(name);
             GameDataManager.instance.AddNewSpecies(GenerateSpecies(name));
         }
 
