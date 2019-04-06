@@ -13,15 +13,27 @@ public class GalaxyEntity {
     public int controlledSystems = 0;
     public Color color;
     public NPC leader;
-    public string entityName;
-    public string leaderTitle;
-    public string adjective;
-    public string governmentName;
     public EntityFleetDoctrine fleetDoctrine;
     public List<EntityGoal> hashtagEntityGoals = new List<EntityGoal>();
     public List<Ship> navy;
     public List<ContractBid> contractBids = new List<ContractBid>();
     public int desiredNavySize = 0;
+
+    private EntityGovernment government;
+    public EntityGovernment Government {
+        get { return government; }
+        set {
+            government = value;
+            ReconstructStrings();
+            OnGovernmentChangeEvent?.Invoke(this);
+        }
+    }
+    public event Action<GalaxyEntity> OnGovernmentChangeEvent;
+
+    public string name;
+    public string adjective;
+    public string fullName;
+    public string fullLeaderTitle;
 
     public void LoseTerritory(SectorData tile) {
         territory.Remove(tile);
@@ -79,8 +91,13 @@ public class GalaxyEntity {
         }
     }
 
+    private void ReconstructStrings() {
+        fullName = government.governmentName.Replace("[NAME]", name);
+        fullLeaderTitle = government.leaderTitle.Replace("[NAME]", leader.fullName);
+    }
+
     public void RequestNewShips() {
-        Debug.Log("Galaxy Entity " + entityName + " is requesting new ships");
+        Debug.Log("Galaxy Entity " + fullName + " is requesting new ships");
         List<ContractBid.ContractBidRequirement> bidRequirements = new List<ContractBid.ContractBidRequirement>();
         bidRequirements.Add(ContractBid.ContractBidRequirement.ShipTypeRequirement(ShipType.Destroyer));
         List<ContractBid.ContractBidCriteria> bidCriteria = new List<ContractBid.ContractBidCriteria>();
@@ -97,10 +114,6 @@ public class GalaxyEntity {
         g.capitalSector = _capitalSector;
         g.GainTerritory(_capitalSector);
         g.color = Constants.GetRandomPastelColor();
-        g.entityName = entityStrings[1];
-        g.governmentName = entityStrings[0];
-        g.adjective = entityStrings[2];
-        g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
         TimeManager.instance.OnMonthEvent += g.EvaluateGoals;
         return g;
     }

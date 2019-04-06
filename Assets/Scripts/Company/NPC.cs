@@ -6,6 +6,7 @@ using GameConstructs;
 public class NPC {
     public string firstName;
     public string lastName;
+    public string fullName { get { return firstName + " " + lastName; } }
     public bool feminine;
     public Sprite sprite;
     public Color spriteColor;
@@ -19,12 +20,10 @@ public class NPC {
             feminine = false;
         }
         if(Random.Range(0,2) >= 1) {
-            firstName = StringLoader.GetAString("firstNamesMasculine");
+            firstName = StringLoader.GetAString("FirstNamesMasculine");
         } else {
-            firstName = StringLoader.GetAString("firstNamesFeminine");
+            firstName = StringLoader.GetAString("FirstNamesFeminine");
         }
-        lastName = StringLoader.GetAString("lastNames");
-        sprite = SpriteLoader.GetNPCSprite("Generic");
-        spriteColor = Constants.GetRandomPastelColor();
+        lastName = StringLoader.GetAString("LastNames");
     }
 }

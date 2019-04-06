@@ -10,7 +10,7 @@ public static class MarkovGenerator {
     private static Regex awkwardConsonants = new Regex("[mngr]{ 3,}");
     private static Regex tripledConsonants = new Regex(@"([b-df-hj-np-tv-wzB-DF-HJ-NP-TV-WZ]+)\1+[b-df-hj-np-tv-wzB-DF-HJ-NP-TV-WZ]|[b-df-hj-np-tv-wzB-DF-HJ-NP-TV-WZ]([b-df-hj-np-tv-wzB-DF-HJ-NP-TV-WZ]+)\2+");
 
-    public static string[] GenerateMarkovWord(string[] words, int numberOfWords, int maxLength=24) {
+    public static string[] GenerateMarkovWord(string[] words, int numberOfWords, int maxLength=24, int randomize=0) {
 
         Dictionary<string, Dictionary<string, int> > masterList = new Dictionary<string, Dictionary<string, int>>();
         Dictionary<string, int> startingList = new Dictionary<string, int>();
@@ -43,26 +43,31 @@ public static class MarkovGenerator {
                 lastLetter = s;
             }
 
-            if (masterList[lastLetter].ContainsKey(".")) {
-                masterList[lastLetter][end] += 1;
-            } else {
-                masterList[lastLetter].Add(end, 1);
+            if(lastLetter != "") { //it would be for a one letter word
+                if (masterList[lastLetter].ContainsKey(".")) {
+                    masterList[lastLetter][end] += 1;
+                } else {
+                    masterList[lastLetter].Add(end, 1);
+                }
             }
         }
 
         //add at least one instance for a little bit of randomization
-        foreach(string s in masterList.Keys) {
-            foreach(string t in masterList.Keys) {
-                //don't readd starting keys(to prevent odd capitialization) and check if the two letters should never appear together
-                if (!startingList.ContainsKey(t)) {
-                    if (!masterList[s].ContainsKey(t)) {
-                        masterList[s].Add(t, 1);
-                    } else {
-                        masterList[s][t] += 1;
+        if (randomize != 0) {
+            foreach (string s in masterList.Keys) {
+                foreach (string t in masterList.Keys) {
+                    //don't readd starting keys(to prevent odd capitialization) and check if the two letters should never appear together
+                    if (!startingList.ContainsKey(t)) {
+                        if (!masterList[s].ContainsKey(t)) {
+                            masterList[s].Add(t, 1);
+                        } else {
+                            masterList[s][t] += 1;
+                        }
                     }
                 }
             }
         }
+
 
         string[] toReturn = new string[numberOfWords];
         for(int i = 0; i < numberOfWords; i++) {
@@ -95,7 +100,7 @@ public static class MarkovGenerator {
             }
             if (word.Length <= 2 || awkwardWhitespace.IsMatch(word) || vowellessWords.IsMatch(word) || manyConsonants.IsMatch(word) || awkwardConsonants.IsMatch(word) || tripledConsonants.IsMatch(word)) {
                 failCount += 1;
-                Debug.Log(word + " failed regex");
+                //Debug.Log(word + " failed regex");
                 goto Restart;
             }
             toReturn[i] = word;

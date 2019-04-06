@@ -45,6 +45,7 @@ public class GalaxyDataGenerator : MonoBehaviour {
         data.SetGalaxyData(size);
         int maxCount = 0; //used for normalizing
         float phi = Random.Range(0.0f, 180.0f);//random phase shift
+        HashSet<Coord> filledCoords = new HashSet<Coord>();
         for (int i = 0; i < buldgeCount + armCount; i++) {
             Coord c;
             if (i > buldgeCount) {
@@ -52,6 +53,7 @@ public class GalaxyDataGenerator : MonoBehaviour {
             } else {
                 c = GetSystem(true);
             }
+            filledCoords.Add(c);
             if (c.x < size && c.y < size && c.x >= 0 && c.y >= 0) {
                 data.sectors[c.x][c.y].systemCount += 1;
                 if (data.sectors[c.x][c.y].systemCount > maxCount) {
@@ -60,6 +62,8 @@ public class GalaxyDataGenerator : MonoBehaviour {
             }
         }
         data.maxCount = maxCount;
+        data.averageCount = (float) (buldgeCount + armCount) / (filledCoords.Count);
+        Debug.Log(data.averageCount);
         previewDisplay.DisplayGalaxyData(data);
     }
 

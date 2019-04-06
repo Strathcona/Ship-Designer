@@ -1,0 +1,30 @@
+[NAME] Empire
+Empire of [NAME]
+[NAME] Caliphate
+[NAME] Dynasty
+[NAME] Republic
+[NAME] Free State
+Free State of [NAME]
+Federation of [NAME]
+[NAME] Commonwealth
+Commonwealth of [NAME]
+[NAME] Alliance
+[NAME] Federation
+[NAME] Accord
+[NAME] Authority
+[NAME] Continuum
+[NAME] Cooperative
+[NAME] Czardom
+Dominion of [NAME]
+Forces of [NAME]
+[NAME] Restoration
+[NAME] Alliance
+[NAME] Union
+Union of [NAME]
+[NAME] Supremacy
+[NAME] Protectorate
+Protectorate of [NAME]
+[NAME] Holdings
+Free System of [NAME]
+Sector State of [NAME]
+[NAME] Sector State

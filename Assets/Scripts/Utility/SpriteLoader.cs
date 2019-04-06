@@ -9,14 +9,14 @@ using System;
 public static class SpriteLoader {
 
     private static Dictionary<string, List<Sprite>> partSprites = new Dictionary<string, List<Sprite>>();
-    private static Dictionary<string, List<Sprite>> npcSprites = new Dictionary<string, List<Sprite>>();
+    private static Dictionary<string, List<Sprite>> alienSprites = new Dictionary<string, List<Sprite>>();
     private static Dictionary<string, List<Sprite>> symbolParts = new Dictionary<string, List<Sprite>>();
     private static Dictionary<string, List<Sprite>> featureSprites = new Dictionary<string, List<Sprite>>();
     public readonly static Dictionary<string, Sprite> bitmaskBorderSprites = new Dictionary<string, Sprite>();
 
     static SpriteLoader() {
         Debug.Log("Loading NPC sprites");
-        AddToDictionary(npcSprites, "Images/NPCs");
+        AddToDictionary(alienSprites, "Images/Aliens");
         Debug.Log("Loading Default Part sprites");
         AddToDictionary(partSprites, "Images/Parts/Default");
         Debug.Log("Loading Company Logos");
@@ -71,9 +71,9 @@ public static class SpriteLoader {
         }
     }
 
-    public static Sprite GetNPCSprite(string name) {
-        if (npcSprites.ContainsKey(name)) {
-            List<Sprite> sprites = npcSprites[name];
+    public static Sprite GetAlienSprite(string name) {
+        if (alienSprites.ContainsKey(name)) {
+            List<Sprite> sprites = alienSprites[name];
             Sprite toReturn = sprites[UnityEngine.Random.Range(0, sprites.Count)];
             return toReturn;
         } else {
@@ -83,13 +83,36 @@ public static class SpriteLoader {
 
     }
 
-    public static List<Sprite> GetAllNPCSprites(string name) {
-        if (npcSprites.ContainsKey(name)) {
-            return npcSprites[name];
+    public static List<Sprite> GetSetOfAlienSprites(string name) {
+        if (alienSprites.ContainsKey(name)) {
+            return alienSprites[name];
         } else {
             Debug.LogError("Couldn't find NPC sprites " + name);
             return null;
         }
+    }
+
+    public static List<Sprite> GetRandomSetOfAlienSprites() {
+        if(alienSprites.Count >= 1) {
+            int num = UnityEngine.Random.Range(0, alienSprites.Count);
+            int index = 0;
+            foreach (List<Sprite> s in alienSprites.Values) {
+                if(num == index) {
+                    return s;
+                }
+                index += 1;
+            }
+        }
+        Debug.LogError("Couldn't find a set of Alien Sprites");
+        return null;
+    }
+
+    public static List<List<Sprite>> GetAllAlienSprites() {
+        List<List<Sprite>> allSprites = new List<List<Sprite>>();
+        foreach(List<Sprite> s in alienSprites.Values) {
+            allSprites.Add(s);
+        }
+        return allSprites;
     }
 
     public static Sprite GetPartSprite(string name) {

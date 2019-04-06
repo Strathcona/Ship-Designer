@@ -13,8 +13,7 @@ public class GalaxyEntityPanel : MonoBehaviour {
 
     public void DisplayEntity(GalaxyEntity g) {
         galaxyEntity = g;
-        entityName.text = galaxyEntity.entityName;
-        entityType.text = galaxyEntity.governmentName;
+        entityName.text = galaxyEntity.fullName;
         npcDisplay.DisplayNPC(galaxyEntity.leader);
         detailText.text = galaxyEntity.GetDetailString();
     }

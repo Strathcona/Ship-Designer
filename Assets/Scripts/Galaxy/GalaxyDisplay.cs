@@ -112,7 +112,7 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
         tile.SetHover(true);
         string displayString = "Major Systems: " + tile.sectorData.systemCount.ToString();
         if (tile.sectorData.Owner != null) {
-            displayString += "\nOwner: " + tile.sectorData.Owner.entityName;
+            displayString += "\nOwner: " + tile.sectorData.Owner.fullName;
         } else {
             displayString += "\nUnclaimed";
         }

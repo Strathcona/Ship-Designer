@@ -8,7 +8,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 {
     public int numberOfMajorPowers = 5;
     public int numberOfMinorPowers = 15;
-    public int numberOfSpecies = 1;
+    public int numberOfSpecies = 20;
 
     public GalaxyData data;
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
@@ -16,10 +16,6 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
-        string[] names = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("SpeciesButterfly"), 400, numberOfSpecies);
-        foreach(string name in names) {
-            GameDataManager.instance.AddNewSpecies(GenerateSpecies(name));
-        }
 
         GameDataManager.instance.ClearAllEntities();
         for(int i =0; i < data.sectors.Length; i++) {
@@ -29,84 +25,107 @@ public class GalaxyEntityGenerator : MonoBehaviour
                 }
             }
         }
-        for(int i =0; i < numberOfMajorPowers; i ++) {
-            GameDataManager.instance.AddNewEntity(GetEntity(UnityEngine.Random.Range(8, 16)));
+        List<List<SectorData>> partitions = GenerateSectorPartitions(unoccupiedSectors);
+        string[] entityNames = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("StarNames"), partitions.Count);
+        for(int i = 0; i < partitions.Count; i ++) {
+            float averageSystem = 0;
+            float maxSystem = 0;
+            float minSystem = 10000;
+            float sumOfSquares = 0;
+            foreach(SectorData d in partitions[i]) {
+                averageSystem += d.systemCount;
+                sumOfSquares += d.systemCount * d.systemCount;
+                if(d.systemCount > maxSystem) {
+                    maxSystem = d.systemCount;
+                }
+                if(d.systemCount < minSystem) {
+                    minSystem = d.systemCount;
+                }
+            }
+            float totalSystem = averageSystem;
+            averageSystem = averageSystem / partitions[i].Count;
+            float sumOfSquaresAverage = sumOfSquares / partitions[i].Count;
+            float standardDeviation = Mathf.Sqrt(sumOfSquaresAverage - (averageSystem * averageSystem));
+            Debug.Log("Total System:"+totalSystem+" averageSystem:"+averageSystem+" minSystem:"+minSystem+" maxSystem:"+maxSystem+" stdDeviation:"+standardDeviation);
+            GalaxyEntity g = GetEntity(partitions[i]);
+            g.name = entityNames[i];
+            if(averageSystem > data.averageCount) {
+                Debug.Log("Democracy");
+                g.Government = EntityGovernment.GetEntityGovernment(EntityGovernment.GovernmentType.Democracy);
+            } else if ( standardDeviation > 3.0f) {
+                Debug.Log("Empire");
+                g.Government = EntityGovernment.GetEntityGovernment(EntityGovernment.GovernmentType.Empire);
+            } else {
+                Debug.Log("Federation");
+                g.Government = EntityGovernment.GetEntityGovernment(EntityGovernment.GovernmentType.Federation);
+            }
+            Debug.Log(g.fullLeaderTitle + " "+g.fullName);
+            GameDataManager.instance.AddNewEntity(g);
         }
-        for (int i = 0; i < numberOfMinorPowers; i++) {
-            GameDataManager.instance.AddNewEntity(GetEntity(UnityEngine.Random.Range(2,7)));
-        }
+
         previewDisplay.ShowTerritory();
     }
 
-    private Species GenerateSpecies(string name) {
-        Color[] colors = new Color[7] {
-            Color.red,
-            Color.magenta,
-            Color.yellow,
-            Color.green,
-            Color.blue,
-            Color.cyan,
-            Color.grey
-        };
-        GradientColorKey[] colorKeys = new GradientColorKey[3];
-        float position = 0.0f;
-        for(int i =0; i < 3; i++) {
-            colorKeys[i] = new GradientColorKey(colors[UnityEngine.Random.Range(0, 7)], position);
-            position += 0.50f;
-        }
-        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[2] {
-            new GradientAlphaKey(1, 0),
-            new GradientAlphaKey(1, 1)
-        };
-        Gradient g = new Gradient();
-        g.alphaKeys = alphaKeys;
-        g.colorKeys = colorKeys;
-
-        return new Species(name, new Sprite[0], g);
-    }
-
-    public GalaxyEntity GetEntity(int size) {
-        if(unoccupiedSectors.Count > 0) {
-            string[] entityStrings = StringLoader.GetAllStrings("EntityStrings");
-            GalaxyEntity g = new GalaxyEntity();
-            SectorData capital = unoccupiedSectors[UnityEngine.Random.Range(0, unoccupiedSectors.Count)];
-            unoccupiedSectors.Remove(capital);
-            g.capitalSector = capital;
-            g.entityName = entityStrings[1];
-            g.GainTerritory(capital);
-            for (int i = 0; i < size; i++) {
-                List<SectorData> neighbours = new List<SectorData>();
-                foreach (SectorData d in g.neighbouringSectors) {
-                    if (d.systemCount > 0 && d.Owner == null) {
-                        neighbours.Add(d);
+    private List<List<SectorData>> GenerateSectorPartitions(List<SectorData> unoccupied) {
+        List<List<SectorData>> partitions = new List<List<SectorData>>();
+        HashSet<SectorData> unoccupiedHash = new HashSet<SectorData>(unoccupied);
+        int maxSize = 25;
+        while(unoccupied.Count > 0) {
+            HashSet<SectorData> partitionHash = new HashSet<SectorData>();
+            List<SectorData> partition = new List<SectorData>();
+            int randomID = UnityEngine.Random.Range(0, unoccupied.Count);
+            SectorData startPoint = unoccupied[randomID];
+            partitionHash.Add(startPoint); //add the first sector
+            partition.Add(startPoint);
+            unoccupied.RemoveAt(randomID);
+            unoccupiedHash.Remove(startPoint);
+            while(partitionHash.Count < maxSize) {
+                HashSet<SectorData> neighbours = new HashSet<SectorData>();
+                foreach(SectorData d in partitionHash) {
+                    foreach(SectorData n in d.neighbours) {
+                        if (!partitionHash.Contains(n) && unoccupiedHash.Contains(n)) { //add neighbours that are outside of the partition
+                            neighbours.Add(n);
+                        }
                     }
                 }
                 if (neighbours.Count > 0) {
-                    SectorData d = DistanceWeightedRandomWalk(neighbours, capital);
-                    g.GainTerritory(d);
-                    unoccupiedSectors.Remove(d);
+                    SectorData p = DistanceWeightedRandomWalk(neighbours, startPoint);
+                    partitionHash.Add(p);
+                    partition.Add(p);
+                    unoccupied.Remove(p);
+                    unoccupiedHash.Remove(p);
                 } else {
                     break;
                 }
             }
-
-            g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
-            g.color = Constants.GetRandomPastelColor();
-            g.governmentName = entityStrings[0];
-            g.adjective = entityStrings[2];
-            g.leaderTitle = entityStrings[3]; g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.entityName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
-            TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
-            TimeManager.SetTimeTrigger(2, g.EvaluateGoals);
-            Debug.Log("Making Entity " + g.entityName);
-            return g;
-        } else {
-            Debug.Log("Couldn't find unoccupied sector");
-            return null;
+            if(partition.Count > 0) {
+                partitions.Add(partition);
+            }
         }
-
+        return partitions;
     }
 
-    public SectorData DistanceWeightedRandomWalk(List<SectorData> neighbours, SectorData start) {
+    public GalaxyEntity GetEntity(List<SectorData> territory) {
+        string[] entityStrings = StringLoader.GetAllStrings("EntityStrings");
+        GalaxyEntity g = new GalaxyEntity();
+        g.leader = new NPC();
+        SectorData capital = territory[UnityEngine.Random.Range(0, territory.Count)];
+        territory.Remove(capital);
+        g.capitalSector = capital;
+
+        foreach(SectorData sector in territory) {
+            g.GainTerritory(sector);
+        }
+        g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
+        g.color = Constants.GetRandomPastelColor();
+        g.adjective = entityStrings[2];
+        g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.fullName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
+        TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
+        TimeManager.SetTimeTrigger(2400, g.EvaluateGoals);
+        return g;
+    }
+
+    public SectorData DistanceWeightedRandomWalk(HashSet<SectorData> neighbours, SectorData start) {
         float distTotal = 0.0f;
         foreach (SectorData s in neighbours) {
             distTotal += 1 / (start.DistanceTo(s) + 1);

@@ -6,6 +6,7 @@ public class GalaxyData {
     public SectorData[][] sectors;
     public List<GalaxyEntity> entities = new List<GalaxyEntity>();
     public int maxCount;
+    public float averageCount;
 
     public GalaxyData() {
 

@@ -29,13 +29,17 @@ public class PortraitGenerator: MonoBehaviour {
     private void Awake() {
         portrait = new LayeredColoredSprite(1);
         portraitDisplay.DisplayLayeredColoredSprite(portrait);
-        layer1Sprites = SpriteLoader.GetAllNPCSprites("Generic");
+        layer1Sprites = SpriteLoader.GetSetOfAlienSprites("Humanoid");
         layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
         color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
         CycleLayer();
         CycleColor();
     }
 
+    public void SetSpriteSet(Sprite[] sprites) {
+        layer1Sprites = new List<Sprite>(sprites);
+        CycleLayer();
+    }
 
     public void CycleLayer() {
         if (layer1Index >= layer1Sprites.Count - 1) {
