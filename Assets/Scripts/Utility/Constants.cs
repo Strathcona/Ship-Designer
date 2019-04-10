@@ -27,6 +27,8 @@ namespace GameConstructs {
     public enum ResearchNodeType {  Start, End, Mandatory, Optional};
     public enum GalaxyFeatureType { None, EntityCapital };
 
+    public enum Gender { None, Nonbinary, Female, Male, ThirdGender}
+
     public static class Constants {
         public static int numberOfTiers = 8;
 

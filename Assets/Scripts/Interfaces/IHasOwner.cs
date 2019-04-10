@@ -2,8 +2,8 @@
 using System.Collections;
 using System;
 public interface IHasOwner {
-    Player GetOwner();
-    void ChangeOwner(Player player);
-    event Action<Player> OnOwnerChangeEvent;
+    Person GetOwner();
+    void ChangeOwner(Magnate player);
+    event Action<Magnate> OnOwnerChangeEvent;
 
 }

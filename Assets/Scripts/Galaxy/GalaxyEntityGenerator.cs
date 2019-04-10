@@ -14,8 +14,20 @@ public class GalaxyEntityGenerator : MonoBehaviour
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
     public GalaxyDisplay previewDisplay;
 
+    public List<Color> entityPallette = new List<Color>();
+
+    private void Awake() {
+        for(int i = 0; i < 8; i++) {
+            entityPallette.Add(Constants.GetRandomPastelColor());
+        }
+    }
+
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
+        string[] speciesNames = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("SpeciesButterfly"), numberOfSpecies);
+        for(int i = 0; i < numberOfSpecies; i++) {
+            GameDataManager.instance.AddNewSpecies(SpeciesGenerator.GetSpecies(speciesNames[i]));
+        }
 
         GameDataManager.instance.ClearAllEntities();
         for(int i =0; i < data.sectors.Length; i++) {
@@ -49,17 +61,8 @@ public class GalaxyEntityGenerator : MonoBehaviour
             Debug.Log("Total System:"+totalSystem+" averageSystem:"+averageSystem+" minSystem:"+minSystem+" maxSystem:"+maxSystem+" stdDeviation:"+standardDeviation);
             GalaxyEntity g = GetEntity(partitions[i]);
             g.name = entityNames[i];
-            if(averageSystem > data.averageCount) {
-                Debug.Log("Democracy");
-                g.Government = EntityGovernment.GetEntityGovernment(EntityGovernment.GovernmentType.Democracy);
-            } else if ( standardDeviation > 3.0f) {
-                Debug.Log("Empire");
-                g.Government = EntityGovernment.GetEntityGovernment(EntityGovernment.GovernmentType.Empire);
-            } else {
-                Debug.Log("Federation");
-                g.Government = EntityGovernment.GetEntityGovernment(EntityGovernment.GovernmentType.Federation);
-            }
-            Debug.Log(g.fullLeaderTitle + " "+g.fullName);
+            g.Government = EntityGovernment.GetRandomEntityGovernment();
+            Debug.Log(g.Government.leader.FullName + " "+g.Government.governmentName);
             GameDataManager.instance.AddNewEntity(g);
         }
 
@@ -108,16 +111,15 @@ public class GalaxyEntityGenerator : MonoBehaviour
     public GalaxyEntity GetEntity(List<SectorData> territory) {
         string[] entityStrings = StringLoader.GetAllStrings("EntityStrings");
         GalaxyEntity g = new GalaxyEntity();
-        g.leader = new NPC();
         SectorData capital = territory[UnityEngine.Random.Range(0, territory.Count)];
         territory.Remove(capital);
         g.capitalSector = capital;
-
         foreach(SectorData sector in territory) {
             g.GainTerritory(sector);
         }
         g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
-        g.color = Constants.GetRandomPastelColor();
+        g.flag = LayeredSpriteGenerator.GenerateLayeredSprites(new List<string>() { "FlagBack", "FlagMid", "FlagFront" }, entityPallette)[0];
+        g.color = g.flag.Colors[0];
         g.adjective = entityStrings[2];
         g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.fullName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
         TimeManager.SetTimeTrigger(1, g.RequestNewGoals);

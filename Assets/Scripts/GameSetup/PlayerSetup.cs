@@ -11,7 +11,7 @@ public class PlayerSetup : MonoBehaviour{
     public Dropdown title;
     public PortraitGenerator portraitGenerator;
     public Button nextButton;
-    public HumanPlayer player;
+    public Magnate player;
 
     private void Awake() {
         player = PlayerManager.instance.activePlayer;

@@ -9,10 +9,9 @@ public class GalaxyEntity {
     public List<SectorData> territory = new List<SectorData>();
     public HashSet<SectorData> neighbouringSectors = new HashSet<SectorData>();
     public SectorData capitalSector;
-    public Sprite symbol;
+    public LayeredColoredSprite flag;
     public int controlledSystems = 0;
     public Color color;
-    public NPC leader;
     public EntityFleetDoctrine fleetDoctrine;
     public List<EntityGoal> hashtagEntityGoals = new List<EntityGoal>();
     public List<Ship> navy;
@@ -24,16 +23,18 @@ public class GalaxyEntity {
         get { return government; }
         set {
             government = value;
-            ReconstructStrings();
+            value.TransitionToGovernment(this);
             OnGovernmentChangeEvent?.Invoke(this);
         }
     }
+
+    public string fullName { get { return government?.governmentName; } }
+    public NPC leader { get { return government?.leader; } }
+
     public event Action<GalaxyEntity> OnGovernmentChangeEvent;
 
     public string name;
     public string adjective;
-    public string fullName;
-    public string fullLeaderTitle;
 
     public void LoseTerritory(SectorData tile) {
         territory.Remove(tile);
@@ -91,13 +92,8 @@ public class GalaxyEntity {
         }
     }
 
-    private void ReconstructStrings() {
-        fullName = government.governmentName.Replace("[NAME]", name);
-        fullLeaderTitle = government.leaderTitle.Replace("[NAME]", leader.fullName);
-    }
-
     public void RequestNewShips() {
-        Debug.Log("Galaxy Entity " + fullName + " is requesting new ships");
+        Debug.Log("Galaxy Entity " + government.governmentName + " is requesting new ships");
         List<ContractBid.ContractBidRequirement> bidRequirements = new List<ContractBid.ContractBidRequirement>();
         bidRequirements.Add(ContractBid.ContractBidRequirement.ShipTypeRequirement(ShipType.Destroyer));
         List<ContractBid.ContractBidCriteria> bidCriteria = new List<ContractBid.ContractBidCriteria>();

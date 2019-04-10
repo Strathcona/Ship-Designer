@@ -7,7 +7,7 @@ public class CompanyGenerator : MonoBehaviour {
     public InputFieldIncrement personalFundsAdded;
     public InputFieldIncrement investorFundsAdded;
     public LogoGenerator logoGenerator;
-    public Player founder;
+    public Magnate founder;
     private static int AICompanyCount = 0;
     // Use this for initialization
 

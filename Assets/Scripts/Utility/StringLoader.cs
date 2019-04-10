@@ -43,5 +43,22 @@ public static class StringLoader {
         }
     }
 
+    public static string GetAString(string[] keys) {
+        List<string> strings = new List<string>();
+        foreach(string key in keys) {
+            if (stringArrays.ContainsKey(key)) {
+                strings.AddRange(stringArrays[key]);
+            } else {
+                Debug.LogError("Couldn't find key " + key + " in StringArrays");
+                return "";
+            }
+        }
+        if(strings.Count > 0) {
+            return strings[UnityEngine.Random.Range(0, strings.Count)];
+        } else {
+            return "";
+        }
+    }
+
 
 }

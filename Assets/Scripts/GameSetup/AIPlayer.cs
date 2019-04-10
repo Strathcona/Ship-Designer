@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIPlayer : Player {
+public class AIPlayer : Magnate {
 
 }

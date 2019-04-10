@@ -1350,7 +1350,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &73611865
 PrefabInstance:
@@ -5077,7 +5077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04ab04d5ef52244b91df0058e3b9541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcPortrait: {fileID: 525310732}
+  npcPortrait: {fileID: 0}
   npcName: {fileID: 7065937}
 --- !u!1 &319886742
 GameObject:
@@ -6828,16 +6828,13 @@ MonoBehaviour:
   detailText: {fileID: 246050394}
   viewButton: {fileID: 80973094}
   galaxyEntity:
-    symbol: {fileID: 0}
     controlledSystems: 0
     color: {r: 0, g: 0, b: 0, a: 0}
-    entityName: 
-    leaderTitle: 
-    adjective: 
-    governmentName: 
     fleetDoctrine: 0
     navy: []
     desiredNavySize: 0
+    name: 
+    adjective: 
 --- !u!1 &426521537
 GameObject:
   m_ObjectHideFlags: 0
@@ -7366,7 +7363,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &447653267
 GameObject:
@@ -15108,6 +15105,36 @@ MonoBehaviour:
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &938044576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 938044577}
+  m_Layer: 0
+  m_Name: World Galaxy Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &938044577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938044576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 208.86122, y: 165.10265, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &941482745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18006,7 +18033,7 @@ RectTransform:
   m_Children:
   - {fileID: 549404523}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -19382,16 +19409,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   galaxyEntity:
-    symbol: {fileID: 0}
     controlledSystems: 0
     color: {r: 0, g: 0, b: 0, a: 0}
-    entityName: 
-    leaderTitle: 
-    adjective: 
-    governmentName: 
     fleetDoctrine: 0
     navy: []
     desiredNavySize: 0
+    name: 
+    adjective: 
   mainScreen: {fileID: 148770745}
   contractScreen: {fileID: 596499216}
   contractBidPanelPrefab: {fileID: 5743719446630668713, guid: 00783eccd61f1664095de021cd8f07f2,
@@ -22996,7 +23020,7 @@ RectTransform:
   m_Children:
   - {fileID: 261635269}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -26879,7 +26903,7 @@ RectTransform:
   m_Children:
   - {fileID: 1238617930}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -28207,7 +28231,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfMajorPowers: 5
   numberOfMinorPowers: 15
+  numberOfSpecies: 10
   previewDisplay: {fileID: 1794973776}
+  entityPallette: []
 --- !u!114 &1729297364
 MonoBehaviour:
   m_ObjectHideFlags: 0

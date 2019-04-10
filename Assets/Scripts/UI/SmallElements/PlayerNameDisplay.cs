@@ -16,7 +16,7 @@ public class PlayerNameDisplay : MonoBehaviour {
         PlayerManager.instance.activePlayer.OnPlayerDetailsChangeEvent += UpdatePlayerName;
     }
     
-    public void UpdatePlayerName(Player player) {
+    public void UpdatePlayerName(Person player) {
         text.text = player.FirstName;
     }
     

@@ -15,7 +15,7 @@ public class LayeredSpriteGenerator {
         Color.black
     };
     
-    public static LayeredColoredSprite[] GenerateLayeredSprites(List<string> layerNames, int number=1, List<Color> layerColors) {
+    public static LayeredColoredSprite[] GenerateLayeredSprites(List<string> layerNames, List<Color> layerColors, int number=1) {
         List<List<Sprite>> spriteLayers = new List<List<Sprite>>();
         foreach (string s in layerNames) {
             List<Sprite> sprites = SpriteLoader.GetAllSymbolParts(s);

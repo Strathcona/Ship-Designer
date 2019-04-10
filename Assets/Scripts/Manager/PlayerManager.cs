@@ -5,8 +5,8 @@ using System;
 
 public class PlayerManager : MonoBehaviour, IInitialized
 {
-    public List<Player> allPlayers = new List<Player>();
-    public HumanPlayer activePlayer;
+    public List<Magnate> allPlayers = new List<Magnate>();
+    public Magnate activePlayer;
     public static PlayerManager instance;
 
     public void Initialize() {
@@ -15,6 +15,6 @@ public class PlayerManager : MonoBehaviour, IInitialized
         } else {
             Debug.LogError("You've put another Player Manager somewhere");
         }
-        activePlayer = new HumanPlayer();
+        activePlayer = new Magnate();
     }
 }

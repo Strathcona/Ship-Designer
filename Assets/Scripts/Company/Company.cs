@@ -8,8 +8,8 @@ public class Company : IHasFunds, IHasOwner{
     public string name;
     public string companyType;
     public LayeredColoredSprite logo;
-    private Player owner;
-    public Player Owner {
+    private Magnate owner;
+    public Magnate Owner {
         get { return owner; }
         set {
             ChangeOwner(value);
@@ -23,13 +23,13 @@ public class Company : IHasFunds, IHasOwner{
         }
     }
     public event Action<int> OnFundsChangeEvent;
-    public event Action<Player> OnOwnerChangeEvent;
+    public event Action<Magnate> OnOwnerChangeEvent;
     public AIPlayer boardOfDirectors;
     private List<Department> departments = new List<Department>();
     public EngineeringDepartment engineeringDepartment;
     public FinanceDepartment financeDepartment;
 
-    public Company(Player founder) {
+    public Company(Magnate founder) {
         owner = founder;
         boardOfDirectors = new AIPlayer();
         boardOfDirectors.FirstName = "Board of Directors";
@@ -54,10 +54,10 @@ public class Company : IHasFunds, IHasOwner{
         }
     }
 
-    public Player GetOwner() {
+    public Person GetOwner() {
         return Owner;
     }
-    public void ChangeOwner(Player newOwner) {
+    public void ChangeOwner(Magnate newOwner) {
         owner.LoseOwnership(this);
         if(newOwner == null) {
             owner = boardOfDirectors;

@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class NPCDisplay : MonoBehaviour {
     public NPC npc;
-    public Image npcPortrait;
+    public LayeredColoredSpriteDisplay npcPortrait;
     public Text npcName;
 
     public void DisplayNPC(NPC n) {
         Clear();
         npc = n;
-        npcName.text = n.firstName + " " + n.lastName;
-        npcPortrait.sprite = npc.sprite;
+        npcName.text = n.FirstName + " " + n.LastName;
+        npcPortrait.DisplayLayeredColoredSprite(npc.Portrait);
     }
 
     public void Clear() {
