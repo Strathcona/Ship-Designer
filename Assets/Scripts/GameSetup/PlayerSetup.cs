@@ -10,6 +10,7 @@ public class PlayerSetup : MonoBehaviour{
     public InputField lastName;
     public Dropdown title;
     public PortraitGenerator portraitGenerator;
+    public GeneralDisplayList speciesList;
     public Button nextButton;
     public Magnate player;
 
@@ -26,29 +27,20 @@ public class PlayerSetup : MonoBehaviour{
     }
 
     private void Start() {
+        speciesList.Display(GameDataManager.instance.Species);
+        speciesList.OnListElementSelectedEvent += portraitGenerator.SetSpecies;
         firstName.onValueChanged.AddListener(SetPlayerFirstName);
         lastName.onValueChanged.AddListener(SetPlayerLastName);
         firstName.text = StringLoader.GetAString("FirstNamesMasculine");
         lastName.text = StringLoader.GetAString("LastNames");
         player.Portrait = portraitGenerator.Portrait;
-        nextButton.interactable = false;
     }
 
     public void SetPlayerFirstName(string input) {
         player.FirstName = input;
-        if (input != "") {
-            nextButton.interactable = true;
-        } else {
-            nextButton.interactable = false;
-        }
     }
 
     public void SetPlayerLastName(string input) {
         player.LastName = input;
-        if (input != "") {
-            nextButton.interactable = true;
-        } else {
-            nextButton.interactable = false;
-        }
     }
 }

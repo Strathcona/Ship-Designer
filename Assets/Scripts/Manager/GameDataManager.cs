@@ -13,7 +13,7 @@ public class GameDataManager : MonoBehaviour, IInitialized {
     public Company[] Companies { get { return companies.ToArray(); } }
 
     private List<Species> species = new List<Species>();
-    public Species[] Species { get { return species.ToArray(); } }
+    public Species[] Species { get {return species.ToArray(); } }
 
     public GalaxyData masterGalaxyData;
 
@@ -36,6 +36,10 @@ public class GameDataManager : MonoBehaviour, IInitialized {
             }
         }
         entities.Clear();
+    }
+
+    public void ClearAllSpecies() {
+        species.Clear();
     }
 
     public void AddNewEntity(GalaxyEntity entity) {

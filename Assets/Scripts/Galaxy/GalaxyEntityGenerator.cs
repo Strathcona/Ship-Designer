@@ -13,7 +13,8 @@ public class GalaxyEntityGenerator : MonoBehaviour
     public GalaxyData data;
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
     public GalaxyDisplay previewDisplay;
-
+    public GeneralDisplayList entityList;
+    public GeneralDisplayList speciesList;
     public List<Color> entityPallette = new List<Color>();
 
     private void Awake() {
@@ -24,12 +25,13 @@ public class GalaxyEntityGenerator : MonoBehaviour
 
     public void GenerateEntities() {
         data = GameDataManager.instance.masterGalaxyData;
+        GameDataManager.instance.ClearAllEntities();
+        GameDataManager.instance.ClearAllSpecies();
+
         string[] speciesNames = MarkovGenerator.GenerateMarkovWord(StringLoader.GetAllStrings("SpeciesButterfly"), numberOfSpecies);
         for(int i = 0; i < numberOfSpecies; i++) {
             GameDataManager.instance.AddNewSpecies(SpeciesGenerator.GetSpecies(speciesNames[i]));
         }
-
-        GameDataManager.instance.ClearAllEntities();
         for(int i =0; i < data.sectors.Length; i++) {
             for(int j=0; j< data.sectors[0].Length; j++) {
                 if(data.sectors[i][j].Owner == null && data.sectors[i][j].systemCount > 0) {
@@ -65,7 +67,8 @@ public class GalaxyEntityGenerator : MonoBehaviour
             Debug.Log(g.Government.leader.FullName + " "+g.Government.governmentName);
             GameDataManager.instance.AddNewEntity(g);
         }
-
+        entityList.Display(GameDataManager.instance.Entitites);
+        speciesList.Display(GameDataManager.instance.Species);
         previewDisplay.ShowTerritory();
     }
 

@@ -15,6 +15,9 @@ public class LayeredColoredSpriteDisplay: MonoBehaviour {
     }
 
     public void DisplayLayeredColoredSprite(LayeredColoredSprite layeredColoredSprite) {
+        if(imagePool == null) {
+            imagePool = new GameObjectPool(imagePrefab, root);
+        } 
         imagePool.ReleaseAll();
         if (layeredColoredSprite != null) {
             if(this.layeredColoredSprite != null) {

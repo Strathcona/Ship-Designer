@@ -1,22 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameConstructs;
 
 public static class SpeciesGenerator {
 
     public static Species GetSpecies(string name="") {
-        Color[] colors = new Color[7] {
-            Color.red,
-            Color.magenta,
-            Color.yellow,
-            Color.green,
-            Color.blue,
-            Color.cyan,
-            Color.grey
-        };
         GradientColorKey[] colorKeys = new GradientColorKey[3];
         float position = 0.0f;
         for (int i = 0; i < 3; i++) {
-            colorKeys[i] = new GradientColorKey(colors[UnityEngine.Random.Range(0, 7)], position);
+            colorKeys[i] = new GradientColorKey(Constants.GetRandomPastelColor(), position);
             position += 0.50f;
         }
         GradientAlphaKey[] alphaKeys = new GradientAlphaKey[2] {

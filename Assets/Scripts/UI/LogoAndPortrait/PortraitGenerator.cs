@@ -26,6 +26,31 @@ public class PortraitGenerator: MonoBehaviour {
         Color.grey
     };
 
+    public void SetSpecies(Species s) {
+        layer1Sprites.Clear();
+        layer1Sprites.AddRange(s.portraitRange);
+        layerColors.Clear();
+        layerColors.AddRange(s.SpeciesColor());
+        layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
+        color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
+        CycleLayer();
+        CycleColor();
+    }
+
+    public void SetSpecies(IDisplayed s) {
+        Species species = (Species)s;
+        if(species != null) {
+            layer1Sprites.Clear();
+            layer1Sprites.AddRange(species.portraitRange);
+            layerColors.Clear();
+            layerColors.AddRange(species.SpeciesColor());
+            layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
+            color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
+            CycleLayer();
+            CycleColor();
+        }
+    }
+
     private void Awake() {
         portrait = new LayeredColoredSprite(1);
         portraitDisplay.DisplayLayeredColoredSprite(portrait);

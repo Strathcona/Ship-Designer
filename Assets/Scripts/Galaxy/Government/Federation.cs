@@ -8,8 +8,8 @@ public class Federation: EntityGovernment {
     private static string[] names = new string[] {
         "[NAME] Accord",
         "[NAME] Federation",
-        "[NAME] Leauge",
-        "Leauge of [NAME]",
+        "[NAME] League",
+        "League of [NAME]",
         "[NAME] Accord",
         "[NAME] Cooperative",
         "[NAME] Union"

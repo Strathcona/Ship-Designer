@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 
+[Serializable]
 public class LayeredColoredSprite : IHasLayeredSprites {
     private Sprite[] sprites;
     public Sprite[] Sprites {

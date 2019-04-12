@@ -5,11 +5,11 @@ using GameConstructs;
 
 public class Empire: EntityGovernment {
     private static Dictionary<Gender, string[]> titles = new Dictionary<Gender, string[]>() {
-        {Gender.Male, new string[]{"Emperor", "Executor", "Basilieus" } },
-        {Gender.Female, new string[]{ "Emperess", "Executor", "Sovriegn" } },
-        {Gender.Nonbinary, new string[]{ "Imperator", "Executor", "Sovriegn" } },
-        {Gender.None, new string[]{ "Imperator", "Executor", "Sovriegn" } },
-        {Gender.ThirdGender, new string[]{ "Imperator", "Executor", "Sovriegn" } }
+        {Gender.Male, new string[]{"Emperor", "Executor", "Basilieus", "Samrat" } },
+        {Gender.Female, new string[]{ "Emperess", "Executor", "Sovereign", "Samrajni" } },
+        {Gender.Nonbinary, new string[]{ "Imperator", "Executor", "Sovereign", "Sapa" } },
+        {Gender.None, new string[]{ "Imperator", "Executor", "Sovereign", "Beylerbey" } },
+        {Gender.ThirdGender, new string[]{ "Imperator", "Executor", "Sovereign", "Primor" } }
     };
     private static string[] names = new string[] {
         "Empire of [NAME]",

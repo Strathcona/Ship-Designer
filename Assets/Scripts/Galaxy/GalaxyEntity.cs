@@ -5,7 +5,7 @@ using UnityEngine;
 using GameConstructs;
 
 [System.Serializable]
-public class GalaxyEntity {
+public class GalaxyEntity: IDisplayed {
     public List<SectorData> territory = new List<SectorData>();
     public HashSet<SectorData> neighbouringSectors = new HashSet<SectorData>();
     public SectorData capitalSector;
@@ -25,6 +25,7 @@ public class GalaxyEntity {
             government = value;
             value.TransitionToGovernment(this);
             OnGovernmentChangeEvent?.Invoke(this);
+            DisplayUpdateEvent?.Invoke(this);
         }
     }
 
@@ -35,6 +36,14 @@ public class GalaxyEntity {
 
     public string name;
     public string adjective;
+
+    public string[] DisplayStrings {
+        get { return new string[1] { Government.governmentName }; }
+    }
+    public LayeredColoredSprite[] DisplaySprites {
+        get { return new LayeredColoredSprite[1] { flag }; }
+    }
+    public event Action<IDisplayed> DisplayUpdateEvent;
 
     public void LoseTerritory(SectorData tile) {
         territory.Remove(tile);

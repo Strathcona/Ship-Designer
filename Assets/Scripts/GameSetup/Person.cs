@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using GameConstructs;
 
-public class Person {
+public class Person : IDisplayed{
     protected string title = "";
     public string Title {
         get { return title; }
@@ -69,6 +69,9 @@ public class Person {
         }
     }
 
+    public string[] DisplayStrings { get { return new string[3] { FirstName +" "+LastName, Title, Epithet }; } }
+    public LayeredColoredSprite[] DisplaySprites { get { return new LayeredColoredSprite[1] { Portrait }; } }
+    public event Action<IDisplayed> DisplayUpdateEvent;
     public event Action<Person> OnPlayerDetailsChangeEvent;
 
 }

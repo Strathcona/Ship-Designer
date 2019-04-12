@@ -35,6 +35,9 @@ public static class SpriteLoader {
             string fileName = file.Name.Substring(0, file.Name.Length - 4);
             //trim off the .png
             Sprite s = Resources.Load<Sprite>(path +"/"+ fileName);
+            if(s == null) {
+                Debug.LogError("Loaded Null Sprite "+fileName);
+            }
             //check if the last digits are "thing_###"
             //We store those together, not in new entries
             //that way when we search "thing" we can get all "thing_001" "thing_002" ...

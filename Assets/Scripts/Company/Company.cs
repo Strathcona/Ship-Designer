@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameConstructs;
 
-public class Company : IHasFunds, IHasOwner{
+public class Company : IHasFunds, IHasOwner, IDisplayed{
     public string name;
     public string companyType;
     public LayeredColoredSprite logo;
@@ -28,6 +28,9 @@ public class Company : IHasFunds, IHasOwner{
     private List<Department> departments = new List<Department>();
     public EngineeringDepartment engineeringDepartment;
     public FinanceDepartment financeDepartment;
+    public string[] DisplayStrings { get { return new string[1] { name }; } }
+    public LayeredColoredSprite[] DisplaySprites { get { return new LayeredColoredSprite[1] { logo }; } }
+    public event Action<IDisplayed> DisplayUpdateEvent;
 
     public Company(Magnate founder) {
         owner = founder;
