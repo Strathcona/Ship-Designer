@@ -22,7 +22,6 @@ public class SectorData {
     public List<Action> onRefresh = new List<Action>();
     public float normalizedCount;
     public List<GalaxyFeature> features = new List<GalaxyFeature>();
-
     public static int[] orthogonal = new int[4] { 1, 3, 4, 6 };
     public static Coord[] neighbourDeltas = new Coord[8] {
         new Coord(-1, -1),

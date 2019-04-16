@@ -19,8 +19,6 @@ public class GalaxyDataGenerator : MonoBehaviour {
     public float armWidth = 30.0f; // in degrees
     public float fuzzFactor = 15.0f;
 
-    public GalaxyDisplay previewDisplay;
-
     public GalaxyData data;
 
     private void Start() {
@@ -64,7 +62,7 @@ public class GalaxyDataGenerator : MonoBehaviour {
         data.maxCount = maxCount;
         data.averageCount = (float) (buldgeCount + armCount) / (filledCoords.Count);
         Debug.Log(data.averageCount);
-        previewDisplay.DisplayGalaxyData(data);
+        WorldMap.instance.DisplayGalaxyData(data);
     }
 
     private Coord GetSystem(bool buldge, float phi = 0.0f) {
