@@ -9,6 +9,7 @@ public class WorldMap : MonoBehaviour {
     public GameObjectPool sectorObjectPool;
     public GameObject sectorObjectPrefab;
     public Gradient gradient;
+    public List<SectorObject> allSectors = new List<SectorObject>();
     private GradientAlphaKey[] a = new GradientAlphaKey[] {
         new GradientAlphaKey(1.0f, 0),
         new GradientAlphaKey(1.0f, 1.0f)
@@ -36,6 +37,9 @@ public class WorldMap : MonoBehaviour {
     }
 
     public void DisplayGalaxyData(GalaxyData d) {
+        allSectors.Clear();
+        sectorObjectPool.ReleaseAll();
+
         float xpos = 0;
         float ypos = 0;
 
@@ -45,12 +49,25 @@ public class WorldMap : MonoBehaviour {
                 GameObject g = sectorObjectPool.GetGameObject();
                 g.transform.position = new Vector3(xpos, ypos, 0);
                 SectorObject so = g.GetComponent<SectorObject>();
-                so.SetColor(gradient.Evaluate((float) d.sectors[x][y].systemCount / d.maxCount));
+                allSectors.Add(so);
+                so.baseColor = gradient.Evaluate((float) d.sectors[x][y].systemCount / d.maxCount);
+                so.DisplayBaseColor();
                 so.DisplaySector(d.sectors[x][y]);
-                so.SortingOrder = y + x * d.sectors[0].Length;
                 ypos += spacing;
             }
             xpos += spacing;
+        }
+    }
+
+    public void ShowTerritory() {
+        foreach (SectorObject s in allSectors) {
+            s.DisplayOwner();
+        }
+    }
+
+    public void ShowSystems() {
+        foreach (SectorObject s in allSectors) {
+            s.DisplayBaseColor();
         }
     }
 }

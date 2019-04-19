@@ -10,16 +10,8 @@ public class SectorObject: MonoBehaviour{
 
     public int bitmask;
     public Color baseColor;
-    public SpriteRenderer bottom;
-    public SpriteRenderer middle;
-    public SpriteRenderer top;
+    public SpriteRenderer background;
     public SectorData sectorData;
-    public int SortingOrder {
-        set { bottom.sortingOrder = value;
-            middle.sortingOrder = value;
-            top.sortingOrder = value;
-        }
-    }
     public void DisplaySector(SectorData _sectorData) {
         sectorData = _sectorData;
         sectorData.onRefresh.Add(Refresh);
@@ -28,10 +20,22 @@ public class SectorObject: MonoBehaviour{
     public void Refresh() {
     }
 
+    public void SetTransparent(bool transparent) {
+        background.enabled = transparent;
+    }
+
     public void SetColor(Color c) {
-        bottom.color = c;
-        middle.color = c;
-        top.color = c;
+        background.color = c;
+    }
+
+    public void DisplayBaseColor() {
+        background.color = baseColor;
+    }
+
+    public void DisplayOwner() {
+        if(sectorData.Owner != null) {
+            SetColor(sectorData.Owner.flag.Colors[0]);
+        }
     }
 /*
     public void RecalculateBorder() {

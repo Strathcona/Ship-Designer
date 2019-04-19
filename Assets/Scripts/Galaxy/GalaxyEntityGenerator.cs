@@ -69,7 +69,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
         }
         entityList.Display(GameDataManager.instance.Entitites);
         speciesList.Display(GameDataManager.instance.Species);
-        previewDisplay.ShowTerritory();
+        WorldMap.instance.ShowTerritory();
     }
 
     private List<List<SectorData>> GenerateSectorPartitions(List<SectorData> unoccupied) {

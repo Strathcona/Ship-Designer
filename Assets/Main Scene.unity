@@ -9073,12 +9073,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cffdef1efa3cdc40b696d0f9f7c63dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTranslateSpeed: 0.02
-  maxX: 3
-  maxY: 3
+  cameraTranslateSpeed: 0.1
+  cameraZoomSpeed: 7
+  maxX: 32
+  maxY: 32
   minX: 0
   minY: 0
-  minZ: -2
+  z: -5
+  minFoV: 10
+  maxFoV: 140
 --- !u!1 &537040794
 GameObject:
   m_ObjectHideFlags: 0
@@ -11377,7 +11380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c9cf6d433de7d4fb1847f80ff13d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 0.15
+  spacing: 1
   root: {fileID: 666742284}
   sectorObjectPrefab: {fileID: 7199932020314522980, guid: a7a45d96ffb2aa5499c816b5ef5e8c75,
     type: 3}
@@ -11410,6 +11413,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  allSectors: []
 --- !u!1001 &675332515
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19057,7 +19061,6 @@ MonoBehaviour:
   armWidthInput: {fileID: 663970160}
   armWidth: 30
   fuzzFactor: 15
-  previewDisplay: {fileID: 1794973776}
 --- !u!1 &1107635902
 GameObject:
   m_ObjectHideFlags: 0
