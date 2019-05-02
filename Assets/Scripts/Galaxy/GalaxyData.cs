@@ -8,11 +8,7 @@ public class GalaxyData {
     public int maxCount;
     public float averageCount;
 
-    public GalaxyData() {
-
-    }
-
-    public void SetGalaxyData(int size) {
+    public void Initialize(int size) {
         sectors = new SectorData[size][];
         for (int i = 0; i < size; i++) {
             sectors[i] = new SectorData[size];

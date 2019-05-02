@@ -28,7 +28,6 @@ public class WorldMap : MonoBehaviour {
         gradient = new Gradient();
         gradient.colorKeys = c;
         gradient.alphaKeys = a;
-        Debug.Log(gradient.Evaluate(0)+ " "+gradient.Evaluate(1));
         sectorObjectPool = new GameObjectPool(sectorObjectPrefab, root);
     }
 
@@ -51,7 +50,11 @@ public class WorldMap : MonoBehaviour {
                 SectorObject so = g.GetComponent<SectorObject>();
                 allSectors.Add(so);
                 so.baseColor = gradient.Evaluate((float) d.sectors[x][y].systemCount / d.maxCount);
-                so.DisplayBaseColor();
+                if(d.sectors[x][y].systemCount == 0) {
+                    so.SetTransparent(true);
+                } else {
+                    so.DisplayBaseColor();
+                }
                 so.DisplaySector(d.sectors[x][y]);
                 ypos += spacing;
             }

@@ -28,12 +28,22 @@ public class PlayerSetup : MonoBehaviour{
 
     private void Start() {
         speciesList.Display(GameDataManager.instance.Species);
-        speciesList.OnListElementSelectedEvent += portraitGenerator.SetSpecies;
+        speciesList.OnListElementSelectedEvent += SpeciesListChange;
+        portraitGenerator.OnLayeredSpriteChangeEvent += PortraitGeneratorChange;
+        speciesList.ForceSelect(0);
         firstName.onValueChanged.AddListener(SetPlayerFirstName);
         lastName.onValueChanged.AddListener(SetPlayerLastName);
         firstName.text = StringLoader.GetAString("FirstNamesMasculine");
         lastName.text = StringLoader.GetAString("LastNames");
-        player.Portrait = portraitGenerator.Portrait;
+    }
+
+    public void SpeciesListChange(IDisplayed species) {
+        portraitGenerator.SetSpecies((Species)species);
+        player.Species = (Species) species;
+    }
+
+    public void PortraitGeneratorChange(LayeredColoredSprite portrait) {
+        player.Portrait = portrait;
     }
 
     public void SetPlayerFirstName(string input) {

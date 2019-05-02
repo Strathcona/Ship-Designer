@@ -6,22 +6,44 @@ using UnityEngine.EventSystems;
 using GameConstructs;
 using System;
 
-public class SectorObject: MonoBehaviour{
+public class SectorObject: MonoBehaviour, IDisplayed{
 
     public int bitmask;
     public Color baseColor;
+    private Color borderColor;
+    public Color BorderColor {
+        get { return borderColor; }
+        set {
+            borderColor = value;
+            border.color = borderColor;
+        }
+    }
     public SpriteRenderer background;
+    public SpriteRenderer border;
+    public Sprite currentBorder;
     public SectorData sectorData;
+    public string[] DisplayStrings {
+        get { return sectorData.DisplayStrings; }
+    }
+    public LayeredColoredSprite[] DisplaySprites {
+        get { return sectorData.DisplaySprites; }
+    }
+    public event Action<IDisplayed> DisplayUpdateEvent;
     public void DisplaySector(SectorData _sectorData) {
         sectorData = _sectorData;
-        sectorData.onRefresh.Add(Refresh);
+        sectorData.SectorDataRefreshEvent += Refresh;
+        Refresh(sectorData);
     }
 
-    public void Refresh() {
+    public void Refresh(SectorData data) {
+        if(sectorData.Owner != null) {
+            BorderColor = sectorData.Owner.flag.Colors[1];
+        }
+        RecalculateBorder();
     }
 
     public void SetTransparent(bool transparent) {
-        background.enabled = transparent;
+        background.enabled = !transparent;
     }
 
     public void SetColor(Color c) {
@@ -37,10 +59,10 @@ public class SectorObject: MonoBehaviour{
             SetColor(sectorData.Owner.flag.Colors[0]);
         }
     }
-/*
+
     public void RecalculateBorder() {
         if (sectorData.Owner != null) {
-            borderImage.gameObject.SetActive(true);
+            border.enabled = true;
             bitmask = 0;
             //X, 1, X
             //2, O, 4,
@@ -52,7 +74,6 @@ public class SectorObject: MonoBehaviour{
             } else {
                 bitmask += 1;
             }
-
             if (sectorData.neighbours[3] != null) {
                 if (sectorData.neighbours[3].Owner != sectorData.Owner) {
                     bitmask += 2;
@@ -76,74 +97,74 @@ public class SectorObject: MonoBehaviour{
             }
             switch (bitmask) {
                 case 0:
-                    borderImage.gameObject.SetActive(false);
+                    border.enabled = false;
                     break;
                 case 1:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     break;
                 case 2:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
                     break;
                 case 3:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     break;
                 case 4:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270.0f));
                     break;
                 case 5:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270.0f));
                     break;
                 case 6:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopBottom"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopBottom"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
                     break;
                 case 7:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     break;
                 case 8:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["Top"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180.0f));
                     break;
                 case 9:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopBottom"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopBottom"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     break;
                 case 10:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
                     break;
                 case 11:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90.0f));
                     break;
                 case 12:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeft"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180.0f));
                     break;
                 case 13:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270.0f));
                     break;
                 case 14:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180.0f));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRight"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 180.0f));
                     break;
                 case 15:
-                    borderImage.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRightBottom"];
-                    borderImage.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    border.sprite = SpriteLoader.bitmaskBorderSprites["TopLeftRightBottom"];
+                    border.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     break;
             }
+            currentBorder = border.sprite;
         } else {
-            borderImage.gameObject.SetActive(false);
+            border.enabled = false;
         }
     }
-    */
     public void Clear() {
         sectorData = null;
     }

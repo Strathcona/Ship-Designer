@@ -60,6 +60,18 @@ public class GalaxyEntity: IDisplayed {
         RecaluclateNeighboringSectors();
     }
 
+    public void GainTerritory(List<SectorData> data) {
+        foreach(SectorData d in data) {
+            if (d.Owner != null) {
+                d.Owner.LoseTerritory(d);
+            }
+            d.Owner = this;
+            controlledSystems += d.systemCount;
+        }
+        territory.AddRange(data);
+        RecaluclateNeighboringSectors();
+    }
+
     public void RecaluclateNeighboringSectors() {
         foreach(SectorData s in territory) {
             foreach(SectorData n in Array.FindAll(s.neighbours, i => i != null && i.Owner != this)) {

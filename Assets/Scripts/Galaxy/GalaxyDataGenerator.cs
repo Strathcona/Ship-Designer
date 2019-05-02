@@ -40,22 +40,62 @@ public class GalaxyDataGenerator : MonoBehaviour {
     }
 
     public void GenerateGalaxy() {
-        data.SetGalaxyData(size);
+        data.Initialize(size);
         int maxCount = 0; //used for normalizing
-        float phi = Random.Range(0.0f, 180.0f);//random phase shift
         HashSet<Coord> filledCoords = new HashSet<Coord>();
-        for (int i = 0; i < buldgeCount + armCount; i++) {
-            Coord c;
-            if (i > buldgeCount) {
-                c = GetSystem(false, phi);
-            } else {
-                c = GetSystem(true);
+        float phi = Random.Range(0.0f, 180.0f);//random phase shift
+        //buldge
+        for (int i = 0; i < buldgeCount; i++){
+            float distance = Random.Range(0.0f, hubRadius);
+            float distanceFuzz = distance + Random.Range(-hubRadius / 10, hubRadius / 10);
+            float theta = Random.Range(0.0f, 360.0f);
+            int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
+            int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
+            if (x < size && y < size && x >= 0 && y >= 0) {
+                data.sectors[x][y].systemCount += 1;
+                filledCoords.Add(new Coord(x, y));
+                if (data.sectors[x][y].systemCount > maxCount) {
+                    maxCount = data.sectors[x][y].systemCount;
+                }
             }
-            filledCoords.Add(c);
-            if (c.x < size && c.y < size && c.x >= 0 && c.y >= 0) {
-                data.sectors[c.x][c.y].systemCount += 1;
-                if (data.sectors[c.x][c.y].systemCount > maxCount) {
-                    maxCount = data.sectors[c.x][c.y].systemCount;
+        }
+        //if we've got no arms it's just a big circle
+        if (armCount <= 0) {
+            for (int i = 0; i < armCount; i++) {
+                float distance = Random.Range(0.0f, diskRadius);
+                float distanceFuzz = distance + Random.Range(-diskRadius / 10, diskRadius / 10);
+                float theta = Random.Range(0.0f, 360.0f);
+                int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
+                int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
+                if (x < size && y < size && x >= 0 && y >= 0) {
+                    data.sectors[x][y].systemCount += 1;
+                    filledCoords.Add(new Coord(x, y));
+                    if (data.sectors[x][y].systemCount > maxCount) {
+                        maxCount = data.sectors[x][y].systemCount;
+                    }
+                }
+            }
+        } else {
+            //arms
+            for (int i = 0; i < armCount; i++) {
+                float armDelta = 0.0f;
+                float distance = hubRadius + Random.Range(0.0f, diskRadius); //where along the arm it is
+                float distanceFuzz = distance + Random.Range(-diskRadius / 10, diskRadius / 10);
+                armDelta = 360 / numberOfArms;
+                float theta = ((360.0f * armWinding * (distanceFuzz / diskRadius)));
+                theta += Random.Range(0.0f, armWidth); //where across the arm it is
+                theta += armDelta * (float)Random.Range(0, numberOfArms); //which arm it is
+                theta += Random.Range(0.0f, fuzzFactor); //fuzz
+                theta += phi; //phase shift
+                int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
+                int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
+                if (x < size && y < size && x >= 0 && y >= 0) {
+                    data.sectors[x][y].systemCount += 1;
+                    filledCoords.Add(new Coord(x, y));
+                    if (data.sectors[x][y].systemCount > maxCount) {
+                        maxCount = data.sectors[x][y].systemCount;
+                        Debug.Log("Placing Arm at " + x + " " + y);
+                    }
                 }
             }
         }
@@ -63,41 +103,5 @@ public class GalaxyDataGenerator : MonoBehaviour {
         data.averageCount = (float) (buldgeCount + armCount) / (filledCoords.Count);
         Debug.Log(data.averageCount);
         WorldMap.instance.DisplayGalaxyData(data);
-    }
-
-    private Coord GetSystem(bool buldge, float phi = 0.0f) {
-        int x = 0;
-        int y = 0;
-        if (buldge) {
-            float distance = Random.Range(0.0f, hubRadius);
-            float distanceFuzz = distance + Random.Range(-hubRadius / 10, hubRadius / 10);
-
-            float theta = Random.Range(0.0f, 360.0f);
-            x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
-            y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
-            return new Coord(x, y);
-        } else {
-            //arms
-            float armDelta = 0.0f;
-            float distance = hubRadius + Random.Range(0.0f, diskRadius);
-            float distanceFuzz = distance + Random.Range(-diskRadius / 10, diskRadius / 10);
-
-            if (numberOfArms != 0) {
-                armDelta = 360 / numberOfArms;
-            } else if (numberOfArms == 0){
-                x = size / 2 + Mathf.RoundToInt(Mathf.Cos(Random.Range(0.0f, 360.0f) * Mathf.PI / 180) * Random.Range(0.0f, armRadius));
-                y = size / 2 + Mathf.RoundToInt(Mathf.Sin(Random.Range(0.0f, 360.0f) * Mathf.PI / 180) * Random.Range(0.0f, armRadius));
-                return new Coord(x, y);
-            }
-
-            float theta = ((360.0f * armWinding * (distanceFuzz / diskRadius)));
-            theta += Random.Range(0.0f, armWidth);
-            theta += armDelta * (float)Random.Range(0, numberOfArms);
-            theta += Random.Range(0.0f, fuzzFactor);
-            theta += phi;
-            x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
-            y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
-            return new Coord(x, y);
-        }
     }
 }

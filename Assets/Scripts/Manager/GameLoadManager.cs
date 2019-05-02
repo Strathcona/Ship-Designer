@@ -19,6 +19,6 @@ public class GameLoadManager : MonoBehaviour {
     }
 
     public void DoneStartingNewGame() {
-        ScreenManager.instance.DisplayCanvas("Company Overview");
+        ScreenManager.instance.DisplayCanvas("World Galaxy Map UI");
     }
 }

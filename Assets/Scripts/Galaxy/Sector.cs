@@ -25,10 +25,10 @@ public class Sector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
     public void DisplaySector(SectorData _sectorData) {
         sectorData = _sectorData;
-        sectorData.onRefresh.Add(Refresh);
+        sectorData.SectorDataRefreshEvent += Refresh;
     }
 
-    public void Refresh() {
+    public void Refresh(SectorData sectorData) {
         RecalculateBorder();
     }
 

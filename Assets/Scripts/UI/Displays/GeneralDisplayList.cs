@@ -15,6 +15,15 @@ public class GeneralDisplayList: MonoBehaviour {
         displayPool = new GameObjectPool(entityDisplayPrefab, root);
     }
 
+    public void ForceSelect(int index) {
+        if (selectable) {
+            if(index < displayPool.usedObjects.Count) {
+                GeneralDisplay d = displayPool.usedObjects[index].GetComponent<GeneralDisplay>();
+                OnSelect(d);
+            }
+        }
+    }
+
     public void Display(IDisplayed[] toDisplay) {
         displayPool.ReleaseAll();
         foreach (IDisplayed d in toDisplay) {

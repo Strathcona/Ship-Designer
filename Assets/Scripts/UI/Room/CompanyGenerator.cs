@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class CompanyGenerator : MonoBehaviour {
+    public static CompanyGenerator instance;
     public InputField companyName;
     public InputFieldIncrement personalFundsAdded;
     public InputFieldIncrement investorFundsAdded;
@@ -10,6 +11,14 @@ public class CompanyGenerator : MonoBehaviour {
     public Magnate founder;
     private static int AICompanyCount = 0;
     // Use this for initialization
+    private void Awake() {
+        if(instance == null) {
+            instance = this;
+        } else {
+            Debug.LogError("More than one Company Generator");
+        }
+    }
+
 
     public void CancelGeneratingCompany() {
         gameObject.SetActive(false);

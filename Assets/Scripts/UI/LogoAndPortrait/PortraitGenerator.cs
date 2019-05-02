@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
+using System;
 public class PortraitGenerator: MonoBehaviour {
     private LayeredColoredSprite portrait;
     public LayeredColoredSprite Portrait {
@@ -26,7 +26,11 @@ public class PortraitGenerator: MonoBehaviour {
         Color.grey
     };
 
+    public event Action<LayeredColoredSprite> OnLayeredSpriteChangeEvent;
+
     public void SetSpecies(Species s) {
+        portrait = new LayeredColoredSprite(1);
+        portraitDisplay.DisplayLayeredColoredSprite(portrait);
         layer1Sprites.Clear();
         layer1Sprites.AddRange(s.portraitRange);
         layerColors.Clear();
@@ -35,30 +39,7 @@ public class PortraitGenerator: MonoBehaviour {
         color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
         CycleLayer();
         CycleColor();
-    }
 
-    public void SetSpecies(IDisplayed s) {
-        Species species = (Species)s;
-        if(species != null) {
-            layer1Sprites.Clear();
-            layer1Sprites.AddRange(species.portraitRange);
-            layerColors.Clear();
-            layerColors.AddRange(species.SpeciesColor());
-            layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
-            color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
-            CycleLayer();
-            CycleColor();
-        }
-    }
-
-    private void Awake() {
-        portrait = new LayeredColoredSprite(1);
-        portraitDisplay.DisplayLayeredColoredSprite(portrait);
-        layer1Sprites = SpriteLoader.GetSetOfAlienSprites("Humanoid");
-        layer1Index = UnityEngine.Random.Range(0, layer1Sprites.Count - 1);
-        color1Index = UnityEngine.Random.Range(0, layerColors.Count - 1);
-        CycleLayer();
-        CycleColor();
     }
 
     public void SetSpriteSet(Sprite[] sprites) {
@@ -67,23 +48,28 @@ public class PortraitGenerator: MonoBehaviour {
     }
 
     public void CycleLayer() {
-        if (layer1Index >= layer1Sprites.Count - 1) {
-            layer1Index = 0;
-        } else {
-            layer1Index += 1;
+        if(layer1Sprites.Count > 0) {
+            if (layer1Index >= layer1Sprites.Count - 1) {
+                layer1Index = 0;
+            } else {
+                layer1Index += 1;
+            }
+            portrait.SetSprite(0, layer1Sprites[layer1Index]);
+            cycleLayer1.GetComponentInChildren<Text>().text = layer1Index.ToString();
         }
-        portrait.SetSprite(0, layer1Sprites[layer1Index]);
-        cycleLayer1.GetComponentInChildren<Text>().text = layer1Index.ToString();
+        OnLayeredSpriteChangeEvent?.Invoke(portrait);
     }
 
     public void CycleColor() {
-        if (color1Index >= layerColors.Count - 1) {
-            color1Index = 0;
-        } else {
-            color1Index += 1;
+        if(layerColors.Count > 0) {
+            if (color1Index >= layerColors.Count - 1) {
+                color1Index = 0;
+            } else {
+                color1Index += 1;
+            }
+            portrait.SetColor(0, layerColors[color1Index]);
+            cycleColor1.GetComponent<Image>().color = portrait.Colors[0];
         }
-        portrait.SetColor(0, layerColors[color1Index]);
-        cycleColor1.GetComponent<Image>().color = portrait.Colors[0];
-       
+        OnLayeredSpriteChangeEvent?.Invoke(portrait);
     }
 }

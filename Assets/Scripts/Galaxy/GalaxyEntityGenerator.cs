@@ -112,17 +112,15 @@ public class GalaxyEntityGenerator : MonoBehaviour
     }
 
     public GalaxyEntity GetEntity(List<SectorData> territory) {
-        string[] entityStrings = StringLoader.GetAllStrings("EntityStrings");
         GalaxyEntity g = new GalaxyEntity();
+        g.flag = LayeredSpriteGenerator.GenerateLayeredSprites(new List<string>() { "FlagBack", "FlagMid", "FlagFront" }, entityPallette)[0];
+        g.color = g.flag.Colors[0];
+        string[] entityStrings = StringLoader.GetAllStrings("EntityStrings");
         SectorData capital = territory[UnityEngine.Random.Range(0, territory.Count)];
         territory.Remove(capital);
         g.capitalSector = capital;
-        foreach(SectorData sector in territory) {
-            g.GainTerritory(sector);
-        }
+        g.GainTerritory(territory);        
         g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
-        g.flag = LayeredSpriteGenerator.GenerateLayeredSprites(new List<string>() { "FlagBack", "FlagMid", "FlagFront" }, entityPallette)[0];
-        g.color = g.flag.Colors[0];
         g.adjective = entityStrings[2];
         g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.fullName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
         TimeManager.SetTimeTrigger(1, g.RequestNewGoals);

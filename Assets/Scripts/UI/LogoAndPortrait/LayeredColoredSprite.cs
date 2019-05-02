@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 [Serializable]
-public class LayeredColoredSprite : IHasLayeredSprites {
+public class LayeredColoredSprite {
     private Sprite[] sprites;
     public Sprite[] Sprites {
         get { return sprites; }
@@ -12,12 +12,12 @@ public class LayeredColoredSprite : IHasLayeredSprites {
     public Color[] Colors {
         get { return colors; }
     }
-    public event Action<IHasLayeredSprites> OnIHasLayeredSpriteChangeEvent;
+    public event Action<LayeredColoredSprite> OnLayeredSpriteChangeEvent;
 
     public bool SetSprite(int i, Sprite sprite) {
         if(i < sprites.Length) {
             sprites[i] = sprite;
-            OnIHasLayeredSpriteChangeEvent?.Invoke(this);
+            OnLayeredSpriteChangeEvent?.Invoke(this);
             return true;
         } else {
             return false;
@@ -26,7 +26,7 @@ public class LayeredColoredSprite : IHasLayeredSprites {
     public bool SetColor(int i, Color color) {
         if (i < colors.Length) {
             colors[i] = color;
-            OnIHasLayeredSpriteChangeEvent?.Invoke(this);
+            OnLayeredSpriteChangeEvent?.Invoke(this);
             return true;
         } else {
             return false;
