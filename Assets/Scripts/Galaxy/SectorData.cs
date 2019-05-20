@@ -17,16 +17,16 @@ public class SectorData: IDisplayed {
     }
     public Coord coord;
     public string sectorName = "";
-    public int systemCount = 0;
+    public int SystemCount = 0;
     public string SystemCountString {
         get {
-            if (systemCount == 0) {
+            if (SystemCount == 0) {
                 return "No Known Systems";
             }
-            if (systemCount == 1) {
+            if (SystemCount == 1) {
                 return "1 System";
             }
-            return systemCount.ToString() + " Systems";
+            return SystemCount.ToString() + " Systems";
         }
     }
     public SectorData[] neighbours = new SectorData[8] { null, null, null, null, null, null, null, null };

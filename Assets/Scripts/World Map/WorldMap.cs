@@ -49,10 +49,11 @@ public class WorldMap : MonoBehaviour {
                 g.transform.position = new Vector3(xpos, ypos, 0);
                 SectorObject so = g.GetComponent<SectorObject>();
                 allSectors.Add(so);
-                so.baseColor = gradient.Evaluate((float) d.sectors[x][y].systemCount / d.maxCount);
-                if(d.sectors[x][y].systemCount == 0) {
+                so.baseColor = gradient.Evaluate((float) d.sectors[x][y].SystemCount / d.maxCount);
+                if(d.sectors[x][y].SystemCount == 0) {
                     so.SetTransparent(true);
                 } else {
+                    so.SetTransparent(false);
                     so.DisplayBaseColor();
                 }
                 so.DisplaySector(d.sectors[x][y]);

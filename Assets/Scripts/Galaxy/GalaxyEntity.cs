@@ -47,7 +47,7 @@ public class GalaxyEntity: IDisplayed {
 
     public void LoseTerritory(SectorData tile) {
         territory.Remove(tile);
-        controlledSystems -= tile.systemCount;
+        controlledSystems -= tile.SystemCount;
     }
 
     public void GainTerritory(SectorData tile) {
@@ -55,7 +55,7 @@ public class GalaxyEntity: IDisplayed {
             tile.Owner.LoseTerritory(tile);
         }
         tile.Owner = this;
-        controlledSystems += tile.systemCount;
+        controlledSystems += tile.SystemCount;
         territory.Add(tile);
         RecaluclateNeighboringSectors();
     }
@@ -66,7 +66,7 @@ public class GalaxyEntity: IDisplayed {
                 d.Owner.LoseTerritory(d);
             }
             d.Owner = this;
-            controlledSystems += d.systemCount;
+            controlledSystems += d.SystemCount;
         }
         territory.AddRange(data);
         RecaluclateNeighboringSectors();

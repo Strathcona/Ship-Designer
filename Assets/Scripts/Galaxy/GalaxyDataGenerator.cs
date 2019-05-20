@@ -52,10 +52,10 @@ public class GalaxyDataGenerator : MonoBehaviour {
             int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
             int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
             if (x < size && y < size && x >= 0 && y >= 0) {
-                data.sectors[x][y].systemCount += 1;
+                data.sectors[x][y].SystemCount += 1;
                 filledCoords.Add(new Coord(x, y));
-                if (data.sectors[x][y].systemCount > maxCount) {
-                    maxCount = data.sectors[x][y].systemCount;
+                if (data.sectors[x][y].SystemCount > maxCount) {
+                    maxCount = data.sectors[x][y].SystemCount;
                 }
             }
         }
@@ -68,10 +68,10 @@ public class GalaxyDataGenerator : MonoBehaviour {
                 int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
                 int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
                 if (x < size && y < size && x >= 0 && y >= 0) {
-                    data.sectors[x][y].systemCount += 1;
+                    data.sectors[x][y].SystemCount += 1;
                     filledCoords.Add(new Coord(x, y));
-                    if (data.sectors[x][y].systemCount > maxCount) {
-                        maxCount = data.sectors[x][y].systemCount;
+                    if (data.sectors[x][y].SystemCount > maxCount) {
+                        maxCount = data.sectors[x][y].SystemCount;
                     }
                 }
             }
@@ -90,10 +90,10 @@ public class GalaxyDataGenerator : MonoBehaviour {
                 int x = size / 2 + Mathf.RoundToInt(Mathf.Cos(theta * Mathf.PI / 180) * distanceFuzz);
                 int y = size / 2 + Mathf.RoundToInt(Mathf.Sin(theta * Mathf.PI / 180) * distanceFuzz);
                 if (x < size && y < size && x >= 0 && y >= 0) {
-                    data.sectors[x][y].systemCount += 1;
+                    data.sectors[x][y].SystemCount += 1;
                     filledCoords.Add(new Coord(x, y));
-                    if (data.sectors[x][y].systemCount > maxCount) {
-                        maxCount = data.sectors[x][y].systemCount;
+                    if (data.sectors[x][y].SystemCount > maxCount) {
+                        maxCount = data.sectors[x][y].SystemCount;
                         Debug.Log("Placing Arm at " + x + " " + y);
                     }
                 }
@@ -101,7 +101,6 @@ public class GalaxyDataGenerator : MonoBehaviour {
         }
         data.maxCount = maxCount;
         data.averageCount = (float) (buldgeCount + armCount) / (filledCoords.Count);
-        Debug.Log(data.averageCount);
         WorldMap.instance.DisplayGalaxyData(data);
     }
 }

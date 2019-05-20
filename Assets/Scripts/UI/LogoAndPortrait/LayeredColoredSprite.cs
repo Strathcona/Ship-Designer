@@ -24,7 +24,9 @@ public class LayeredColoredSprite {
         }
     }
     public bool SetColor(int i, Color color) {
-        if (i < colors.Length) {
+        if (i < colors.Length)
+            {
+            Debug.Log("Setting color " + color);
             colors[i] = color;
             OnLayeredSpriteChangeEvent?.Invoke(this);
             return true;

@@ -67,32 +67,28 @@ public class SectorObject: MonoBehaviour, IDisplayed{
             //X, 1, X
             //2, O, 4,
             //X, 8, X
-            if (sectorData.neighbours[1] != null) {
-                if (sectorData.neighbours[1].Owner != sectorData.Owner) {
-                    bitmask += 1;
-                }
-            } else {
+            //neighbours
+            //2, 4, 7
+            //1, O, 6,
+            //0, 3, 5
+            if (sectorData.neighbours[4] == null) {
+                bitmask += 1;
+            } else if (sectorData.neighbours[4].Owner != sectorData.Owner) {
                 bitmask += 1;
             }
-            if (sectorData.neighbours[3] != null) {
-                if (sectorData.neighbours[3].Owner != sectorData.Owner) {
-                    bitmask += 2;
-                }
-            } else {
+            if (sectorData.neighbours[1] == null) {
+                bitmask += 2;
+            } else if (sectorData.neighbours[1].Owner != sectorData.Owner) {
                 bitmask += 2;
             }
-            if (sectorData.neighbours[4] != null) {
-                if (sectorData.neighbours[4].Owner != sectorData.Owner) {
-                    bitmask += 4;
-                }
-            } else {
+            if (sectorData.neighbours[6] == null) {
+                bitmask += 4;
+            } else if (sectorData.neighbours[6].Owner != sectorData.Owner) {
                 bitmask += 4;
             }
-            if (sectorData.neighbours[6] != null) {
-                if (sectorData.neighbours[6].Owner != sectorData.Owner) {
-                    bitmask += 8;
-                }
-            } else {
+            if (sectorData.neighbours[3] == null) {
+                bitmask += 8;
+            } else if (sectorData.neighbours[3].Owner != sectorData.Owner) {
                 bitmask += 8;
             }
             switch (bitmask) {

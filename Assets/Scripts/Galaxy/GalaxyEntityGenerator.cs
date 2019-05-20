@@ -8,7 +8,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
 {
     public int numberOfMajorPowers = 5;
     public int numberOfMinorPowers = 15;
-    public int numberOfSpecies = 20;
+    public int numberOfSpecies = 5;
 
     public GalaxyData data;
     public List<SectorData> unoccupiedSectors = new List<SectorData>();
@@ -34,7 +34,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
         }
         for(int i =0; i < data.sectors.Length; i++) {
             for(int j=0; j< data.sectors[0].Length; j++) {
-                if(data.sectors[i][j].Owner == null && data.sectors[i][j].systemCount > 0) {
+                if(data.sectors[i][j].Owner == null && data.sectors[i][j].SystemCount > 0) {
                     unoccupiedSectors.Add(data.sectors[i][j]);
                 }
             }
@@ -47,13 +47,13 @@ public class GalaxyEntityGenerator : MonoBehaviour
             float minSystem = 10000;
             float sumOfSquares = 0;
             foreach(SectorData d in partitions[i]) {
-                averageSystem += d.systemCount;
-                sumOfSquares += d.systemCount * d.systemCount;
-                if(d.systemCount > maxSystem) {
-                    maxSystem = d.systemCount;
+                averageSystem += d.SystemCount;
+                sumOfSquares += d.SystemCount * d.SystemCount;
+                if(d.SystemCount > maxSystem) {
+                    maxSystem = d.SystemCount;
                 }
-                if(d.systemCount < minSystem) {
-                    minSystem = d.systemCount;
+                if(d.SystemCount < minSystem) {
+                    minSystem = d.SystemCount;
                 }
             }
             float totalSystem = averageSystem;

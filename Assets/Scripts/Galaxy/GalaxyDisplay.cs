@@ -62,7 +62,7 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
             for(int y = 0; y < displayedData.sectors[0].Length; y++) {
                 GameObject sector = sectorPool.GetGameObject();
                 Sector s = sector.GetComponent<Sector>();
-                s.baseColor = gradient.Evaluate((float) displayedData.sectors[x][y].systemCount / displayedData.maxCount);
+                s.baseColor = gradient.Evaluate((float) displayedData.sectors[x][y].SystemCount / displayedData.maxCount);
                 s.DisplaySector(displayedData.sectors[x][y]);
                 s.ShowBaseColor();
                 allSectors.Add(s);
@@ -110,7 +110,7 @@ public class GalaxyDisplay : MonoBehaviour, IPointerClickHandler {
     public void TilePointerEnter(Sector tile) {
         HoverSector = tile;
         tile.SetHover(true);
-        string displayString = "Major Systems: " + tile.sectorData.systemCount.ToString();
+        string displayString = "Major Systems: " + tile.sectorData.SystemCount.ToString();
         if (tile.sectorData.Owner != null) {
             displayString += "\nOwner: " + tile.sectorData.Owner.fullName;
         } else {

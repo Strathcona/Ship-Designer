@@ -31,10 +31,11 @@ public class LayeredColoredSpriteDisplay: MonoBehaviour {
 
     public void RefreshDisplay(LayeredColoredSprite layeredColoredSprite) {
         imagePool.ReleaseAll();
-        for (int i = 0; i < layeredColoredSprite.Sprites.Length; i++) {
+        for (int i = 0; i < this.layeredColoredSprite.Sprites.Length; i++) {
             Image image = imagePool.GetGameObject().GetComponent<Image>();
-            image.sprite = layeredColoredSprite.Sprites[i];
-            image.color = layeredColoredSprite.Colors[i];
+            image.sprite = this.layeredColoredSprite.Sprites[i];
+            image.color = this.layeredColoredSprite.Colors[i];
+            Debug.Log("Displaying Color " + image.color);
         }
     }
 }
