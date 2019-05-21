@@ -33,9 +33,8 @@ public class LayeredColoredSpriteDisplay: MonoBehaviour {
         imagePool.ReleaseAll();
         for (int i = 0; i < this.layeredColoredSprite.Sprites.Length; i++) {
             Image image = imagePool.GetGameObject().GetComponent<Image>();
-            image.sprite = this.layeredColoredSprite.Sprites[i];
             image.color = this.layeredColoredSprite.Colors[i];
-            Debug.Log("Displaying Color " + image.color);
+            image.overrideSprite = this.layeredColoredSprite.Sprites[i];
         }
     }
 }
