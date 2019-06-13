@@ -6,11 +6,16 @@ using GameConstructs;
 
 public class Company : IHasFunds, IHasOwner, IDisplayed{
     public string name;
-    public string companyType;
+    public string slogan;
     public LayeredColoredSprite logo;
-    private Magnate owner;
-    public Magnate Owner {
-        get { return owner; }
+
+    public Magnate founder;
+    public TickDate establishedDate;
+    public GalaxyEntity headquarteredEntity;
+
+    private Magnate currentOwner;
+    public Magnate CurrentOwner {
+        get { return currentOwner; }
         set {
             ChangeOwner(value);
         }
@@ -25,20 +30,31 @@ public class Company : IHasFunds, IHasOwner, IDisplayed{
     public event Action<int> OnFundsChangeEvent;
     public event Action<Magnate> OnOwnerChangeEvent;
     public AIPlayer boardOfDirectors;
+
     private List<Department> departments = new List<Department>();
     public EngineeringDepartment engineeringDepartment;
     public FinanceDepartment financeDepartment;
+    public FacilitiesDepartment facilitiesDepartment;
+
     public string[] DisplayStrings { get { return new string[1] { name }; } }
     public LayeredColoredSprite[] DisplaySprites { get { return new LayeredColoredSprite[1] { logo }; } }
     public event Action<IDisplayed> DisplayUpdateEvent;
 
     public Company(Magnate founder) {
-        owner = founder;
+        this.founder = founder;
+        currentOwner = founder;
+        establishedDate = TimeManager.currentTime;
+
+
         boardOfDirectors = new AIPlayer();
         boardOfDirectors.FirstName = "Board of Directors";
+
         TimeManager.instance.OnDayEvent += DailyDepartmentWork;
+
         engineeringDepartment = new EngineeringDepartment();
+        facilitiesDepartment = new FacilitiesDepartment();
         financeDepartment = new FinanceDepartment();
+        departments.Add(facilitiesDepartment);
         departments.Add(engineeringDepartment);
         departments.Add(financeDepartment);
     }
@@ -58,13 +74,13 @@ public class Company : IHasFunds, IHasOwner, IDisplayed{
     }
 
     public Person GetOwner() {
-        return Owner;
+        return CurrentOwner;
     }
     public void ChangeOwner(Magnate newOwner) {
-        owner.LoseOwnership(this);
+        currentOwner.LoseOwnership(this);
         if(newOwner == null) {
-            owner = boardOfDirectors;
+            currentOwner = boardOfDirectors;
         }
-        OnOwnerChangeEvent?.Invoke(owner);
+        OnOwnerChangeEvent?.Invoke(currentOwner);
     }
 }

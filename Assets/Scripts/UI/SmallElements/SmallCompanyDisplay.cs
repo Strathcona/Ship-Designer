@@ -16,7 +16,6 @@ public class SmallCompanyDisplay : MonoBehaviour {
         Clear();
         company = c;
         companyName.text = company.name;
-        companyType.text = company.companyType;
 
     }
 

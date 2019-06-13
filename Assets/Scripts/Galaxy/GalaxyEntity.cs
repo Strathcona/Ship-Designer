@@ -21,24 +21,14 @@ public class GalaxyEntity: IDisplayed {
     private EntityGovernment government;
     public EntityGovernment Government {
         get { return government; }
-        set {
-            government = value;
-            value.TransitionToGovernment(this);
-            OnGovernmentChangeEvent?.Invoke(this);
-            DisplayUpdateEvent?.Invoke(this);
-        }
     }
 
     public string fullName { get { return government?.governmentName; } }
     public NPC leader { get { return government?.leader; } }
 
-    public event Action<GalaxyEntity> OnGovernmentChangeEvent;
-
-    public string name;
-    public string adjective;
 
     public string[] DisplayStrings {
-        get { return new string[1] { Government.governmentName }; }
+        get { return new string[1] { government?.governmentName }; }
     }
     public LayeredColoredSprite[] DisplaySprites {
         get { return new LayeredColoredSprite[1] { flag }; }
@@ -120,7 +110,7 @@ public class GalaxyEntity: IDisplayed {
         List<ContractBid.ContractBidCriteria> bidCriteria = new List<ContractBid.ContractBidCriteria>();
         bidCriteria.Add(ContractBid.ContractBidCriteria.LowMinimumCrewCriteria(3));
         int units = UnityEngine.Random.Range(1, 5);
-        ContractBid newContract = new ContractBid(this, units, bidCriteria, bidRequirements, adjective + " Naval Expansion");
+        ContractBid newContract = new ContractBid(this, units, bidCriteria, bidRequirements," Naval Expansion");
         contractBids.Add(newContract);
     }
 

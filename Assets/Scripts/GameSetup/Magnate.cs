@@ -13,7 +13,7 @@ public class Magnate : Person, IHasFunds {
             OnActiveCompanyChangeEvent?.Invoke(activeCompany);
         }
     }
-
+    public bool hasActiveCompany { get { return activeCompany != null; } }
     private int funds;
     public int Funds {
         get { return funds; }

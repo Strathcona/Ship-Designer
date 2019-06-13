@@ -8,14 +8,14 @@ public class Person : IDisplayed{
     public string Title {
         get { return title; }
         set { title = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
     }
     protected string epithet = "";
     public string Epithet {
         get { return epithet; }
         set { epithet = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
     }
     protected string firstName;
@@ -23,7 +23,7 @@ public class Person : IDisplayed{
         get { return firstName; }
         set {
             firstName = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
     }
     protected string lastName;
@@ -31,7 +31,7 @@ public class Person : IDisplayed{
         get { return lastName; }
         set {
             lastName = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
     }
     public string FullName { get {
@@ -49,7 +49,7 @@ public class Person : IDisplayed{
         get { return portrait; }
         set {
             portrait = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
     }
     protected Species species;
@@ -57,7 +57,7 @@ public class Person : IDisplayed{
         get { return species; }
         set {
             species = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
     }
     protected Gender gender;
@@ -65,8 +65,21 @@ public class Person : IDisplayed{
         get { return gender; }
         set {
             gender = value;
-            OnPlayerDetailsChangeEvent?.Invoke(this);
+            OnPersonChange();
         }
+    }
+    protected GalaxyEntity nationality;
+    public GalaxyEntity Nationality {
+        get { return nationality; }
+        set {
+            nationality = value;
+            OnPersonChange();
+        }
+    }
+
+    protected void OnPersonChange() {
+        OnPlayerDetailsChangeEvent?.Invoke(this);
+        DisplayUpdateEvent?.Invoke(this);
     }
 
     public string[] DisplayStrings { get { return new string[3] { FirstName +" "+LastName, Title, Epithet }; } }

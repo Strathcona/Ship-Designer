@@ -21,8 +21,7 @@ public class Federation: EntityGovernment {
 
     protected override void TransitionToGovernmentImplementation() {
         string name = names[Random.Range(0, names.Length)];
-        name = name.Replace("[NAME]", galaxyEntity.name);
-        governmentName = name;
+        governmentName = name
     }
 
     protected override void AppointNewLeaderImplementation() {

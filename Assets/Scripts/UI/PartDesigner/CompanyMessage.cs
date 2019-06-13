@@ -23,7 +23,6 @@ public class CompanyMessage : MonoBehaviour {
         Clear();
         company = c;
         companyName.text = company.name;
-        companyType.text = company.companyType;
         logoDisplay.DisplayLayeredColoredSprite(company.logo);
     }
 
