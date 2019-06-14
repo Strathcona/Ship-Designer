@@ -63,8 +63,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
             Debug.Log("Total System:"+totalSystem+" averageSystem:"+averageSystem+" minSystem:"+minSystem+" maxSystem:"+maxSystem+" stdDeviation:"+standardDeviation);
             GalaxyEntity g = GetEntity(partitions[i]);
             g.name = entityNames[i];
-            g.Government = EntityGovernment.GetRandomEntityGovernment();
-            Debug.Log(g.Government.leader.FullName + " "+g.Government.governmentName);
+            Debug.Log(g.leader.FullName + " "+g.Government.governmentName + " " +g.Government.governmentCatagory);
             GameDataManager.instance.AddNewEntity(g);
         }
         entityList.Display(GameDataManager.instance.Entitites);
@@ -120,11 +119,7 @@ public class GalaxyEntityGenerator : MonoBehaviour
         territory.Remove(capital);
         g.capitalSector = capital;
         g.GainTerritory(territory);        
-        g.fleetDoctrine = (EntityFleetDoctrine)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EntityFleetDoctrine)).Length);
-        g.adjective = entityStrings[2];
-        g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.fullName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
-        TimeManager.SetTimeTrigger(1, g.RequestNewGoals);
-        TimeManager.SetTimeTrigger(2400, g.EvaluateGoals);
+        g.capitalSector.AddGalaxyFeature(new GalaxyFeature(g.FullName + " Capital", GalaxyFeatureType.EntityCapital, g.color));
         return g;
     }
 

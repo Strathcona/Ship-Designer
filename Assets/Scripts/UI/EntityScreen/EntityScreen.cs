@@ -42,10 +42,6 @@ public class EntityScreen : MonoBehaviour {
     public void ShowContractScreen() {
         ToggleVisible(false);
         contractScreen.SetActive(true);
-        foreach(ContractBid bid in galaxyEntity.contractBids) {
-            GameObject g = contractBidPanelPool.GetGameObject();
-            g.GetComponent<ContractBidPanel>().DisplayContractBid(bid);
-        }
     }
 
     public void ClearContractScreen() {

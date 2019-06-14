@@ -32,7 +32,7 @@ public class GameDataManager : MonoBehaviour, IInitialized {
     public void ClearAllEntities() {
         foreach(GalaxyEntity e in entities) {
             if(e != null) {
-                e.ClearEntityTerritory();
+                e.ClearEntity();
             }
         }
         entities.Clear();

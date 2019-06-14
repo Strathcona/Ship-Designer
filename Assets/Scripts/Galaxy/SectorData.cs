@@ -37,7 +37,7 @@ public class SectorData: IDisplayed {
     public string[] DisplayStrings {
         get {
             if (Owner != null) {
-                return new string[] { sectorName, Owner.fullName, SystemCountString };
+                return new string[] { sectorName, Owner.FullName, SystemCountString };
             } else {
                 return new string[] { sectorName, "Unclaimed", SystemCountString };
             }
